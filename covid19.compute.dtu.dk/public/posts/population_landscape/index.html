@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Population landscape Post by Sune Lehmann. Visualization by Ulf Aslak. Published: May 14, 2020.  When you first get your hands on a new dataset, one of the key things to do is to look at the data. The human eye is expert at spotting patterns, systems, outliers. That&rsquo;s one of the ways we form theories and hypotheses to explore with more complex statistical tools.
+Sometimes looking at the data is as easy as plotting x against y."><meta property="og:title" content="Population landscape" />
+<meta property="og:description" content="Population landscape Post by Sune Lehmann. Visualization by Ulf Aslak. Published: May 14, 2020.  When you first get your hands on a new dataset, one of the key things to do is to look at the data. The human eye is expert at spotting patterns, systems, outliers. That&rsquo;s one of the ways we form theories and hypotheses to explore with more complex statistical tools.
+Sometimes looking at the data is as easy as plotting x against y." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/posts/population_landscape/" />
+<meta property="article:modified_time" content="2020-05-11T22:10:54+02:00" />
+<title>Population landscape | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18: Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14: Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11: What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/"class=active>7: Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data/movement_maps/">Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Population landscape</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="population-landscape"><strong>Population landscape</strong></h1>
+<p><span style="font-size:14px"><em>Post by <a href="mailto:sljo@dtu.dk">Sune Lehmann</a>. Visualization by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a>. Published: May 14, 2020.</em></span> <!-- raw HTML omitted --></p>
+<video width='100%' style="display:block; margin-right: auto; margin-left: auto;" controls loop>
+  <source src="/population_viz.mp4" type="video/mp4">
+</video>
+<p>When you first get your hands on a new dataset, one of the key things to do is to <strong>look at the data</strong>. The human eye is expert at spotting patterns, systems, outliers. That&rsquo;s one of the ways we form theories and hypotheses to explore with more complex statistical tools.</p>
+<p>Sometimes looking at the data is as easy as plotting <em>x</em> against <em>y</em>. But other times the data is so complex that it is very difficult to visualize &ndash; but then when you do, the results can be extraordinarily beautiful. That&rsquo;s the case in the <a href="/mobility/popdensevis/index.html"><strong>population landscape visualization</strong></a>.</p>
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    <strong>Denmark</strong>
+<img src="/popdensview1.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    <strong>Region Hovedstaden</strong>
+<img src="/popdensview2.png" alt="img">
+  </div>
+  
+</div>
+
+<p>Here we are interested in understanding <em>where</em> on the map that people are spending their time. Furthermore, we want to understand how that changes over <em>time</em>. And we want to compare that to how they were behaving <em>before the lockdown</em>. Those three things in one visualization!</p>
+<p>The result is the beautiful landscapes you see above and below.</p>
+<h3 id="how-to-read-the-map"><strong>How to read the map</strong></h3>
+<p>Let&rsquo;s focus on the view of the entire country shown below. Here we plot tiles with a <strong>height</strong> that corresponds to their baseline—pre-lockdown—count (how many people are usually in this tile on this weekday in this time interval), and a <strong>color</strong> that corresponds to the percentage change from that baseline.</p>
+<p><img src="/popdensview1.png" alt="img" /></p>
+<p>Maximally <strong><span style="color:#c0392b">red tiles</span></strong> contain less than half of the people they usually contain (≤ –50% deviation from baseline). Maximally <strong><span style="color:#009432">green tiles</span></strong> contain more than one and a half times their usual count (≥ 50% deviation from baseline).</p>
+<p>Now you&rsquo;re ready to go play with the visualization for yourself!</p>
+<blockquote>
+<p><strong>Visualization</strong>:  <a href="/mobility/popdensevis/index.html">Click here to inspect the data yourself</a>.
+To change the map angle, hold <kbd>shift</kbd> or <kbd>alt</kbd> while panning. <em><strong>In the interactive view, you can also scroll across dates</strong></em> to study changes over time.</p>
+</blockquote>
+<p>Below, we share some observations that we&rsquo;ve made.</p>
+<h3 id="country-and-region"><strong>Country and region</strong></h3>
+<p><em>Question: How does the overall population distribution change when people cease work or can work from anywhere?</em></p>
+<p><strong>Observation 1:</strong> <em>Large parts of the population have left the cities.</em> The data shown above is from Monday April 6, night (18–02), a time when people are normally at home. The tall red tiles in urban areas reveal that people who live there are not at home. The pattern is found throughout the lockdown. This effect was particularly striking over the Easter break in mid-April and decreased as schools reopened.</p>
+<p><strong>Observation 2:</strong> <em>Holiday areas become densely populated.</em> A closer look at &lsquo;Region Hovedstaden&rsquo; reveals very high population counts near coastal areas known to contain holiday homes, in some tiles with more than a 100% increase compared to the baseline. As above &ndash; since there is a connection &ndash; this effect was particularly striking over the Easter break in mid-April and decreased as schools reopened.</p>
+<h3 id="urban-agglomeration"><strong>Urban agglomeration</strong></h3>
+<p><em>Question: How does the population distribution during work hours (18–02) around cities change when workers are sent home?</em>
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    Around <strong>Aarhus</strong>
+<img src="/popdens_aarhus.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    Around <strong>Odense</strong>
+<img src="/popdens_odense.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    Around <strong>Copenhagen</strong>
+<img src="/popdens_copenhagen.png" alt="img">
+  </div>
+  
+</div>
+</p>
+<p><strong>Observation 3:</strong> <em>Places where people work (inner city, industrial areas, airports) become <span style="color:#c0392b">relatively empty</span> during work hours. Places where people live (outskirts, rural areas) become <span style="color:#009432">more populated</span></em>. In the figure above we visualize population counts around metropolitan areas for working hours (10–18). It is not surprising that we see places associated with work decline significantly in population during work hours, and conversely that places where people live boom; this is simply the effect of work moving into peoples homes.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

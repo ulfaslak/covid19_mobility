@@ -1,0 +1,29 @@
+<!-- HTML -->
+<!-- ---- -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class="flex">
+	<div class="radio-timeframe" id='radio-differenceFig'></div>
+	<div class="select-place" id='select-differenceFig'></div>
+</div>
+<div class='vis' id='vis-difference'></div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let instance_difference;
+
+	d3.json('/data/Denmark_difference.json').then(function(data) {
+		instance_difference = new SingleLinePlot(data, 'vis-difference', 'differenceFig');
+		instance_difference.setup();
+		instance_difference.drawLayout();
+		instance_difference.drawData();
+	})
+
+</script>

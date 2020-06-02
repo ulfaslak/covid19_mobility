@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="What&rsquo;s happening in my city? Post by Laura Alessandretti. Published: May, 11, 2020. During the lockdown, people have moved across Denmark, fleeing from some areas and populating other parts of the country. By looking at the change in population sizes across cities, we can discover where the number of occupants has increased during the lock-down and vice versa, as well as how these changes evolved across March and April 2020. Here we discuss (some of) the conclusions that can be drawn by visualizing the data."><meta property="og:title" content="What&#39;s happening in my city?" />
+<meta property="og:description" content="What&rsquo;s happening in my city? Post by Laura Alessandretti. Published: May, 11, 2020. During the lockdown, people have moved across Denmark, fleeing from some areas and populating other parts of the country. By looking at the change in population sizes across cities, we can discover where the number of occupants has increased during the lock-down and vice versa, as well as how these changes evolved across March and April 2020. Here we discuss (some of) the conclusions that can be drawn by visualizing the data." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/posts/change_in_population_sizes/" />
+<meta property="article:modified_time" content="2020-05-12T10:42:24+02:00" />
+<title>What&#39;s happening in my city? | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18: Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14: Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/"class=active>11: What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7: Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data/movement_maps/">Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>What&#39;s happening in my city?</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="whats-happening-in-my-city"><strong>What&rsquo;s happening in my city?</strong></h1>
+<span style="font-size:14px"><em>Post by <a href="mailto:l.alessandretti@gmail.com">Laura Alessandretti</a>. Published: May, 11, 2020.</em></span>
+<p>During the lockdown, people have moved across Denmark, fleeing from some areas and populating other parts of the country.
+By looking at the <a href="https://covid19.compute.dtu.dk/visualizations/where_people_are_change_in_population_size/">change in population sizes</a> across cities, we can discover where the number of occupants has increased during the lock-down and vice versa, as well as how these changes evolved across March and April 2020. Here we discuss (some of) the conclusions that can be drawn by visualizing the data.</p>
+<p><strong>The number of occupants has increased in holiday destinations, and decreased in urban hubs.</strong></p>
+<p>Let&rsquo;s look at the relative change in number of occupants with respect to February. In the figures below, extracted from the <a href="https://covid19.compute.dtu.dk/visualizations/where_people_are_change_in_population_size/">first interactive visualization</a>, each black line displays the change in number of occupants for a single municipality. A horizontal dashed line indicates the baseline &ndash; where the curve of a municipality that experienced no decrease or increase in occupants compared to February would lie. As can be seen in the left-hand figure, a majority of black lines are above the dashed line corresponding to observing &ldquo;no change&rdquo;, revealing that in most cities the number of occupants has increased during the lockdown.</p>
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    <em>All municipalities</em>
+<img src="/Post1_1.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    <em>Fanø</em>
+<img src="/Post1_2.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    <em>Copenhagen</em>
+<img src="/Post1_3.png" alt="img">
+  </div>
+  
+</div>
+
+<p>The center figure illustrates the useful interactive feature of the visualization. By hovering with the mouse over the line, we find that the cities experiencing the largest increase in population size correspond to holiday destinations. These destinations include Fanø, Odsherred, Dragør, Gribskov, Læsø, Halsnæs, where the population size has increased up to 20% as of May 3rd. Conversely, the right-hand figure shows that the cities experiencing the largest decrease correspond to the major urban hubs in Denmark: Copenhagen and surrounding municipalities (Fredriksberg, Ballerup, Lyngby), Aarhus, Odense, and Aalborg. In these areas the population has decreased by approximately 10% as of May 3rd. We clearly see that these changes were more pronounced during the Easter break (April 9th&ndash;13th), where holiday destinations increased in population up to 80% and urban hubs decreased by more than 15%.</p>
+<p>Interestingly, the cities experiencing a decrease in population size include Tårnby and Billund. This is not surprising considering that&rsquo;s where the major Danish airports are!. In addition to this, Billund, home of LEGO, could be suffering from LEGOLAND being temporarily closed during the lockdown.</p>
+<p><strong>Changes are not that dramatic.</strong></p>
+<p>What do these relative changes actually mean? Let’s look at the absolute numbers. The figure below shows that the absolute change in population size is typically less than 20,000 individuals (this is true for all municipalities except Copenhagen). In fact, most lines are very close to the dashed line corresponding to “no change”, suggesting the actual change measured in terms of number of individuals is not that large. For example, in Fanø, which is a small island, even if the relative change is huge, there are only ~500 individuals more than usual. On the contrary, as of May 3rd there are approximately 40,000 less individuals staying in Copenhagen as compared to the February baseline. This huge difference is very likely to be a consequence of the border closure, as fewer tourists have visited the capital this spring.
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    <em>All municipalities</em>
+<img src="/Post1_4.png" alt="img">
+  </div>
+  
+</div>
+</p>
+<p><strong>Things are slowly moving back to normal.</strong></p>
+<p>Let&rsquo;s now zoom in into single municipalities and check how things are evolving over March and April by looking at the <a href="https://covid19.compute.dtu.dk/visualizations/where_people_are_change_in_population_size/">second interactive visualization</a>. As is illustrated in the left-hand figure below, we can see that in Copenhagen the number of occupants is slowly increasing again, moving up by approximately 3%. Similarly Aarhus, Odense and Aalborg show an increasing trend.
+Conversely, the number of occupants in holiday destinations is slowly decreasing. For example, as is illustrated in the right-hand figure below, the number of occupants in Gribskov has decreased by approximately 5% in the period under study.</p>
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    <em>Copenhagen</em>
+<img src="/Post1_7.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    <em>Gribskov</em>
+<img src="/Post1_8.png" alt="img">
+  </div>
+  
+</div>
+
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

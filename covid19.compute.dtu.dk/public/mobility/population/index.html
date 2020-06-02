@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: May, 5, 2020 6:37:31
+.vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0."><meta property="og:title" content="Population density" />
+<meta property="og:description" content="Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: May, 5, 2020 6:37:31
+.vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/mobility/population/" />
+<meta property="article:modified_time" content="2020-05-05T06:37:31+02:00" />
+<title>Population density | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18: Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14: Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11: What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7: Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data/movement_maps/">Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Population density</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="population-density-during-lockdown"><strong>Population density during lockdown</strong></h1>
+<p><span style="font-size:14px"><em>Report by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a>, <a href="mailto:l.alessandretti@gmail.com">Laura Alessandretti</a>, and <a href="mailto:sljo@dtu.dk">Sune Lehmann</a>.</em></span> <span style="font-size:14px"><em>Updated: May, 5, 2020 6:37:31</em></span></p>
+
+
+
+
+<style type="text/css">
+	.vis {
+		margin: 0 auto;
+		height: 370px;
+	}
+	.line-baseline { 
+		stroke: black;
+		stroke-width: 1.5;
+		fill: none;
+		stroke-dasharray: 10 5;
+		opacity: 0.2;
+	}
+	.line-horizontal { 
+		stroke: #bdc3c7;
+		stroke-width: 1;
+		fill: none;
+		stroke-dasharray: 10 5;
+	}
+	.line-crisis { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.line-changeall { 
+		fill: none;
+		stroke: black;
+		stroke-width: 1;
+		stroke-opacity: 0.7;
+	}
+	.line-tooltip {
+		stroke: 'black';
+		stroke-dasharray: 5 2.5;
+		stroke-width: 1.5;
+	}
+	.line { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.rect-tooltip {
+		fill: white;
+		fill-opacity: 0;
+		z-index: 1;
+	}
+	.trendline {
+		fill: none; 
+		stroke: red;
+		stroke-width: 2.5;
+	}
+	.histEvent {
+		stroke: grey;
+		stroke-width: 2;
+		stroke-opacity: 1;
+	}
+	.histEventDot {
+		fill: grey;
+	}
+	.dot-baseline {
+		fill: white;
+		stroke: #2c3e50;
+		stroke-width: 2;
+		opacity: 0;
+	}
+	.dot {
+		fill: black;
+		opacity: 0.5;
+	}
+	.legend-label {
+		text-anchor: start;
+		font-weight: 300;
+		cursor: pointer;
+	}
+	.right-legend {
+		font-size: 12px;
+	}
+	.tooltip {	
+		position: absolute;
+		top: 0;
+		line-height: 1;
+		font-weight: 500;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 2px;	
+	}
+	.toggle {
+		-webkit-user-select: none;          
+		-moz-user-select: none;  
+		-ms-user-select: none;  
+		user-select: none;  
+	}
+	 
+	.select-place {
+		position: absolute;
+		right: 0px;
+	}
+	.flex {
+		display: flex;
+	}
+	.radio-rect {
+		cursor: pointer;
+		fill: #636e72;
+	}
+
+	.radio-rect.selected {
+		fill: #0984e3;
+	}
+
+	.radio-text {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.radio-text.selected {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+	}
+
+</style>
+
+
+
+
+
+
+<div style="max-height: 0px">
+	<svg>
+	  <defs>
+	    <pattern id="lines" height="10" width="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="4" x2="10" y2="4" stroke-width="2" stroke="black"/>
+	    </pattern>
+	  </defs>
+	</svg>
+</div>
+
+
+
+
+
+
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://unpkg.com/chroma-js@2.0.3/chroma.min.js"></script>
+
+
+<script src="/scripts/eventDates.js"></script>
+<script src="/scripts/timeSeriesFigure.js"></script>
+
+<script>
+
+	
+	
+
+	
+	function adjustBaseline(datum) {
+		datumy = d3.range(7).map(() => []);
+		datum.forEach((d, i) => {
+		    datumy[i%7].push(d[1]);
+		});
+		datumy = datumy.map(d => d3.mean(d));
+		return datum.map((d, i) => [d[0], datumy[i%7]]);
+	}
+
+	
+	function zip(a, b) {
+		return a.map((e, i) => [e, b[i]]);
+	}
+
+	function round(val, order) {
+		return Math.round(val * order) / order;
+	}
+
+	Date.prototype.addDays = function(n) {
+	    let date = new Date(this.valueOf());
+	    date.setDate(date.getDate() + n);
+	    return date;
+	}
+
+	function weekavg(y) {
+		let y_avg = [];
+		y.forEach((v, i) => {
+			let i0 = Math.max(0, i-3);
+			let i1 = Math.min(y.length-1, i+4);
+			y_avg.push(d3.mean(y.slice(i0, i1)));
+		});
+		return y_avg;
+	}
+
+	function insertKSeperators(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+</script>
+<p>An important aspect of understanding how the lockdown affects mobility is <em>how the population is re-distributed across the country.</em></p>
+<ul>
+<li>Do people stay in their homes or do they move to less populated spaces?</li>
+<li>How is population density in the cities impacted?</li>
+<li>What is the development over time?</li>
+<li>Can we find signs of normality in the population distribution as the country opens up?</li>
+</ul>
+<p>In this (continuously updated) report we will address these and related questions. Data for this report are so-called &ldquo;Population density maps&rdquo; and were provided by the Facebook&rsquo;s <a href="https://dataforgood.fb.com/">Data for Good</a> initiative; please see the section <em>Data description</em> at the bottom of this page for descriptive details, and notes on privacy and limitations.</p>
+<h2 id="visualizing-population-distribution"><strong>Visualizing population distribution</strong></h2>
+<p>The population density maps describe the number of people in <em>tiles</em> (square areas) throughout the country at different time-intervals.</p>
+<p>In the two figures below we plot tiles with a <strong>height</strong> that corresponds to their baseline—pre-lockdown—count (how many people are usually in this tile), and a <strong>color</strong> that corresponds to the percentage change from that baseline (how did the population in that tile change).</p>
+<p>Maximally <strong><span style="color:#c0392b">red tiles</span></strong> contain less than half of the people they usually contain (≤ –50% deviation from baseline). Maximally <strong><span style="color:#009432">green tiles</span></strong> contain more than one and a half times their usual count (≥ 50% deviation from baseline).</p>
+<blockquote>
+<p><strong>Visualization</strong>: The following sections <em>Country and region</em> and <em>Urban agglomeration</em> highlight observations that can be made by exploring our interactive map visualization of the Population density maps. <a href="/mobility/popdensevis/index.html">Click here to inspect the data yourself</a>.
+To change the map angle, hold <kbd>shift</kbd> or <kbd>alt</kbd> while panning.</p>
+</blockquote>
+<h3 id="country-and-region"><strong>Country and region</strong></h3>
+<p><em>Question: How does the overall population distribution change when people cease work or can work from anywhere?</em>
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    <strong>Denmark</strong>
+<img src="/popdensview1.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    <strong>Region Hovedstaden</strong>
+<img src="/popdensview2.png" alt="img">
+  </div>
+  
+</div>
+</p>
+<p><strong>Observation 1:</strong> <em>Large parts of the population have left the cities.</em> The data shown above is from Monday April 6, night (18–02), a time when people are normally at home. The tall red tiles in urban areas reveal that people who live there are not at home. The pattern is found throughout the lockdown.</p>
+<p><strong>Observation 2:</strong> <em>Holiday areas become densely populated.</em> A closer look at &lsquo;Region Hovedstaden&rsquo; reveals very high population counts near coastal areas known to contain holiday homes, in some tiles with over 100% deviation from baseline (read more about regional population change under <em>Local population deviation</em> below).</p>
+<h3 id="urban-agglomeration"><strong>Urban agglomeration</strong></h3>
+<p><em>Question: How does the population distribution during work hours (18–02) around cities change when workers are sent home?</em>
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    Around <strong>Aarhus</strong>
+<img src="/popdens_aarhus.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    Around <strong>Odense</strong>
+<img src="/popdens_odense.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    Around <strong>Copenhagen</strong>
+<img src="/popdens_copenhagen.png" alt="img">
+  </div>
+  
+</div>
+</p>
+<p><strong>Observation 3:</strong> <em>Places where people work (inner city, industrial areas, airports) become <span style="color:#c0392b">relatively empty</span> during work hours. Places where people live (outskirts, rural areas) become <span style="color:#009432">more populated</span></em>. In the figure above we visualize population counts around metropolitan areas for working hours (10–18). It is not surprising that we see places associated with work decline significantly in population during work hours, and reversely that places where people live boom; this is simply the effect of work moving into peoples homes.</p>
+<h2 id="analyses"><strong>Analyses</strong></h2>
+<p>A key thing that we are interested in is <em>changes over time</em>. Below we look into various aspects that help us understand and quantify the changes we observe on the map.</p>
+<h3 id="leaving-home-during-the-day"><strong>Leaving home during the day</strong></h3>
+<p>By looking at how the number of people spending most of their time in a given area changes between working hours (10–18) and non-working hours (18–02) we can assess how many individuals leave their home during the day (for example to go to work). We use the following reasoning: if 80 people spent most of their time in a given tile during working hours and the number is 100 during non-working hours (allowing us to assume that 100 people live there), we can say that 20 people were not at home during the working hours of the day. This is not a perfect measure, as work and home areas are not fully seperated, so the numbers we report are a lower bound, as some people will work very near home, or work where others live. <em>The important to look for here is how the daily measurements deviate from the baseline.</em></p>
+<p>Note that you can interact with the figure below. You can:</p>
+<ol>
+<li>Change the municipality displayed using the <strong>dropdown menu</strong>.</li>
+<li>Toggle whether the y-axis displays the absolute measurements (rel<span style="color:white">/</span><strong>abs</strong>) or the deviation from the baseline (<strong>rel</strong><span style="color:white">/</span>abs).</li>
+</ol>
+
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-workingFig'></div>
+	<div class="select-place" id='select-workingFig'></div>
+</div>
+<div class='vis' id='vis-working'></div>
+
+
+
+
+
+
+<script>
+
+	let instance_working;
+
+	d3.json('/data/Denmark_night_day_difference.json').then(function(data) {
+		instance_working = new DeviationPlot(data, 'vis-working', 'workingFig');
+		instance_working.setup();
+		instance_working.drawLayout();
+		instance_working.drawData();
+	})
+
+</script>
+<p><strong>Observation 4:</strong> <em>People are spending less time away from home during weekdays</em>. This is an expected pattern (around -50%, toggle <strong>rel</strong> abs to inspect), and corroborates <em>Observation 3</em>.</p>
+<p><strong>Observation 5:</strong> <em>People are more away from home on weekends</em>, which is a trend that seems to increase over time. One plausible explanation for this is that the weather in Denmark has been exceptionally good during April motivating people to spend more time outside. At the same time, the baseline is based on data from January and February, where people tend to stay inside because of cold weather. Even so, however, the large increase in the most recent weekends <em>[written: May 4]</em> shows that people are going out on weekends more.</p>
+<p><strong>Observation 6:</strong> <em>Date of child-care reopening is a changepoint</em>. April 15 when daycare institutions, kindergardens and school for the youngest opened back up (at 50% capacity), the number of people leaving their home during working hours seems to rise above the trend seen previously in the lockdown. In the following weeks more people follow suit (though still around -35% reduction).</p>
+<h3 id="local-population-deviation"><strong>Local population deviation</strong></h3>
+<p>We saw in the visualization of the Population density maps that there are places which attract people during the lockdown and others that drive them away (observations 1 and 2). We begin, therefore, by quantifying population count changes over time at the municipality level.</p>
+<p><em>Question: How many people are there a given municipality, compared to pre-lockdown?</em></p>
+<p>We first plot daily population change for all municipalities in the same figure. The figure lets you toggle whether the y-axis displays change relative to the average population size of each municipality (<strong>rel</strong><span style="color:white">/</span>abs), or not, i.e. the absolute population deviation (rel<span style="color:white">/</span><strong>abs</strong>). You can also change the time interval to display results for.</p>
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-changeAllFig'></div>
+	<div class="select-place" id='select-changeAllFig'></div>
+</div>
+<div class='vis' id='vis-changeAll'></div>
+
+
+
+
+
+
+<script>
+
+	let instance_changeAll;
+
+	d3.json('/data/Denmark_change.json').then(function(data) {
+		instance_changeAll = new MultiLinePlot(data, 'vis-changeAll', 'changeAllFig');
+		instance_changeAll.setup();
+		instance_changeAll.drawLayout();
+		instance_changeAll.drawData();
+	})
+
+</script>
+<p>We also plot each municipality individually letting you select which one to display using the dropdown. Here toggling &lsquo;rel<span style="color:white">/</span><strong>abs</strong>&rsquo; displays population size on the y-axis. For example, for Copenhagen (København) we see that the baseline population size is around 600k (the public count for 2017 is 602.581; source UN) whereas the lockdown population size is around 540k, which yields a relative change of around -10%.</p>
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-changeFig'></div>
+	<div class="select-place" id='select-changeFig'></div>
+</div>
+<div class='vis' id='vis-change'></div>
+
+
+
+
+
+
+<script>
+
+	let instance_change;
+
+	d3.json('/data/Denmark_change.json').then(function(data) {
+		instance_change = new DeviationPlot(data, 'vis-change', 'changeFig');
+		instance_change.setup();
+		instance_change.drawLayout();
+		instance_change.drawData();
+	})
+
+</script>
+<p><strong>Observation 7:</strong> <em>Major country-wide population changes over Easter.</em> Over Easter and in particularly Thursday which was a national holiday, we observe the largest fluctuations in population size. Municipalities which primarily contain urban and large suburban areas see a massive decline in population. The municipalities with the largest <span style="color:#c0392b">relative population decrease</span> <strong>on Thursday April 9</strong> are:</p>
+<ul>
+<li>Frederiksberg (-16.6%, -17.6k)</li>
+<li>København (-14.7%, -91.4k)</li>
+<li>Tårnby (-12.1%, -8.0k)</li>
+<li>Lyngby-Taarbæk (-12.0%, -5.3k)</li>
+<li>Aarhus (-11.2%, -40.0k).</li>
+</ul>
+<p>Reversely, in municipalities which contain large portions of rural space there is an increase in population size on this date. Municipalities with largest <span style="color:#009432">relative increase</span> are:</p>
+<ul>
+<li>Fanø (81.1%, 2.6k)</li>
+<li>Odsherred (62%, 20.0k)</li>
+<li>Gribskov (48.4%, 18.9k)</li>
+<li>Læsø (43.4%, 227)</li>
+<li>Halsnæs (39.2%, 12.4k).</li>
+</ul>
+<p>While these changes level out after Easter, the above ranking more or less holds. For example, Gribskov municipality typically contains on average around 20% more people than usual (~15% during afternoon/night and ~30% during working hours). To what extent this occurs because people move into their summer houses, temporarily move in with relatives, or other is unclear from this analysis, but it is likely a mixture of different behaviors.</p>
+<p>Overall it hints towards a population that is less concentrated in the cities and <em>more evenly spread out</em> across the country. In the section <em>Spread out population</em> we quantify this effect.</p>
+<p><strong>Observation 8:</strong> <em>People are slowly returning to the cities</em>. On April 6 we made <em>Observation 1</em> that people were leaving the cities. Now <em>[written: May 4]</em> we observe that populations are slowly returning to the urban areas.</p>
+<h3 id="assessing-relocation"><strong>Assessing relocation</strong></h3>
+<p>Any <span style="color:#c0392b">positive</span> or <span style="color:#009432">negative</span> deviation observed in tiles means someone is not where they usually are. By averaging the total amount of positive and negative deviation we can assess the share of people that—relative to the given timeframe—<em>have relocated</em>.</p>
+<p><em>Question: How many people are not in their usual place?</em></p>
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-differenceFig'></div>
+	<div class="select-place" id='select-differenceFig'></div>
+</div>
+<div class='vis' id='vis-difference'></div>
+
+
+
+
+
+
+<script>
+
+	let instance_difference;
+
+	d3.json('/data/Denmark_difference.json').then(function(data) {
+		instance_difference = new SingleLinePlot(data, 'vis-difference', 'differenceFig');
+		instance_difference.setup();
+		instance_difference.drawLayout();
+		instance_difference.drawData();
+	})
+
+</script>
+<p><strong>Observation 9:</strong> <em>2–4% of the population has temporarily moved away from their home.</em> The relocation we observe during afternoon and night (select 18–02) equates to the number of people that are not at home at night. Relocation peaks at 5% on Friday of Easter. We expect this to decrease to 0% when society has fully reopened, but at the current time <em>[written: May 4]</em> there does not appear to be a decrease compared to the earliest recorded week of lockdown.</p>
+<p><strong>Observation 10:</strong> <em>5-7% are displaced during working hours</em>. Selecting the time window 10–18 we observe that people have relocated work to other places—like home—and are, therefore, not in their usual place–their workplace. For the reason mentioned under <em>Leaving home during the day</em> we can only take the values on the y-axis as a lower bound. But we do observe that a decreasing proportion of the population keeps away from work.</p>
+<h3 id="spread-out-population"><strong>Spread out population</strong></h3>
+<p>The <a href="https://en.wikipedia.org/wiki/Gini_coefficient">Gini Index</a> measures how <em>unevenly distributed</em> (or <em>concentrated</em>) a distribution is and can, therefore, inform us about trends in how the population spreads out across the country. As we can see from the giant peaks of cities in the Population density maps visualization (see <em>Visualizing population distribution</em>), the population is usually very unevenly distributed. We observe in the same map visualization that people spread out during the lockdown, distributing themselves more evenly throughout the country.</p>
+<p>The Gini Index ranges from zero to one. If the population spreads out perfectly such that every tile contains the same number of people, the Gini Index will be zero. If all of Denmark concentrates in a single tile it will be one. In the figure below you can select different timeframes for different parts of the country.</p>
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-giniFig'></div>
+	<div class="select-place" id='select-giniFig'></div>
+</div>
+<div class='vis' id='vis-gini'></div>
+
+
+
+
+
+
+<script>
+
+	let instance_gini;
+	
+	d3.json('/data/Denmark_gini_over_time.json').then(function(data) {
+		instance_gini = new DeviationPlot(data, 'vis-gini', 'giniFig');
+		instance_gini.setup();
+		instance_gini.drawLayout();
+		instance_gini.drawData();
+	})
+
+</script>
+<p><strong>Observation 11:</strong> <em>Population concentration has decreased by 6-1%</em>. This is in terms of the Gini index. This concentration decrease (or &ldquo;spreading out&rdquo;) peaks over Easter which supports our observations above.</p>
+<p><strong>Observation 12:</strong> <em>Population concentration is slowly increasing</em>. On week 14 during weekdays (March 30–April 3) the average deviation from baseline was -2.8%. By week 18 the weekday average deviation from baseline was -2.1%.</p>
+<h2 id="data-description"><strong>Data description</strong></h2>
+<p>Data was made available through Facebook&rsquo;s <a href="https://dataforgood.fb.com/">Data for Good</a> initiative. The earliest data made available starts March 28; at the lowest level it details population counts in geographical tiles up to 1.5 km by 1.5 km in size in three timebines each day (0–8, 8–16, and 16–24 GMT). Aggregation at the municipality level is also available. <strong>For privacy preservation</strong>, data is unavailale in tiles/municipalties where at a given time &lt; 10 people are present. For each count a corresponding <em>baseline</em> value is provided. The baseline is the average count for the same day and time over the 45 days prior to data generation. <strong>There are two important things to note about this data</strong>:</p>
+<ul>
+<li>Since the baseline averages over the 45 days prior to data generation, and data generation starts on March 28, around two weeks of the 45 baseline days span into the lockdown period. Therefore, by comparing to this baseline <strong>reported effects may be as much as 33% smaller</strong> than those we might have obtained if comparing to a baseline that did not include lockdown.</li>
+<li>In any given time interval, the total number of counted individuals across the whole country is between 324.188 and 466.815 (<em>mean</em>: 421.500; <em>median</em>: 448.929; lowest between 0–8 GMT). These are Facebook users that actively use the mobile app at some time during an interval. <strong>To offer realistic population counts</strong> in the interactive visualization, we factor into the raw user counts the ratio between the total number of people in Denmark (5.787.997, as of Thursday, April 16, 202; source: <a href="https://www.worldometers.info/world-population/denmark-population/">Worldometer</a>) and the number of active users in a given time interval. This ratio varies between 13.8 and 17.9. Note, however, that the percentage change is computed <em>after</em> factoring in this ratio. This recalibration assumes that active Facebook users are distributed evenly throughout the population.</li>
+</ul>
+<!-- raw HTML omitted -->
+<blockquote>
+<p><strong>Update log</strong>:</p>
+<p><em>17.4.2020</em>: The ratio between the total Danish population and the number of active Facebook users in a given time interval is now factored into the counts we display in the interactive population density map visualization. The percent change displayed is calculated from the recalibrated values. Affected text in <em>Data description</em> has been updated.</p>
+<p><em>17.4.2020</em>: Sentence &ldquo;There are two important limitations in this data&rdquo; changed to &ldquo;There are two important things to note about this data&rdquo;.</p>
+<p><em>17.4.2020</em>: Change recommendation from using <kbd>alt</kbd> for rotating view in interactive visualization to using <kbd>shift</kbd>. Both keys, however, work in most browsers.</p>
+<p><em>18.4.2020</em>: Add button in visualization to change colorscheme. Rotates between five different schemes.</p>
+<p><em>18.4.2020</em>: Add options to display y-axes as absolute. When absolute, it expresses <em>approximate number of individuals</em>. The ratio between the total Danish population and active users within the time window is factored into counts, same as in the visualization.</p>
+<p><em>18.4.2020</em>: Add option in dropdown of &ldquo;Change in population size&rdquo; plot to display all municipalities at the same time.</p>
+<p><em>20.4.2020</em>: Small improvements to text.</p>
+<p><em>3.5.2020</em>: Add section &ldquo;Leaving home during the day&rdquo;.</p>
+<p><em>4.5.2020</em>: Update all figures to display rolling 7-day average, legend, events and shade for period with no data.</p>
+<p><em>4.5.2020</em>: Remove option to display 02–08 timeframe in all figures, as it is non-informative and only adds confusion.</p>
+<p><em>4.5.2020</em>: Reformat text to explicitly state what our observations based on the figures are.</p>
+</blockquote>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

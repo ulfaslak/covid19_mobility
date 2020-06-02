@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2."><meta property="og:title" content="" />
+<meta property="og:description" content="Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/where_people_are_population_concentration/" />
+<meta property="article:modified_time" content="2020-05-28T11:53:54+02:00" />
+<title>Where People Are Population Concentration | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18: Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14: Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11: What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7: Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/"class=active>Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data/movement_maps/">Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Where People Are Population Concentration</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="population-distribution"><strong>Population distribution</strong></h1>
+<span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
+
+
+
+
+<style type="text/css">
+	.vis {
+		margin: 0 auto;
+		height: 370px;
+	}
+	.line-baseline { 
+		stroke: black;
+		stroke-width: 1.5;
+		fill: none;
+		stroke-dasharray: 10 5;
+		opacity: 0.2;
+	}
+	.line-horizontal { 
+		stroke: #bdc3c7;
+		stroke-width: 1;
+		fill: none;
+		stroke-dasharray: 10 5;
+	}
+	.line-crisis { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.line-changeall { 
+		fill: none;
+		stroke: black;
+		stroke-width: 1;
+		stroke-opacity: 0.7;
+	}
+	.line-tooltip {
+		stroke: 'black';
+		stroke-dasharray: 5 2.5;
+		stroke-width: 1.5;
+	}
+	.line { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.rect-tooltip {
+		fill: white;
+		fill-opacity: 0;
+		z-index: 1;
+	}
+	.trendline {
+		fill: none; 
+		stroke: red;
+		stroke-width: 2.5;
+	}
+	.histEvent {
+		stroke: grey;
+		stroke-width: 2;
+		stroke-opacity: 1;
+	}
+	.histEventDot {
+		fill: grey;
+	}
+	.dot-baseline {
+		fill: white;
+		stroke: #2c3e50;
+		stroke-width: 2;
+		opacity: 0;
+	}
+	.dot {
+		fill: black;
+		opacity: 0.5;
+	}
+	.legend-label {
+		text-anchor: start;
+		font-weight: 300;
+		cursor: pointer;
+	}
+	.right-legend {
+		font-size: 12px;
+	}
+	.tooltip {	
+		position: absolute;
+		top: 0;
+		line-height: 1;
+		font-weight: 500;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 2px;	
+	}
+	.toggle {
+		-webkit-user-select: none;          
+		-moz-user-select: none;  
+		-ms-user-select: none;  
+		user-select: none;  
+	}
+	 
+	.select-place {
+		position: absolute;
+		right: 0px;
+	}
+	.flex {
+		display: flex;
+	}
+	.radio-rect {
+		cursor: pointer;
+		fill: #636e72;
+	}
+
+	.radio-rect.selected {
+		fill: #0984e3;
+	}
+
+	.radio-text {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.radio-text.selected {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+	}
+
+</style>
+
+
+
+
+
+
+<div style="max-height: 0px">
+	<svg>
+	  <defs>
+	    <pattern id="lines" height="10" width="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="4" x2="10" y2="4" stroke-width="2" stroke="black"/>
+	    </pattern>
+	  </defs>
+	</svg>
+</div>
+
+
+
+
+
+
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://unpkg.com/chroma-js@2.0.3/chroma.min.js"></script>
+
+
+<script src="/scripts/eventDates.js"></script>
+<script src="/scripts/timeSeriesFigure.js"></script>
+
+<script>
+
+	
+	
+
+	
+	function adjustBaseline(datum) {
+		datumy = d3.range(7).map(() => []);
+		datum.forEach((d, i) => {
+		    datumy[i%7].push(d[1]);
+		});
+		datumy = datumy.map(d => d3.mean(d));
+		return datum.map((d, i) => [d[0], datumy[i%7]]);
+	}
+
+	
+	function zip(a, b) {
+		return a.map((e, i) => [e, b[i]]);
+	}
+
+	function round(val, order) {
+		return Math.round(val * order) / order;
+	}
+
+	Date.prototype.addDays = function(n) {
+	    let date = new Date(this.valueOf());
+	    date.setDate(date.getDate() + n);
+	    return date;
+	}
+
+	function weekavg(y) {
+		let y_avg = [];
+		y.forEach((v, i) => {
+			let i0 = Math.max(0, i-3);
+			let i1 = Math.min(y.length-1, i+4);
+			y_avg.push(d3.mean(y.slice(i0, i1)));
+		});
+		return y_avg;
+	}
+
+	function insertKSeperators(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+</script>
+<p>The figure below displays the <strong>fraction of people that have changed location</strong> compared to a similar time frame before the lockdown. We estimate this variable by summing the positive and absolute negative baseline population deviation across all tiles and dividing my two. Simply, this corresponds to averaging the amount of red and green in the <a href="/mobility/popdensevis/index.html">Landscape visualization</a>, which signals that someone is not where they usually are during this time of the week.</p>
+<p>Note that the change we see here is <em>a lower bound</em> of the actual movement because we can assume there are cases where pairs of people (coincidentally) trade places, which cancels out any measurable deviation in the population distribution. This point is important in interpreting the figure.</p>
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-differenceFig'></div>
+	<div class="select-place" id='select-differenceFig'></div>
+</div>
+<div class='vis' id='vis-difference'></div>
+
+
+
+
+
+
+<script>
+
+	let instance_difference;
+
+	d3.json('/data/Denmark_difference.json').then(function(data) {
+		instance_difference = new SingleLinePlot(data, 'vis-difference', 'differenceFig');
+		instance_difference.setup();
+		instance_difference.drawLayout();
+		instance_difference.drawData();
+	})
+
+</script>
+<blockquote>
+<p><strong>The figure is interactive!</strong> You can:</p>
+<ul>
+<li>Change the region displayed using the <strong>dropdown menu</strong>.</li>
+<li>Toggle the time window to display results for <code>all day</code>, <code>10-18</code> or <code>18-02</code>.</li>
+<li><strong>Hover</strong> the curves to see precise values.</li>
+<li><strong>Hover</strong> the marks on the x-axis to see events.</li>
+</ul>
+</blockquote>
+<p>The <a href="https://en.wikipedia.org/wiki/Gini_coefficient">Gini Index</a> is another way of visualizing these changes. This index measures how <em>unevenly distributed</em> (or <em>concentrated</em>) a distribution is and can, therefore, inform us about trends in how the population spreads out across the country. As we can see from the giant peaks of cities in the Population density maps visualization (see <em>Visualizing population distribution</em>), the population is usually very unevenly distributed. We observe in the same map visualization that people spread out during the lockdown, distributing themselves more evenly throughout the country.</p>
+<p>The Gini Index ranges from zero to one. If the population spreads out perfectly such that every tile contains the same number of people, the Gini Index will be zero. If all of Denmark concentrates in a single tile it will be one. In the figure below you can select different timeframes for different parts of the country. The figure below display the Gini Index over time.</p>
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-giniFig'></div>
+	<div class="select-place" id='select-giniFig'></div>
+</div>
+<div class='vis' id='vis-gini'></div>
+
+
+
+
+
+
+<script>
+
+	let instance_gini;
+	
+	d3.json('/data/Denmark_gini_over_time.json').then(function(data) {
+		instance_gini = new DeviationPlot(data, 'vis-gini', 'giniFig');
+		instance_gini.setup();
+		instance_gini.drawLayout();
+		instance_gini.drawData();
+	})
+
+</script>
+<blockquote>
+<p><strong>The figure is interactive!</strong> You can:</p>
+<ul>
+<li>Change the region displayed using the <strong>dropdown menu</strong>.</li>
+<li>Toggle the time window to display results for <code>all day</code>, <code>10-18</code> or <code>18-02</code>..</li>
+<li>Toggle whether the y-axis displays the absolute measurements (rel<span style="color:white">/</span><strong>abs</strong>) or the deviation from the baseline (<strong>rel</strong><span style="color:white">/</span>abs).</li>
+<li><strong>Hover</strong> the curves to see precise values.</li>
+<li><strong>Hover</strong> the marks on the x-axis to see events.</li>
+</ul>
+</blockquote>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

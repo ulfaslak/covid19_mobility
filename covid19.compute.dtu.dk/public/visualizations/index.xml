@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Visualizations on COVID-19 mobility</title>
+    <link>https://covid19.compute.dtu.dk/visualizations/</link>
+    <description>Recent content in Visualizations on COVID-19 mobility</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://covid19.compute.dtu.dk/visualizations/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://covid19.compute.dtu.dk/visualizations/how_people_move_distance_traveled/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/visualizations/how_people_move_distance_traveled/</guid>
+      <description>Distance traveled Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://covid19.compute.dtu.dk/visualizations/how_people_move_movements_between_municipalities/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/visualizations/how_people_move_movements_between_municipalities/</guid>
+      <description>Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://covid19.compute.dtu.dk/visualizations/how_people_move_staying_home/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/visualizations/how_people_move_staying_home/</guid>
+      <description>Staying home Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://covid19.compute.dtu.dk/visualizations/where_people_are_change_in_population_size/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/visualizations/where_people_are_change_in_population_size/</guid>
+      <description>Change in population sizes Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/</guid>
+      <description>Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://covid19.compute.dtu.dk/visualizations/where_people_are_landscape/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/visualizations/where_people_are_landscape/</guid>
+      <description>Population landscape Visualization and data analysis by Ulf Aslak and Peter Møllgaard. The population density maps describe the number of people in tiles (square areas) throughout the country at different time-intervals.
+In the two figures below we plot tiles with a height that corresponds to their baseline—pre-lockdown—count (how many people are usually in this tile), and a color that corresponds to the percentage change from that baseline (how did the population in that tile change).</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://covid19.compute.dtu.dk/visualizations/where_people_are_population_concentration/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/visualizations/where_people_are_population_concentration/</guid>
+      <description>Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
+    </item>
+    
+  </channel>
+</rss>

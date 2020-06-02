@@ -1,0 +1,29 @@
+<!-- HTML -->
+<!-- ---- -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class="flex">
+	<div class="radio-timeframe" id='radio-changeFig'></div>
+	<div class="select-place" id='select-changeFig'></div>
+</div>
+<div class='vis' id='vis-change'></div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let instance_change;
+
+	d3.json('/data/Denmark_change.json').then(function(data) {
+		instance_change = new DeviationPlot(data, 'vis-change', 'changeFig');
+		instance_change.setup();
+		instance_change.drawLayout();
+		instance_change.drawData();
+	})
+
+</script>

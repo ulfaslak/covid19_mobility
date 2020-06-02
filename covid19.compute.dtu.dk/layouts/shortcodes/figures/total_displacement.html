@@ -1,0 +1,30 @@
+<!-- HTML -->
+<!-- ---- -->
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class="flex">
+	<div class="radio-timeframe" id='radio-displacementFig'></div>
+	<div class="select-place" id='select-displacementFig'></div>
+</div>
+<div class='vis' id='vis-displacement'></div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let instance_displacement;
+
+	d3.json('/data/Denmark_total_displacement.json').then(function(data) {
+		instance_displacement = new DeviationPlot(data, 'vis-displacement', 'displacementFig');
+		instance_displacement.setup();
+		instance_displacement.drawLayout();
+		instance_displacement.drawData();
+	})
+
+</script>

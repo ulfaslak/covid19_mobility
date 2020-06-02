@@ -1,0 +1,29 @@
+<!-- HTML -->
+<!-- ---- -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class="flex">
+	<div class="radio-timeframe" id='radio-changeAllFig'></div>
+	<div class="select-place" id='select-changeAllFig'></div>
+</div>
+<div class='vis' id='vis-changeAll'></div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let instance_changeAll;
+
+	d3.json('/data/Denmark_change.json').then(function(data) {
+		instance_changeAll = new MultiLinePlot(data, 'vis-changeAll', 'changeAllFig');
+		instance_changeAll.setup();
+		instance_changeAll.drawLayout();
+		instance_changeAll.drawData();
+	})
+
+</script>

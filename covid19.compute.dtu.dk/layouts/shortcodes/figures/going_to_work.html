@@ -1,0 +1,30 @@
+<!-- HTML -->
+<!-- ---- -->
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class="flex">
+	<div class="radio-timeframe" id='radio-workingFig'></div>
+	<div class="select-place" id='select-workingFig'></div>
+</div>
+<div class='vis' id='vis-working'></div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let instance_working;
+
+	d3.json('/data/Denmark_night_day_difference.json').then(function(data) {
+		instance_working = new DeviationPlot(data, 'vis-working', 'workingFig');
+		instance_working.setup();
+		instance_working.drawLayout();
+		instance_working.drawData();
+	})
+
+</script>

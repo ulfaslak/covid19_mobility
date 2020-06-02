@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on COVID-19 mobility</title>
+    <link>https://covid19.compute.dtu.dk/posts/</link>
+    <description>Recent content in Posts on COVID-19 mobility</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    
+	<atom:link href="https://covid19.compute.dtu.dk/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Going out/Staying home</title>
+      <link>https://covid19.compute.dtu.dk/posts/going_to_work/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/posts/going_to_work/</guid>
+      <description>Going out/Staying home Post by Jonas Lybker Juul. Published: May 18, 2020.   The COVID-19 pandemic has impacted nearly every part of a typical Danish life. Among all the major disruptions, perhaps the biggest has been the impact the outbreak has had on working lives.
+At the peak of the Danish lock-down, most public employees (all except for those carrying out tasks of a critical nature) and an estimated one-third of people working in the private sector, were working from home.</description>
+    </item>
+    
+    <item>
+      <title>Population landscape</title>
+      <link>https://covid19.compute.dtu.dk/posts/population_landscape/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/posts/population_landscape/</guid>
+      <description>Population landscape Post by Sune Lehmann. Visualization by Ulf Aslak. Published: May 14, 2020.  When you first get your hands on a new dataset, one of the key things to do is to look at the data. The human eye is expert at spotting patterns, systems, outliers. That&amp;rsquo;s one of the ways we form theories and hypotheses to explore with more complex statistical tools.
+Sometimes looking at the data is as easy as plotting x against y.</description>
+    </item>
+    
+    <item>
+      <title>Population redistribution</title>
+      <link>https://covid19.compute.dtu.dk/posts/spread_of_population/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/posts/spread_of_population/</guid>
+      <description>Population re-distributed! Post by Sune Lehmann and Laura Alessandretti. Published: May 12, 2020. The lockdown presented a massive disruption to daily lives in Denmark.
+As discussed in the Population Landscape post, we observed a massive decrease of the number of people in the central districts of cities and airports. We can see this quite clearly in the screenshot from the Landscape visualization, which shows Copenhagen during Easter.
+ A view of Copenhagen during Easter.</description>
+    </item>
+    
+    <item>
+      <title>What&#39;s happening in my city?</title>
+      <link>https://covid19.compute.dtu.dk/posts/change_in_population_sizes/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/posts/change_in_population_sizes/</guid>
+      <description>What&amp;rsquo;s happening in my city? Post by Laura Alessandretti. Published: May, 11, 2020. During the lockdown, people have moved across Denmark, fleeing from some areas and populating other parts of the country. By looking at the change in population sizes across cities, we can discover where the number of occupants has increased during the lock-down and vice versa, as well as how these changes evolved across March and April 2020. Here we discuss (some of) the conclusions that can be drawn by visualizing the data.</description>
+    </item>
+    
+  </channel>
+</rss>

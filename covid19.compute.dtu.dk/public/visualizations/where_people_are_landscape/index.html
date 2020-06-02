@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Population landscape Visualization and data analysis by Ulf Aslak and Peter Møllgaard. The population density maps describe the number of people in tiles (square areas) throughout the country at different time-intervals.
+In the two figures below we plot tiles with a height that corresponds to their baseline—pre-lockdown—count (how many people are usually in this tile), and a color that corresponds to the percentage change from that baseline (how did the population in that tile change)."><meta property="og:title" content="" />
+<meta property="og:description" content="Population landscape Visualization and data analysis by Ulf Aslak and Peter Møllgaard. The population density maps describe the number of people in tiles (square areas) throughout the country at different time-intervals.
+In the two figures below we plot tiles with a height that corresponds to their baseline—pre-lockdown—count (how many people are usually in this tile), and a color that corresponds to the percentage change from that baseline (how did the population in that tile change)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/where_people_are_landscape/" />
+<meta property="article:modified_time" content="2020-05-28T11:53:48+02:00" />
+<title>Where People Are Landscape | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18: Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14: Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11: What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7: Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/"class=active>Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data/movement_maps/">Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Where People Are Landscape</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="population-landscape"><strong>Population landscape</strong></h1>
+<span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
+<p><img src="/popdensview1.png" alt="img" /></p>
+<p>The population density maps describe the number of people in <em>tiles</em> (square areas) throughout the country at different time-intervals.</p>
+<p>In the two figures below we plot tiles with a <strong>height</strong> that corresponds to their baseline—pre-lockdown—count (how many people are usually in this tile), and a <strong>color</strong> that corresponds to the percentage change from that baseline (how did the population in that tile change).</p>
+<p>Maximally <strong><span style="color:#c0392b">red tiles</span></strong> contain less than half of the people they usually contain (≤ –50% deviation from baseline). Maximally <strong><span style="color:#009432">green tiles</span></strong> contain more than one and a half times their usual count (≥ 50% deviation from baseline).</p>
+<blockquote>
+<p><strong><a href="/mobility/popdensevis/index.html">Click here to inspect the data yourself</a></strong>.
+To change the map angle, hold <kbd>shift</kbd> or <kbd>alt</kbd> while panning.</p>
+</blockquote>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

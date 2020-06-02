@@ -1,0 +1,210 @@
+<!-- ------- -->
+<!-- Styling -->
+<!-- ------- -->
+
+<style type="text/css">
+	.vis {
+		margin: 0 auto;
+		height: 370px;
+	}
+	.line-baseline { 
+		stroke: black;
+		stroke-width: 1.5;
+		fill: none;
+		stroke-dasharray: 10 5;
+		opacity: 0.2;
+	}
+	.line-horizontal { 
+		stroke: #bdc3c7;
+		stroke-width: 1;
+		fill: none;
+		stroke-dasharray: 10 5;
+	}
+	.line-crisis { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.line-changeall { 
+		fill: none;
+		stroke: black;
+		stroke-width: 1;
+		stroke-opacity: 0.7;
+	}
+	.line-tooltip {
+		stroke: 'black';
+		stroke-dasharray: 5 2.5;
+		stroke-width: 1.5;
+	}
+	.line { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.rect-tooltip {
+		fill: white;
+		fill-opacity: 0;
+		z-index: 1;
+	}
+	.trendline {
+		fill: none; 
+		stroke: red;
+		stroke-width: 2.5;
+	}
+	.histEvent {
+		stroke: grey;
+		stroke-width: 2;
+		stroke-opacity: 1;
+	}
+	.histEventDot {
+		fill: grey;
+	}
+	.dot-baseline {
+		fill: white;
+		stroke: #2c3e50;
+		stroke-width: 2;
+		opacity: 0;
+	}
+	.dot {
+		fill: black;
+		opacity: 0.5;
+	}
+	.legend-label {
+		text-anchor: start;
+		font-weight: 300;
+		cursor: pointer;
+	}
+	.right-legend {
+		font-size: 12px;
+	}
+	.tooltip {	
+		position: absolute;
+		top: 0;
+		line-height: 1;
+		font-weight: 500;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 2px;	
+	}
+	.toggle {
+		-webkit-user-select: none; /* Safari */        
+		-moz-user-select: none; /* Firefox */
+		-ms-user-select: none; /* IE10+/Edge */
+		user-select: none; /* Standard */
+	}
+	/*.radio-group {
+		position: absolute;
+		border: solid 1px #999999;
+		display: inline-block;
+		border-radius: 5px;
+		overflow: hidden;
+	}*/
+	.select-place {
+		position: absolute;
+		right: 0px;
+	}
+	.flex {
+		display: flex;
+	}
+	.radio-rect {
+		cursor: pointer;
+		fill: #636e72;
+	}
+
+	.radio-rect.selected {
+		fill: #0984e3;
+	}
+
+	.radio-text {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.radio-text.selected {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+	}
+
+</style>
+
+
+<!-- ---- -->
+<!-- HTML -->
+<!-- ---- -->
+
+<div style="max-height: 0px">
+	<svg>
+	  <defs>
+	    <pattern id="lines" height="10" width="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="4" x2="10" y2="4" stroke-width="2" stroke="black"/>
+	    </pattern>
+	  </defs>
+	</svg>
+</div>
+
+
+<!-- ---------- -->
+<!-- Javascript -->
+<!-- ---------- -->
+
+<!-- Remote packages -->
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://unpkg.com/chroma-js@2.0.3/chroma.min.js"></script>
+
+<!-- Local scripts -->
+<script src="/scripts/eventDates.js"></script>
+<script src="/scripts/timeSeriesFigure.js"></script>
+
+<script>
+
+	// Utility functions //
+	// ----------------- //
+
+	// Recompute baseline so each week is exactly the same
+	function adjustBaseline(datum) {
+		datumy = d3.range(7).map(() => []);
+		datum.forEach((d, i) => {
+		    datumy[i%7].push(d[1]);
+		});
+		datumy = datumy.map(d => d3.mean(d));
+		return datum.map((d, i) => [d[0], datumy[i%7]]);
+	}
+
+	// General utils
+	function zip(a, b) {
+		return a.map((e, i) => [e, b[i]]);
+	}
+
+	function round(val, order) {
+		return Math.round(val * order) / order;
+	}
+
+	Date.prototype.addDays = function(n) {
+	    let date = new Date(this.valueOf());
+	    date.setDate(date.getDate() + n);
+	    return date;
+	}
+
+	function weekavg(y) {
+		let y_avg = [];
+		y.forEach((v, i) => {
+			let i0 = Math.max(0, i-3);
+			let i1 = Math.min(y.length-1, i+4);
+			y_avg.push(d3.mean(y.slice(i0, i1)));
+		});
+		return y_avg;
+	}
+
+	function insertKSeperators(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+</script>

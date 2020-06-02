@@ -1,0 +1,443 @@
+<!-- CSS -->
+<!-- --- -->
+
+<style>
+	.vis-movements {
+		margin: 0 auto;
+		height: 660px;
+	}
+	.map-polygon-movements {
+		stroke: white;
+		stroke-width: 0.3;
+	}
+	input.movements[type=radio] {
+		position: absolute;
+		visibility: hidden;
+		display: none;
+	}
+
+	label.movements {
+		color: #222222;
+		display: inline-block;
+		font-size: 12px;
+		font-weight: 500;
+		padding: 0px 5px 0px 5px;
+	}
+
+	input.movements[type=radio]:checked + label.movements{
+		color: #ffffff;
+		background: #555555;
+		cursor: pointer;
+	}
+
+	label.movements + input.movements[type=radio] + label.movements {
+		border-left: solid 1px #999999;
+		cursor: pointer;
+	}
+</style>
+
+<!-- HTML -->
+<!-- ---- -->
+
+<div class="flex">
+	<div class="flex radio-group">
+		<input class="movements" onclick="instance_movements.update0()" type="radio" id="option-zero-movements" name="selector-movements" checked>
+		<label class="movements" for="option-zero-movements">Lockdown</label>
+		<input class="movements" onclick="instance_movements.update1()" type="radio" id="option-one-movements" name="selector-movements">
+		<label class="movements" for="option-one-movements">Baseline</label>
+		<input class="movements" onclick="instance_movements.update2()" type="radio" id="option-two-movements" name="selector-movements">
+		<label class="movements" for="option-two-movements">Change</label>
+	</div>
+</div>
+
+<div class='vis-movements' id='vis-movements'></div>
+
+<div class="slider-container">
+	<div id="slider-step"></div>
+</div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	function movementsvis() {
+
+		// Globals //
+		// ------- //
+
+		let geoData, data,
+			namePolygonMap = {},
+			t = 0,
+			mode = "crisis";
+			withinMax = 0,
+			outMax = 0,
+			inMax = 0,
+			selected = undefined;
+
+
+		// ----- //
+		// Setup //
+		// ----- //
+
+		// DIMENSIONS AND MARGIN
+		let maindiv = document.getElementById("vis-movements")
+		let margin_ = {top: 70, right: 5, bottom: 30, left: 60},
+			width = 770 - margin_.left - margin_.right,
+			height = 660 - margin_.top - margin_.bottom;
+
+		// ADD SVG TO DRAW ON
+		// 1. Define svg
+		let svg = d3.select("#vis-movements")
+			.append("svg")
+				.attr("width", width + margin_.left + margin_.right)
+				.attr("height", height + margin_.top + margin_.bottom);
+
+		// 2. Define g
+		let g = svg.append("g");
+				// .attr("transform", 
+				// 		"translate(" + margin_.left + "," + margin_.top + ")");
+
+		// ZOOMING AND PANNING
+		let zoom = d3.zoom()
+			.extent([[100, 18], [width, height]])
+			.scaleExtent([1, 4])
+			.on("zoom", zoomed);
+
+		svg.call(zoom);
+
+		// SCALING
+		let x = d3.scaleLinear().domain([7.9-1.2, 12.81+1.2]).range([0, width]);
+		let y = d3.scaleLinear().domain([54.53+0.3, 57.82+0.3]).range([height, 0]);
+
+		// LOAD GEO DATA
+		d3.json("/data/geojson_dk.json").then(function(data_) {
+
+			// GEO DATA
+			geoData = data_;
+
+			// NAME TO POLYGON MAP
+			geoData.forEach(d => {
+				namePolygonMap[d.kommune] = d.polygons;
+			})
+			
+			// LOAD MOVEMENTS DATA
+			d3.json("/data/movements_between_admin_regions.json").then(function(data_) {
+
+				// DATA
+				data = data_;
+
+				// SLIDER
+				// 1. Define
+				let N = data._meta.datetime.length
+				let sliderStep = d3.sliderBottom()
+					.min(0)
+					.max(N-1)
+					.width(width)
+					.tickValues(d3.range(1, N, 7))
+					.tickFormat(idxToDate)
+					.step(1)
+					.default(0)
+					.on('onchange', _t => {
+						t = _t;
+						visualize(geoData, _t, data, mode);
+					});
+
+				// 2. Append to div
+				let gStep = d3.select('div#slider-step')
+					.append('svg')
+					.attr('width', width + 60)
+					.attr('height', 100)
+					.append('g')
+					.attr('transform', 'translate(40,55)');
+				gStep.call(sliderStep);
+
+				// START VISUALIZATION
+				visualize(geoData, t, data, mode);
+			})
+		})
+
+
+		// VISUALIZATION //
+		// ------------- //
+
+		function visualize(geoData, t, data, mode) {
+			// MODE DEPENDENT VARIABLES
+			// 1. Update the colorScale
+			// 2. Sort legend range and title
+			let domain,
+				legendRange,
+				legendTitle,
+				n_steps = 5;
+			if (mode == "percent_change") {
+				domain = [1, -1];  // reverse scale so blue (good) is less travel
+				legendRange = d3.range(-n_steps, n_steps)
+				legendTitle = "Percent change";
+			}
+			else {
+				domain = [-data._meta.inMax, data._meta.inMax];
+				legendRange = d3.range(-1, n_steps)
+				legendTitle = "Going to work";
+			}
+			
+			// UPDATE COLORSCALE DOMAIN
+			colorScale.domain(domain)
+
+			// CLEAR ALL POLYGONS
+			svg.selectAll('polygon').remove()
+			svg.selectAll('rect').remove()
+			svg.selectAll('text').remove()
+
+			// DRAW LEGEND
+			// 1. Title text
+			svg.append('text')
+				.attr('x', width-53)
+				.attr('y', 20)
+				.attr('font-weight', 700)
+				.text(legendTitle)
+
+			// 2. Rects and labels
+			legendRange.forEach((i, idx) => {
+
+				// a. Rects
+				svg.append('rect')
+					.attr('x', width-53)
+					.attr('y', idx * 23 + 40)
+					.attr('width', 15)
+					.attr('height', 15)
+					.attr('fill', () => {
+						if (idx == 0)
+							return 'url(#thinlines)';
+						else
+							return colorScale(i / (n_steps-1) * domain[1]);
+					})
+
+				// b. labels
+				svg.append('text')
+					.attr('x', width-30)
+					.attr('y', idx * 23 + 52.5)
+					.attr('font-size', 13)
+					.text(() => {
+						if (idx == 0)
+							return "No data";
+						else
+							return round(i / (n_steps-1) * domain[1] * 100, 1e0) + "%";
+					})
+			})
+
+			// DRAW REGION POLYGONS (THE MAP)
+			for (let datum of geoData) {
+				g.selectAll(datum.kommune)
+					.data(datum.polygons)
+					.enter().append("polygon")
+				    .attr("points", mp => mp.map(p => [x(p[0]), y(p[1])].join(",")).join(" "))
+				    .attr("class", 'map-polygon-movements')
+				    .attr("id", datum.kommune)
+				    .style('fill', () => defaultFill(datum.kommune, t))
+					.on('mouseover', mp => {
+						if (datum.kommune in data) {
+							mouseover();
+							if (typeof selected == 'undefined')
+								highlightRegion(datum.kommune, mp, 'black');
+							else if (datum.kommune != selected) {
+								highlightRegion(datum.kommune, mp, 'grey');
+							}
+						}
+					})
+					.on('mousemove', () => {
+						if (typeof selected == 'undefined') {
+							if (datum.kommune in data) 
+								mousemoveDefaultMovements(datum.kommune, t);
+						} else {
+							if (datum.kommune in data[selected])
+								mousemoveSelectedMovements(datum.kommune, t);
+							else
+								mouseout();
+
+						}
+					})
+					.on('mouseout', mp => {
+						mouseout();
+						if (datum.kommune != selected)
+							unhighlightRegion(datum.kommune, mp)
+					})
+					.on('click', mp => {
+						if (datum.kommune in data) {
+							if (typeof selected == 'undefined') {
+								highlightRegion(datum.kommune, mp, 'black')
+								recolorRegions(datum.kommune, t)
+								selected = datum.kommune;
+							} else {
+								if (datum.kommune == selected) {
+									unhighlightRegion(selected, mp);
+									restoreDefault(t);
+									selected = undefined;
+								} else {
+									unhighlightRegion(selected, mp);
+									highlightRegion(datum.kommune, mp, 'black');
+									recolorRegions(datum.kommune, t);
+									selected = datum.kommune;
+								}
+							}
+						}
+					});
+
+
+			}
+		}
+
+		let colorScale = chroma.scale(['#b71540', '#e55039', '#C4C4C4', '#4a69bd', '#0c2461'])
+
+		function pushPolygonToFront(d) {
+			d3.selectAll("polygon").sort(a => {
+		      	if (a != d) return -1
+		      	else return 1;
+		  	});
+		}
+
+		function pushMultiPolygonToFront(d) {
+			d3.selectAll("polygon").sort(a => {
+		      	if (!d.includes(a)) return -1
+		      	else return 1;
+		  	});
+		}
+
+		function highlightRegion(d, mp, color) {
+			pushPolygonToFront(mp);
+			d3.selectAll('#' + d)
+				.style('stroke', color)
+				.style('stroke-width', 1)
+		}
+
+		function unhighlightRegion(d, mp) {
+			if (typeof selected != 'undefined') {
+				pushMultiPolygonToFront(namePolygonMap[selected])
+			}
+			d3.selectAll('#' + d)
+				.style('stroke', 'white')
+				.style('stroke-width', 0.3)
+		}
+
+		function idxToDate(i) {
+			let days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+			let date = new Date(2020, 2, 28);
+			date.setHours(date.getHours() + 24 * i);
+			let dateString = "";
+			dateString += days[date.getDay()] + " ";
+			dateString += date.getDate() + "/";
+			dateString += date.getMonth() + 1
+			return dateString
+		}
+
+		function mousemoveDefaultMovements(d, t) {
+			let count = data[d][d][mode][t][0];
+
+			let tooltiptext = "<b>" + d + "</b><br>";
+			if (mode == 'percent_change')
+				tooltiptext += "Deviation: <b>" + round(count*100, 1e1) + "%</b>";
+			else
+				tooltiptext += "Share: <b>" + round(data[d][d][mode][t][0] * 100, 1e1) + "%</b>";
+
+			tooltip
+				.html(tooltiptext)
+				.style("left", (d3.event.pageX + 10) + "px")
+				.style("top", (d3.event.pageY) + "px");
+		}
+
+		function mousemoveSelectedMovements(d, t) {
+			let count = data[selected][d][mode][t][0];
+			if (selected == d) {
+				Object.keys(data[selected]).forEach(n => {
+					if (n != d && t in data[selected][n][mode])
+						count -= data[selected][n][mode][t][0];
+				})
+			}
+
+			let tooltiptext = "<b>" + d + "</b><br>";
+			if (mode == 'percent_change')
+				tooltiptext += "Deviation: <b>" + round(count * 100, 1e1) + "%</b>";
+			else
+				tooltiptext += "Share: <b>" + round(count * 100, 1e2) + "%</b>";
+
+			tooltip
+				.html(tooltiptext)
+				.style("left", (d3.event.pageX + 10) + "px")
+				.style("top", (d3.event.pageY) + "px");
+		}
+		
+		function defaultFill(d, t) {
+			if (d in data && t in data[d]["_" + d][mode]) {
+	    		let count = data[d]["_" + d][mode][t][0];
+	    		return colorScale(count).hex();
+	    	} else {
+	    		return 'url(#thinlines)';
+	    	}
+		}
+
+		function recolorRegions(d, t) {
+			// Make everything gray
+			d3.selectAll('.map-polygon-movements')
+				.style('fill', '#ecf0f1')
+
+			// Color each kommune by their flow into `d`
+			Object.keys(data[d]).forEach(neighbor => {
+				if (t in data[d][neighbor][mode]) {
+					let count;
+					if (neighbor != d) {
+						count = data[d][neighbor][mode][t][0]
+					} else {
+						count = data[d][d][mode][t][0]
+						Object.keys(data[d]).forEach(n => {
+							if (n != d & t in data[d][n][mode])
+								count -= data[d][n][mode][t][0]
+						})
+					}
+					d3.selectAll('#' + neighbor)
+						.style('fill', colorScale(count).hex())
+				}
+			})
+		}
+
+		function restoreDefault(t) {
+			geoData.forEach(datum_ => {
+				d3.selectAll('#' + datum_.kommune)
+					.style('fill', defaultFill(datum_.kommune, t))
+			})
+		}
+
+		function zoomed() {
+			g.attr("transform", d3.event.transform);
+		}
+
+		document.onkeydown = evt => {
+		    evt = evt || window.event;
+		    if (evt.key === "Escape" || evt.key === "Esc") {
+		    	selected = undefined;
+		    	visualize(geoData, t, data, mode);
+		    }
+		};
+
+		function update0() {
+			mode = 'crisis';
+			visualize(geoData, t, data, mode);
+		}
+		function update1() {
+			mode = 'baseline';
+			visualize(geoData, t, data, mode);
+		}
+		function update2() {
+			mode = 'percent_change';
+			visualize(geoData, t, data, mode);
+		}
+
+		return {
+			update0: update0,
+			update1: update1,
+			update2: update2
+		}
+	}
+
+	let instance_movements = movementsvis()
+</script>

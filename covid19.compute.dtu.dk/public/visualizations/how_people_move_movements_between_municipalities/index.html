@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2."><meta property="og:title" content="" />
+<meta property="og:description" content="Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/how_people_move_movements_between_municipalities/" />
+<meta property="article:modified_time" content="2020-05-28T11:53:30+02:00" />
+<title>How People Move Movements Between Municipalities | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18: Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14: Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11: What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7: Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data/movement_maps/">Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>How People Move Movements Between Municipalities</strong>
+
+  <label for="toc-control">
+    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="movements-between-municipalities"><strong>Movements between municipalities</strong></h1>
+<span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
+
+
+
+
+<style type="text/css">
+	.vis {
+		margin: 0 auto;
+		height: 370px;
+	}
+	.line-baseline { 
+		stroke: black;
+		stroke-width: 1.5;
+		fill: none;
+		stroke-dasharray: 10 5;
+		opacity: 0.2;
+	}
+	.line-horizontal { 
+		stroke: #bdc3c7;
+		stroke-width: 1;
+		fill: none;
+		stroke-dasharray: 10 5;
+	}
+	.line-crisis { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.line-changeall { 
+		fill: none;
+		stroke: black;
+		stroke-width: 1;
+		stroke-opacity: 0.7;
+	}
+	.line-tooltip {
+		stroke: 'black';
+		stroke-dasharray: 5 2.5;
+		stroke-width: 1.5;
+	}
+	.line { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.rect-tooltip {
+		fill: white;
+		fill-opacity: 0;
+		z-index: 1;
+	}
+	.trendline {
+		fill: none; 
+		stroke: red;
+		stroke-width: 2.5;
+	}
+	.histEvent {
+		stroke: grey;
+		stroke-width: 2;
+		stroke-opacity: 1;
+	}
+	.histEventDot {
+		fill: grey;
+	}
+	.dot-baseline {
+		fill: white;
+		stroke: #2c3e50;
+		stroke-width: 2;
+		opacity: 0;
+	}
+	.dot {
+		fill: black;
+		opacity: 0.5;
+	}
+	.legend-label {
+		text-anchor: start;
+		font-weight: 300;
+		cursor: pointer;
+	}
+	.right-legend {
+		font-size: 12px;
+	}
+	.tooltip {	
+		position: absolute;
+		top: 0;
+		line-height: 1;
+		font-weight: 500;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 2px;	
+	}
+	.toggle {
+		-webkit-user-select: none;          
+		-moz-user-select: none;  
+		-ms-user-select: none;  
+		user-select: none;  
+	}
+	 
+	.select-place {
+		position: absolute;
+		right: 0px;
+	}
+	.flex {
+		display: flex;
+	}
+	.radio-rect {
+		cursor: pointer;
+		fill: #636e72;
+	}
+
+	.radio-rect.selected {
+		fill: #0984e3;
+	}
+
+	.radio-text {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.radio-text.selected {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+	}
+
+</style>
+
+
+
+
+
+
+<div style="max-height: 0px">
+	<svg>
+	  <defs>
+	    <pattern id="lines" height="10" width="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="4" x2="10" y2="4" stroke-width="2" stroke="black"/>
+	    </pattern>
+	  </defs>
+	</svg>
+</div>
+
+
+
+
+
+
+
+<script src="https://d3js.org/d3.v5.min.js"></script>
+<script src="https://unpkg.com/d3-simple-slider"></script>
+<script src="https://unpkg.com/chroma-js@2.0.3/chroma.min.js"></script>
+
+
+<script src="/scripts/eventDates.js"></script>
+<script src="/scripts/timeSeriesFigure.js"></script>
+
+<script>
+
+	
+	
+
+	
+	function adjustBaseline(datum) {
+		datumy = d3.range(7).map(() => []);
+		datum.forEach((d, i) => {
+		    datumy[i%7].push(d[1]);
+		});
+		datumy = datumy.map(d => d3.mean(d));
+		return datum.map((d, i) => [d[0], datumy[i%7]]);
+	}
+
+	
+	function zip(a, b) {
+		return a.map((e, i) => [e, b[i]]);
+	}
+
+	function round(val, order) {
+		return Math.round(val * order) / order;
+	}
+
+	Date.prototype.addDays = function(n) {
+	    let date = new Date(this.valueOf());
+	    date.setDate(date.getDate() + n);
+	    return date;
+	}
+
+	function weekavg(y) {
+		let y_avg = [];
+		y.forEach((v, i) => {
+			let i0 = Math.max(0, i-3);
+			let i1 = Math.min(y.length-1, i+4);
+			y_avg.push(d3.mean(y.slice(i0, i1)));
+		});
+		return y_avg;
+	}
+
+	function insertKSeperators(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+</script>
+<div style="height:20px"></div>
+
+
+
+<style>
+	.vis-movements {
+		margin: 0 auto;
+		height: 660px;
+	}
+	.map-polygon-movements {
+		stroke: white;
+		stroke-width: 0.3;
+	}
+	input.movements[type=radio] {
+		position: absolute;
+		visibility: hidden;
+		display: none;
+	}
+
+	label.movements {
+		color: #222222;
+		display: inline-block;
+		font-size: 12px;
+		font-weight: 500;
+		padding: 0px 5px 0px 5px;
+	}
+
+	input.movements[type=radio]:checked + label.movements{
+		color: #ffffff;
+		background: #555555;
+		cursor: pointer;
+	}
+
+	label.movements + input.movements[type=radio] + label.movements {
+		border-left: solid 1px #999999;
+		cursor: pointer;
+	}
+</style>
+
+
+
+
+<div class="flex">
+	<div class="flex radio-group">
+		<input class="movements" onclick="instance_movements.update0()" type="radio" id="option-zero-movements" name="selector-movements" checked>
+		<label class="movements" for="option-zero-movements">Lockdown</label>
+		<input class="movements" onclick="instance_movements.update1()" type="radio" id="option-one-movements" name="selector-movements">
+		<label class="movements" for="option-one-movements">Baseline</label>
+		<input class="movements" onclick="instance_movements.update2()" type="radio" id="option-two-movements" name="selector-movements">
+		<label class="movements" for="option-two-movements">Change</label>
+	</div>
+</div>
+
+<div class='vis-movements' id='vis-movements'></div>
+
+<div class="slider-container">
+	<div id="slider-step"></div>
+</div>
+
+
+
+
+
+
+<script>
+
+	function movementsvis() {
+
+		
+		
+
+		let geoData, data,
+			namePolygonMap = {},
+			t = 0,
+			mode = "crisis";
+			withinMax = 0,
+			outMax = 0,
+			inMax = 0,
+			selected = undefined;
+
+
+		
+		
+		
+
+		
+		let maindiv = document.getElementById("vis-movements")
+		let margin_ = {top: 70, right: 5, bottom: 30, left: 60},
+			width = 770 - margin_.left - margin_.right,
+			height = 660 - margin_.top - margin_.bottom;
+
+		
+		
+		let svg = d3.select("#vis-movements")
+			.append("svg")
+				.attr("width", width + margin_.left + margin_.right)
+				.attr("height", height + margin_.top + margin_.bottom);
+
+		
+		let g = svg.append("g");
+				
+				
+
+		
+		let zoom = d3.zoom()
+			.extent([[100, 18], [width, height]])
+			.scaleExtent([1, 4])
+			.on("zoom", zoomed);
+
+		svg.call(zoom);
+
+		
+		let x = d3.scaleLinear().domain([7.9-1.2, 12.81+1.2]).range([0, width]);
+		let y = d3.scaleLinear().domain([54.53+0.3, 57.82+0.3]).range([height, 0]);
+
+		
+		d3.json("/data/geojson_dk.json").then(function(data_) {
+
+			
+			geoData = data_;
+
+			
+			geoData.forEach(d => {
+				namePolygonMap[d.kommune] = d.polygons;
+			})
+			
+			
+			d3.json("/data/movements_between_admin_regions.json").then(function(data_) {
+
+				
+				data = data_;
+
+				
+				
+				let N = data._meta.datetime.length
+				let sliderStep = d3.sliderBottom()
+					.min(0)
+					.max(N-1)
+					.width(width)
+					.tickValues(d3.range(1, N, 7))
+					.tickFormat(idxToDate)
+					.step(1)
+					.default(0)
+					.on('onchange', _t => {
+						t = _t;
+						visualize(geoData, _t, data, mode);
+					});
+
+				
+				let gStep = d3.select('div#slider-step')
+					.append('svg')
+					.attr('width', width + 60)
+					.attr('height', 100)
+					.append('g')
+					.attr('transform', 'translate(40,55)');
+				gStep.call(sliderStep);
+
+				
+				visualize(geoData, t, data, mode);
+			})
+		})
+
+
+		
+		
+
+		function visualize(geoData, t, data, mode) {
+			
+			
+			
+			let domain,
+				legendRange,
+				legendTitle,
+				n_steps = 5;
+			if (mode == "percent_change") {
+				domain = [1, -1];  
+				legendRange = d3.range(-n_steps, n_steps)
+				legendTitle = "Percent change";
+			}
+			else {
+				domain = [-data._meta.inMax, data._meta.inMax];
+				legendRange = d3.range(-1, n_steps)
+				legendTitle = "Going to work";
+			}
+			
+			
+			colorScale.domain(domain)
+
+			
+			svg.selectAll('polygon').remove()
+			svg.selectAll('rect').remove()
+			svg.selectAll('text').remove()
+
+			
+			
+			svg.append('text')
+				.attr('x', width-53)
+				.attr('y', 20)
+				.attr('font-weight', 700)
+				.text(legendTitle)
+
+			
+			legendRange.forEach((i, idx) => {
+
+				
+				svg.append('rect')
+					.attr('x', width-53)
+					.attr('y', idx * 23 + 40)
+					.attr('width', 15)
+					.attr('height', 15)
+					.attr('fill', () => {
+						if (idx == 0)
+							return 'url(#thinlines)';
+						else
+							return colorScale(i / (n_steps-1) * domain[1]);
+					})
+
+				
+				svg.append('text')
+					.attr('x', width-30)
+					.attr('y', idx * 23 + 52.5)
+					.attr('font-size', 13)
+					.text(() => {
+						if (idx == 0)
+							return "No data";
+						else
+							return round(i / (n_steps-1) * domain[1] * 100, 1e0) + "%";
+					})
+			})
+
+			
+			for (let datum of geoData) {
+				g.selectAll(datum.kommune)
+					.data(datum.polygons)
+					.enter().append("polygon")
+				    .attr("points", mp => mp.map(p => [x(p[0]), y(p[1])].join(",")).join(" "))
+				    .attr("class", 'map-polygon-movements')
+				    .attr("id", datum.kommune)
+				    .style('fill', () => defaultFill(datum.kommune, t))
+					.on('mouseover', mp => {
+						if (datum.kommune in data) {
+							mouseover();
+							if (typeof selected == 'undefined')
+								highlightRegion(datum.kommune, mp, 'black');
+							else if (datum.kommune != selected) {
+								highlightRegion(datum.kommune, mp, 'grey');
+							}
+						}
+					})
+					.on('mousemove', () => {
+						if (typeof selected == 'undefined') {
+							if (datum.kommune in data) 
+								mousemoveDefaultMovements(datum.kommune, t);
+						} else {
+							if (datum.kommune in data[selected])
+								mousemoveSelectedMovements(datum.kommune, t);
+							else
+								mouseout();
+
+						}
+					})
+					.on('mouseout', mp => {
+						mouseout();
+						if (datum.kommune != selected)
+							unhighlightRegion(datum.kommune, mp)
+					})
+					.on('click', mp => {
+						if (datum.kommune in data) {
+							if (typeof selected == 'undefined') {
+								highlightRegion(datum.kommune, mp, 'black')
+								recolorRegions(datum.kommune, t)
+								selected = datum.kommune;
+							} else {
+								if (datum.kommune == selected) {
+									unhighlightRegion(selected, mp);
+									restoreDefault(t);
+									selected = undefined;
+								} else {
+									unhighlightRegion(selected, mp);
+									highlightRegion(datum.kommune, mp, 'black');
+									recolorRegions(datum.kommune, t);
+									selected = datum.kommune;
+								}
+							}
+						}
+					});
+
+
+			}
+		}
+
+		let colorScale = chroma.scale(['#b71540', '#e55039', '#C4C4C4', '#4a69bd', '#0c2461'])
+
+		function pushPolygonToFront(d) {
+			d3.selectAll("polygon").sort(a => {
+		      	if (a != d) return -1
+		      	else return 1;
+		  	});
+		}
+
+		function pushMultiPolygonToFront(d) {
+			d3.selectAll("polygon").sort(a => {
+		      	if (!d.includes(a)) return -1
+		      	else return 1;
+		  	});
+		}
+
+		function highlightRegion(d, mp, color) {
+			pushPolygonToFront(mp);
+			d3.selectAll('#' + d)
+				.style('stroke', color)
+				.style('stroke-width', 1)
+		}
+
+		function unhighlightRegion(d, mp) {
+			if (typeof selected != 'undefined') {
+				pushMultiPolygonToFront(namePolygonMap[selected])
+			}
+			d3.selectAll('#' + d)
+				.style('stroke', 'white')
+				.style('stroke-width', 0.3)
+		}
+
+		function idxToDate(i) {
+			let days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+			let date = new Date(2020, 2, 28);
+			date.setHours(date.getHours() + 24 * i);
+			let dateString = "";
+			dateString += days[date.getDay()] + " ";
+			dateString += date.getDate() + "/";
+			dateString += date.getMonth() + 1
+			return dateString
+		}
+
+		function mousemoveDefaultMovements(d, t) {
+			let count = data[d][d][mode][t][0];
+
+			let tooltiptext = "<b>" + d + "</b><br>";
+			if (mode == 'percent_change')
+				tooltiptext += "Deviation: <b>" + round(count*100, 1e1) + "%</b>";
+			else
+				tooltiptext += "Share: <b>" + round(data[d][d][mode][t][0] * 100, 1e1) + "%</b>";
+
+			tooltip
+				.html(tooltiptext)
+				.style("left", (d3.event.pageX + 10) + "px")
+				.style("top", (d3.event.pageY) + "px");
+		}
+
+		function mousemoveSelectedMovements(d, t) {
+			let count = data[selected][d][mode][t][0];
+			if (selected == d) {
+				Object.keys(data[selected]).forEach(n => {
+					if (n != d && t in data[selected][n][mode])
+						count -= data[selected][n][mode][t][0];
+				})
+			}
+
+			let tooltiptext = "<b>" + d + "</b><br>";
+			if (mode == 'percent_change')
+				tooltiptext += "Deviation: <b>" + round(count * 100, 1e1) + "%</b>";
+			else
+				tooltiptext += "Share: <b>" + round(count * 100, 1e2) + "%</b>";
+
+			tooltip
+				.html(tooltiptext)
+				.style("left", (d3.event.pageX + 10) + "px")
+				.style("top", (d3.event.pageY) + "px");
+		}
+		
+		function defaultFill(d, t) {
+			if (d in data && t in data[d]["_" + d][mode]) {
+	    		let count = data[d]["_" + d][mode][t][0];
+	    		return colorScale(count).hex();
+	    	} else {
+	    		return 'url(#thinlines)';
+	    	}
+		}
+
+		function recolorRegions(d, t) {
+			
+			d3.selectAll('.map-polygon-movements')
+				.style('fill', '#ecf0f1')
+
+			
+			Object.keys(data[d]).forEach(neighbor => {
+				if (t in data[d][neighbor][mode]) {
+					let count;
+					if (neighbor != d) {
+						count = data[d][neighbor][mode][t][0]
+					} else {
+						count = data[d][d][mode][t][0]
+						Object.keys(data[d]).forEach(n => {
+							if (n != d & t in data[d][n][mode])
+								count -= data[d][n][mode][t][0]
+						})
+					}
+					d3.selectAll('#' + neighbor)
+						.style('fill', colorScale(count).hex())
+				}
+			})
+		}
+
+		function restoreDefault(t) {
+			geoData.forEach(datum_ => {
+				d3.selectAll('#' + datum_.kommune)
+					.style('fill', defaultFill(datum_.kommune, t))
+			})
+		}
+
+		function zoomed() {
+			g.attr("transform", d3.event.transform);
+		}
+
+		document.onkeydown = evt => {
+		    evt = evt || window.event;
+		    if (evt.key === "Escape" || evt.key === "Esc") {
+		    	selected = undefined;
+		    	visualize(geoData, t, data, mode);
+		    }
+		};
+
+		function update0() {
+			mode = 'crisis';
+			visualize(geoData, t, data, mode);
+		}
+		function update1() {
+			mode = 'baseline';
+			visualize(geoData, t, data, mode);
+		}
+		function update2() {
+			mode = 'percent_change';
+			visualize(geoData, t, data, mode);
+		}
+
+		return {
+			update0: update0,
+			update1: update1,
+			update2: update2
+		}
+	}
+
+	let instance_movements = movementsvis()
+</script>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

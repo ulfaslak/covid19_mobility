@@ -1,0 +1,29 @@
+<!-- HTML -->
+<!-- ---- -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class="flex">
+	<div class="radio-timeframe" id='radio-giniFig'></div>
+	<div class="select-place" id='select-giniFig'></div>
+</div>
+<div class='vis' id='vis-gini'></div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let instance_gini;
+	
+	d3.json('/data/Denmark_gini_over_time.json').then(function(data) {
+		instance_gini = new DeviationPlot(data, 'vis-gini', 'giniFig');
+		instance_gini.setup();
+		instance_gini.drawLayout();
+		instance_gini.drawData();
+	})
+
+</script>

@@ -1,0 +1,30 @@
+<!-- HTML -->
+<!-- ---- -->
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class="flex">
+	<div class="radio-timeframe" id='radio-stationarityFig'></div>
+	<div class="select-place" id='select-stationarityFig'></div>
+</div>
+<div class='vis' id='vis-stationarity'></div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let instance_stationarity;
+
+	d3.json('/data/Denmark_total_stationarity.json').then(function(data) {
+		instance_stationarity = new DeviationPlot(data, 'vis-stationarity', 'stationarityFig');
+		instance_stationarity.setup();
+		instance_stationarity.drawLayout();
+		instance_stationarity.drawData();
+	})
+
+</script>
