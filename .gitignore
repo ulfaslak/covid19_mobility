@@ -1,0 +1,8 @@
+Facebook/*
+utils/kdtrees/*
+utils/globals/*
+covid19.compute.dtu.dk/static/data/*
+covid19.compute.dtu.dk/public/data/*
+# Exception to keep folder
+!covid19.compute.dtu.dk/public/data/.gitkeep
+!covid19.compute.dtu.dk/static/data/.gitkeep
