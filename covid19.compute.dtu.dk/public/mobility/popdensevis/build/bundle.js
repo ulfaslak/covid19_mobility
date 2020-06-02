@@ -9782,7 +9782,7 @@ var app = (function () {
     		// SLIDER
     		let N;
 
-    		await json("./data/meta.json").then(data => {
+    		await json("/data/tile_vis/meta.json").then(data => {
     			N = data["n_files"];
     		});
 
@@ -9814,7 +9814,7 @@ var app = (function () {
     	});
 
     	function renderData(idxDay) {
-    		let filename = "./data/" + idxDayToFilename(idxDay, idxTime);
+    		let filename = "/data/tile_vis/" + idxDayToFilename(idxDay, idxTime);
 
     		json(filename).then(function (data) {
     			let geojsonLayer = new deck.GeoJsonLayer({
