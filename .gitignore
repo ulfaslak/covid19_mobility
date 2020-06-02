@@ -4,5 +4,5 @@ utils/globals/*
 covid19.compute.dtu.dk/static/data/*
 covid19.compute.dtu.dk/public/data/*
 # Exception to keep folder
-!covid19.compute.dtu.dk/public/data/tile_vis
-!covid19.compute.dtu.dk/static/data/tile_vis
+!covid19.compute.dtu.dk/public/data/tile_vis/.gitkeep
+!covid19.compute.dtu.dk/static/data/tile_vis/.gitkeep
