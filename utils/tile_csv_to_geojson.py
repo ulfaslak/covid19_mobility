@@ -30,7 +30,7 @@ def run(country,iso):
 
 	# PATHS
 	PATH_IN = f"Facebook/{country}/population_tile/"
-	PATH_OUT = "covid19.compute.dtu.dk/public/mobility/popdensevis/data/"
+	PATH_OUT = "covid19.compute.dtu.dk/static/data/tile_vis/"
 	#PATH_OUT = "/Users/ulfaslak/Documents/git/popdensv/public/data/"
 
 	# FILES

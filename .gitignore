@@ -3,7 +3,15 @@ utils/kdtrees/*
 utils/globals/*
 covid19.compute.dtu.dk/static/data/*
 covid19.compute.dtu.dk/public/data/*
-covid19.compute.dtu.dk/public/mobility/popdensevis/data/*
+.idea/*
+.ipynb_checkpoints/*
+*.py[cod]
 # Exception to keep folder
-!covid19.compute.dtu.dk/public/data/.gitkeep
-!covid19.compute.dtu.dk/static/data/.gitkeep
+!covid19.compute.dtu.dk/public/data/tile_vis
+!covid19.compute.dtu.dk/static/data/tile_vis
+
+covid19.compute.dtu.dk/static/data/tile_vis/*
+covid19.compute.dtu.dk/public/data/tile_vis/*
+
+!covid19.compute.dtu.dk/public/data/tile_vis/.gitkeep
+!covid19.compute.dtu.dk/static/data/tile_vis/.gitkeep
