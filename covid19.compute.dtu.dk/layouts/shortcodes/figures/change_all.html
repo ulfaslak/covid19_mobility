@@ -19,7 +19,7 @@
 
 	let instance_changeAll;
 
-	d3.json('/data/Denmark_change.json').then(function(data) {
+	d3.json('/data/'+sessionStorage.country+'_change.json').then(function(data) {
 		instance_changeAll = new MultiLinePlot(data, 'vis-changeAll', 'changeAllFig');
 		instance_changeAll.setup();
 		instance_changeAll.drawLayout();

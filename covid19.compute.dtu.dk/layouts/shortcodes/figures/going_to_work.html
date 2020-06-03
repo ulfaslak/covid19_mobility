@@ -20,7 +20,7 @@
 
 	let instance_working;
 
-	d3.json('/data/Denmark_night_day_difference.json').then(function(data) {
+	d3.json('/data/'+sessionStorage.country+'_night_day_difference.json').then(function(data) {
 		instance_working = new DeviationPlot(data, 'vis-working', 'workingFig');
 		instance_working.setup();
 		instance_working.drawLayout();
