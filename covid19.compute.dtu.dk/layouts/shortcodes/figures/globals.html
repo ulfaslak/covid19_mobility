@@ -109,6 +109,9 @@
 	.flex {
 		display: flex;
 	}
+	.flex-col {
+		flex-direction: column;
+	}
 	.radio-rect {
 		cursor: pointer;
 		fill: #636e72;
@@ -146,6 +149,9 @@
 	    <pattern id="lines" height="10" width="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
 	      <line x1="0" y1="4" x2="10" y2="4" stroke-width="2" stroke="black"/>
 	    </pattern>
+	    <pattern id="thinlines" height="5" width="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="2" x2="10" y2="2" stroke-width="0.5" stroke="black"/>
+	    </pattern>
 	  </defs>
 	</svg>
 </div>
@@ -163,6 +169,7 @@
 <!-- Local scripts -->
 <script src="/scripts/eventDates.js"></script>
 <script src="/scripts/timeSeriesFigure.js"></script>
+<script src="/scripts/choroplethMap.js"></script>
 
 <script>
 

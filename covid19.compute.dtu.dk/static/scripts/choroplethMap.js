@@ -1,14 +1,13 @@
 class MovementsMap {
 
-	constructor(data, geoData, mainDivId, uniqueId) {
+	constructor(data, geoData, uniqueId) {
 		// Variables
 		this.data = data;
 		this.geoData = geoData;
-		this.mainDivId = mainDivId;
 		this.uniqueId = uniqueId;
 		this.betweenMax = data._meta.betweenMax;
 		this.inMax = data._meta.inMax;
-		this.outMap = data._meta.outMax;
+		this.outMax = data._meta.outMax;
 		this.datetime = data._meta.datetime;
 		this.t = data._meta.defaults.t;
 		this.radioOption = data._meta.defaults.radioOption;
@@ -18,7 +17,9 @@ class MovementsMap {
 		let margin = {top: 70, right: 5, bottom: 30, left: 60},
 			figureWidth = 770,
 			figureHeight = 660;
-		this.maindiv = document.getElementById("vis-movements");
+		let maindiv = document.getElementById("vis-" + this.uniqueId);
+		maindiv.style.width = figureWidth + "px";
+		maindiv.style.height = figureHeight + "px";
 		this.width = figureWidth - margin.left - margin.right;
 		this.height = figureHeight - margin.top - margin.bottom;
 
@@ -39,7 +40,7 @@ class MovementsMap {
 			.style("display", "none");
 
 		// SVG
-		this.svg = d3.select("#" + this.mainDivId)
+		this.svg = d3.select("#vis-" + this.uniqueId)
 			.append("svg")
 				.attr("width", this.width + margin.left + margin.right)
 				.attr("height", this.height + margin.top + margin.bottom);
@@ -50,7 +51,7 @@ class MovementsMap {
 		let zoom = d3.zoom()
 			.extent([[100, 18], [this.width, this.height]])
 			.scaleExtent([1, 4])
-			.on("zoom", this.zoomed);
+			.on("zoom", () => this.zoomed());
 		this.svg.call(zoom);
 	}	
 
@@ -65,13 +66,13 @@ class MovementsMap {
 	}
 
 	drawLayout() {
-		this.setLegend();
 		this.setRadio();
 		this.setSlider();
 	}
 
 	drawData() {
 		this.drawMap();
+		this.setLegend();
 	}
 
 	clearData() {
@@ -81,7 +82,9 @@ class MovementsMap {
 	}
 
 	redrawData() {
+		this.setColorDomain();
 		this.drawMap();
+		this.setLegend();
 	}
 
 
@@ -97,10 +100,12 @@ class MovementsMap {
 
 	setColorDomain() {
 		this.domain = undefined;
-		if (this.radioOption == "percent_change")
-			this.domain = [1, -1];  // reverse scale so blue (good) is less travel
-		else
+		if (this.radioOption == "percent_change") {
+			this.domain = [-1, 1];  // reverse scale so blue (good) is less travel
+		}
+		else {
 			this.domain = [-this.inMax, this.inMax];
+		}
 		this.colorScale.domain(this.domain)
 	}
 
@@ -234,7 +239,7 @@ class MovementsMap {
 			});
 
 		// Append to div
-		let gStep = d3.select('div#slider-step')
+		let gStep = d3.select('#slider-' + this.uniqueId)
 			.append('svg')
 			.attr('width', this.width + 60)
 			.attr('height', 100)
@@ -272,7 +277,7 @@ class MovementsMap {
 						if (datum.kommune in this.data) 
 							this.mousemoveDefaultMovements(datum.kommune, this.t);
 					} else {
-						if (datum.kommune in data[this.selected])
+						if (datum.kommune in this.data[this.selected])
 							this.mousemoveSelectedMovements(datum.kommune, this.t);
 						else
 							this.mouseout();
@@ -293,7 +298,7 @@ class MovementsMap {
 						} else {
 							if (datum.kommune == this.selected) {
 								this.unhighlightRegion(this.selected, mp);
-								this.restoreDefault(t);
+								this.restoreDefault(this.t);
 								this.selected = undefined;
 							} else {
 								this.unhighlightRegion(this.selected, mp);
@@ -319,13 +324,13 @@ class MovementsMap {
 	}
 
 	mousemoveDefaultMovements(d, t) {
-		let count = this.data[d][d][this.radioOption][this.t][0];
+		let count = this.data[d]["_" + d][this.radioOption][this.t][0];
 
 		let tooltiptext = "<b>" + d + "</b><br>";
 		if (this.radioOption == 'percent_change')
 			tooltiptext += "Deviation: <b>" + round(count*100, 1e1) + "%</b>";
 		else
-			tooltiptext += "Share: <b>" + round(this.data[d][d][this.radioOption][this.t][0] * 100, 1e1) + "%</b>";
+			tooltiptext += "Share: <b>" + round(this.data[d]["_" + d][this.radioOption][this.t][0] * 100, 1e1) + "%</b>";
 
 		this.tooltip
 			.html(tooltiptext)
@@ -393,14 +398,21 @@ class MovementsMap {
 					count = this.data[d][neighbor][this.radioOption][this.t][0]
 				} else {
 					count = this.data[d][d][this.radioOption][this.t][0]
-					Object.keys(data[d]).forEach(n => {
+					Object.keys(this.data[d]).forEach(n => {
 						if (n != d & this.t in this.data[d][n][this.radioOption])
 							count -= this.data[d][n][this.radioOption][this.t][0]
 					})
 				}
 				this.svg.selectAll('#' + neighbor)
-					.style('fill', colorScale(count).hex())
+					.style('fill', this.colorScale(count).hex())
 			}
+		})
+	}
+
+	restoreDefault(t) {
+		this.geoData.forEach(datum_ => {
+			this.svg.selectAll('#' + datum_.kommune)
+				.style('fill', this.defaultFill(datum_.kommune, this.t))
 		})
 	}
 
@@ -455,6 +467,20 @@ class MovementsMap {
 		dateString += date.getDate() + "/";
 		dateString += date.getMonth() + 1
 		return dateString
+	}
+
+	pushPolygonToFront(d) {
+		this.svg.selectAll("polygon").sort(a => {
+	      	if (a != d) return -1
+	      	else return 1;
+	  	});
+	}
+
+	pushMultiPolygonToFront(d) {
+		this.svg.selectAll("polygon").sort(a => {
+	      	if (!d.includes(a)) return -1
+	      	else return 1;
+	  	});
 	}
 
 }
