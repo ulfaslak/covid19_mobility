@@ -68,6 +68,9 @@ def run():
             return 0
         return (crisis - baseline) / baseline
 
+    # Name inconsistency map
+    to_actual = {'Nordfyn': 'Nordfyns'}
+
     # Global paths
     PATH_IN_TILE = 'Facebook/Denmark/movement_tile/'
     PATH_IN_ADMIN = 'Facebook/Denmark/movement_admin/'
@@ -100,7 +103,7 @@ def run():
             )
 
             # Add this flow to the total flow inside the kommune. This way, its count will
-            # represent the number of people in that kommune that go to work
+            # represent the number of people in that kommune that go to work *anywhere*
             data_out[kommune]["_" + kommune]['baseline'][idx][0] += data_out[kommune][neighbor]['baseline'][idx][0]
             data_out[kommune]["_" + kommune]['crisis'][idx][0] += data_out[kommune][neighbor]['crisis'][idx][0]
 
@@ -118,21 +121,21 @@ def run():
             )
 
             # Add this flow to total outflow from kommune so it represents how many people
-            # that commute here during working hours
+            # *from anywhere* that commute here during working hours
             data_out[kommune]["_" + kommune]['baseline'][idx][1] += data_out[kommune][neighbor]['baseline'][idx][1]
             data_out[kommune]["_" + kommune]['crisis'][idx][1] += data_out[kommune][neighbor]['crisis'][idx][1]
 
         # Recompute percent change for 'how many people go to work' for the kommune
         if data_kommune_is_target.shape[0] > 0:
-            data_out[kommune][kommune]['percent_change'][idx][0] = percent_change(
-                data_out[kommune][kommune]['crisis'][idx][0],
-                data_out[kommune][kommune]['baseline'][idx][0]
+            data_out[kommune]["_" + kommune]['percent_change'][idx][0] = percent_change(
+                data_out[kommune]["_" + kommune]['crisis'][idx][0],
+                data_out[kommune]["_" + kommune]['baseline'][idx][0]
             )
         # Recompute percent change for 'how many people work here' for the kommune
         if data_kommune_is_source.shape[0] > 0:
-            data_out[kommune][kommune]['percent_change'][idx][1] = percent_change(
-                data_out[kommune][kommune]['crisis'][idx][1],
-                data_out[kommune][kommune]['baseline'][idx][1]
+            data_out[kommune]["_" + kommune]['percent_change'][idx][1] = percent_change(
+                data_out[kommune]["_" + kommune]['crisis'][idx][1],
+                data_out[kommune]["_" + kommune]['baseline'][idx][1]
             )
 
     # Data out mobile
@@ -215,6 +218,9 @@ def run():
         # Get list of municipalities
         data_nn = data.loc[(data.source_kommune.notnull()) & (data.target_kommune.notnull())]
         kommunes = sorted(set(data_nn.source_kommune.tolist() + data_nn.target_kommune.tolist()))
+
+        # Filter list of names to remove inconsistencies
+        kommunes = [k if k not in to_actual else to_actual[k] for k in kommunes]
         
         # Update data_out
         for kommune in kommunes:
@@ -230,9 +236,15 @@ def run():
         for target, data in data_out[source].items():
             baseline_in, baseline_out = zip(*data['baseline'])
             crisis_in, crisis_out = zip(*data['crisis'])
-            if source == target:
-                data_out['_meta']['inMax'] = max(data_out['_meta']['inMax'], max(baseline_in), max(crisis_in))
-                data_out['_meta']['outMax'] = max(data_out['_meta']['outMax'], max(baseline_out), max(crisis_out))
+            if "_" + source == target:
+                data_out['_meta']['inMax'] = max(
+                    data_out['_meta']['inMax'],
+                    max(crisis_in), max(baseline_in)
+                )
+                data_out['_meta']['outMax'] = max(
+                    data_out['_meta']['outMax'],
+                    max(crisis_out), max(baseline_out)
+                )
             else:
                 data_out['_meta']['betweenMax'] = max(
                     data_out['_meta']['betweenMax'],
@@ -242,8 +254,8 @@ def run():
 
 
     # Add to _meta
-    data_out['_meta']['radioOptions'] = ['crisis', 'baseline', 'percent_change']
-    data_out['_meta']['defaults']['radioOption'] = 'crisis'
+    data_out['_meta']['radioOptions'] = ['percent_change', 'crisis', 'baseline']
+    data_out['_meta']['defaults']['radioOption'] = 'percent_change'
     data_out['_meta']['defaults']['t'] = 0
     data_out['_meta']['defaults']['latMin'] = 54.53   # DEBUG: These should be infered from data
     data_out['_meta']['defaults']['latMax'] = 57.82   # DEBUG: These should be infered from data
