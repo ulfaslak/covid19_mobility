@@ -228,6 +228,7 @@
             li = document.createElement('li');
             a = document.createElement('a');
             a.text = item;
+            a.style.cursor = "pointer";
             if (item != sessionStorage.country) {
                 a.onclick = function() {
                     sessionStorage.country=item;

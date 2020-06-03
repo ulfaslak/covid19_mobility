@@ -6,8 +6,8 @@ from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
 
-def run(country,iso):
-    def load_prepare(path,iso,adm_region='adm1',adm_kommune='adm2'):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
+    def load_prepare(path,iso):
         data = pd.read_csv(path)
         data = data[(data != "\\N").all(1)]
         data = data.loc[data.country == iso]
