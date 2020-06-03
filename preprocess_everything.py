@@ -39,6 +39,12 @@ def run():
     print('\n-----------\nrun in parallel:\n----------------')
     for country in country_list:
         print(f'Processing {country}')
+        if country == "Germany":
+            adm_kommune = 'adm3'
+            adm_region = 'adm1'
+        else:
+            adm_kommune = 'adm2'
+            adm_region = 'adm1'
         iso = pycountry.countries.get(name=country).alpha_2
         if country == 'Denmark':
             pscripts = [
@@ -58,7 +64,7 @@ def run():
                 stationarity,
                 night_day_difference
             ]
-        Parallel(n_jobs=min(8, len(pscripts)))(delayed(lambda x: x.run(country,iso))(x) for x in pscripts)
+        Parallel(n_jobs=min(8, len(pscripts)))(delayed(lambda x: x.run(country,iso,adm_region,adm_kommune))(x) for x in pscripts)
 
 if __name__ == "__main__":
     run()

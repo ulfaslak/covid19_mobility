@@ -4,7 +4,7 @@ import json
 import datetime as dt
 from tqdm import tqdm
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     PATH = f'Facebook/{country}/population_tile/'
 
     with open(f'utils/globals/{country}_tile_baseline.json') as fp:

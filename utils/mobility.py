@@ -9,7 +9,7 @@ from tqdm import tqdm
 import requests as rq
 from functools import partial
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
     class defaultlist(list):
         def __init__(self, fx):
@@ -133,14 +133,10 @@ def run(country,iso):
         data_admin = load_prepare_admin(PATH_IN_ADMIN + filename,iso)
 
         # Relabel
-#        data_tile['source_kommune'] = data_tile['start_polygon_name']
-#        data_tile['target_kommune'] = data_tile['end_polygon_name']
-#        data_admin['source_kommune'] = data_admin['start_polygon_name']
-#        data_admin['target_kommune'] = data_admin['end_polygon_name']
-        data_tile['source_kommune'] = data_tile['start_adm2']
-        data_tile['target_kommune'] = data_tile['end_adm2']
-        data_admin['source_kommune'] = data_admin['start_adm2']
-        data_admin['target_kommune'] = data_admin['end_adm2']
+        data_tile['source_kommune'] = data_tile['start_'+adm_kommune]
+        data_tile['target_kommune'] = data_tile['end_'+adm_kommune]
+        data_admin['source_kommune'] = data_admin['start_'+adm_kommune]
+        data_admin['target_kommune'] = data_admin['end_'+adm_kommune]
         
         # Keep only within-municipality flow in tile data
         data_tile = data_tile.loc[data_tile['source_kommune'] == data_tile['target_kommune']]

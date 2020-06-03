@@ -8,7 +8,7 @@ from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
     class defaultlist(list):
         def __init__(self, fx):
@@ -150,8 +150,8 @@ def run(country,iso):
 #             data['source_tile'], tile_kommune_map, updated_kommune)
 #         data['target_kommune'], tile_kommune_map, updated_kommune = get_update_kommune(
 #             data['target_tile'], tile_kommune_map, updated_kommune)
-        data['source_kommune'] = data['start_adm2']
-        data['target_kommune'] = data['end_adm2']
+        data['source_kommune'] = data['start_'+adm_kommune]
+        data['target_kommune'] = data['end_'+adm_kommune]
         
 
         # Time #

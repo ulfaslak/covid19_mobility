@@ -7,7 +7,7 @@ from collections import defaultdict
 from tqdm import tqdm
 from json.decoder import JSONDecodeError
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def load_prepare(path,iso):
         data = pd.read_csv(path)
         data = data[(data != "\\N").all(1)]

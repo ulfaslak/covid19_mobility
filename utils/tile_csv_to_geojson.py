@@ -5,7 +5,7 @@ import json
 import requests as rq
 from tqdm import tqdm
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 	def tile_points(coord, dlat, dlon):
 		dlat_ = dlat[coord[0]]
 		return [
@@ -82,7 +82,7 @@ def run(country,iso):
 					"bl": round(float(row['n_baseline']), 1),
 					"gr": round(percent_change(row), 3),
 					"lo": round(float(row['n_crisis']), 1),
-					"ko": row['adm2']
+					"ko": row[adm_kommune]
 				}
 			})
 
