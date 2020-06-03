@@ -5,6 +5,7 @@ import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
+from countryinfo import CountryInfo
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def gini_coefficient(x):

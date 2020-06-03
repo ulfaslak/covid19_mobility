@@ -5,6 +5,7 @@ import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
+from countryinfo import CountryInfo
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def load_prepare(path,iso):
@@ -35,7 +36,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
 
 
-    N_POP = 5_787_997  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+    N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
     def update_data_out(level, data08, data16):
         data_diff_b = (data08.n_baseline - data16.n_baseline)

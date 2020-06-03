@@ -14,6 +14,7 @@ import json
 import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
+from countryinfo import CountryInfo
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def load_prepare(path):
@@ -55,7 +56,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     PATH_IN_POP = f'Facebook/{country}/population_tile/'
     PATH_OUT = f'utils/globals/{country}_'
 
-    N_POP = 5_787_997  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+    N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
     # Aggregate
     weekday_window_data = defaultdict(lambda: defaultdict(list))

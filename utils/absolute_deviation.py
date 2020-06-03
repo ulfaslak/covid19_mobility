@@ -5,6 +5,7 @@ import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
+from countryinfo import CountryInfo
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def load_prepare(path,iso):
@@ -40,7 +41,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             if depth== 2:
                 return defaultdict(list, {k: v for k, v in d.items()})
 
-    N_POP = 5_787_997  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+    N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
     def update_data_out1(time, label, data):
         data_out1[time][label].append(

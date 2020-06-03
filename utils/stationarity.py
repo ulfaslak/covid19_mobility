@@ -7,6 +7,7 @@ import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
+from countryinfo import CountryInfo
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
@@ -88,7 +89,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
 
     # Danish population as of Thursday, April 16, 2020 (Worldometer)
-    N_POP = 5_787_997
+    N_POP = CountryInfo(country).population()
         
     def update_data_out(level, idx, data):
         # `data_out`: fraction of population that remains stationary
