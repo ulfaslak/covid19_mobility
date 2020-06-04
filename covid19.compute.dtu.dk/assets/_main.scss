@@ -214,7 +214,7 @@ ul.pagination {
 
   nav {
     width: $toc-width;
-    padding: $padding-16;
+    padding: 30px $padding-16;  /*EDITED*/
 
     @include fixed;
   }
@@ -315,9 +315,9 @@ aside nav,
     font-size: $font-size-base;
   }
 
-  .book-toc {
+  /*.book-toc {
     display: none;
-  }
+  }*/
 
   .book-header {
     display: block;
