@@ -228,7 +228,7 @@ class MovementsMap {
 			.min(0)
 			.max(N-1)
 			.width(this.width)
-			.tickValues(d3.range(1, N, 7))
+			.tickValues(d3.range(2, N, 7))
 			.tickFormat(this.idxToDate)
 			.step(1)
 			.default(0)
@@ -253,6 +253,8 @@ class MovementsMap {
 	// Plot data
 	// ---------
 
+	// DEBUG: rewrite highlightRegion so it draws mp and rewrite unhighlightRegion so it removes it.
+
 	drawMap() {
 		for (let datum of this.geoData) {
 			this.g.selectAll(datum.kommune)
@@ -275,10 +277,10 @@ class MovementsMap {
 				.on('mousemove', () => {
 					if (typeof this.selected == 'undefined') {
 						if (datum.kommune in this.data) 
-							this.mousemoveDefaultMovements(datum.kommune, this.t);
+							this.tooltipDefault(datum.kommune, this.t);
 					} else {
 						if (datum.kommune in this.data[this.selected])
-							this.mousemoveSelectedMovements(datum.kommune, this.t);
+							this.tooltipSelected(datum.kommune, this.t);
 						else
 							this.mouseout();
 
@@ -323,7 +325,7 @@ class MovementsMap {
 		this.tooltip.style("display", "none");
 	}
 
-	mousemoveDefaultMovements(d, t) {
+	tooltipDefault(d, t) {
 		let count = this.data[d]["_" + d][this.radioOption][this.t][0];
 
 		let tooltiptext = "<b>" + d + "</b><br>";
@@ -338,7 +340,7 @@ class MovementsMap {
 			.style("top", (d3.event.pageY - 10) + "px");
 	}
 
-	mousemoveSelectedMovements(d, t) {
+	tooltipSelected(d, t) {
 		let count = this.data[this.selected][d][this.radioOption][this.t][0];
 		if (this.selected == d) {
 			Object.keys(this.data[this.selected]).forEach(n => {
@@ -370,7 +372,8 @@ class MovementsMap {
 	}
 
 	highlightRegion(d, mp, color) {
-		this.pushPolygonToFront(mp);
+		// this.pushPolygonToFront(mp);
+		this.pushMultiPolygonToFront(this.namePolygonMap[d])
 		this.svg.selectAll('#' + d)
 			.style('stroke', color)
 			.style('stroke-width', 1)
@@ -454,14 +457,13 @@ class MovementsMap {
 
 
 
-
 	// Utilities
 	// ---------
 
 	idxToDate(i) {
 		let days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 		let date = new Date(2020, 2, 28);
-		date.setHours(date.getHours() + 24 * i);
+		date.setHours(date.getHours() + 24 * (i-1));
 		let dateString = "";
 		dateString += days[date.getDay()] + " ";
 		dateString += date.getDate() + "/";

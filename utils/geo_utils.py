@@ -26,6 +26,7 @@ def create_shape_file(country, adm, save_dir=False, file_return=True):
     with fiona.io.ZipMemoryFile(data_bytes) as zip_memory_file:
         with zip_memory_file.open(f"gadm36_{iso3}_{adm}.shp") as collection:
             geodf = gpd.GeoDataFrame.from_features(collection, crs=collection.crs)
+            geodf.geometry = geodf.geometry.simplify(0.004)
 
     shape_file = [{'kommune': loc['NAME_2'], 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
     if save_dir != False:
