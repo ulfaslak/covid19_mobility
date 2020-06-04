@@ -7,8 +7,9 @@ import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
+from countryinfo import CountryInfo
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
     class defaultlist(list):
         def __init__(self, fx):
@@ -88,7 +89,7 @@ def run(country,iso):
 
 
     # Danish population as of Thursday, April 16, 2020 (Worldometer)
-    N_POP = 5_787_997
+    N_POP = CountryInfo(country).population()
         
     def update_data_out(level, idx, data):
         # `data_out`: fraction of population that remains stationary
@@ -150,8 +151,8 @@ def run(country,iso):
 #             data['source_tile'], tile_kommune_map, updated_kommune)
 #         data['target_kommune'], tile_kommune_map, updated_kommune = get_update_kommune(
 #             data['target_tile'], tile_kommune_map, updated_kommune)
-        data['source_kommune'] = data['start_adm2']
-        data['target_kommune'] = data['end_adm2']
+        data['source_kommune'] = data['start_'+adm_kommune]
+        data['target_kommune'] = data['end_'+adm_kommune]
         
 
         # Time #

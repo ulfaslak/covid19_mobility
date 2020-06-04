@@ -25,6 +25,7 @@ title = "COVID-19 mobility"
 
   # Set page weight to re-arrange items in file-tree menu (if BookMenuBundle not set)
   weight = 10
+  country = "Denmark"
 
 [frontmatter]
   lastmod = ["lastmod", ":fileModTime", ":default"]

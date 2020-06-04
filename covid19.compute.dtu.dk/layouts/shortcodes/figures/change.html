@@ -19,7 +19,7 @@
 
 	let instance_change;
 
-	d3.json('/data/Denmark_change.json').then(function(data) {
+	d3.json('/data/'+sessionStorage.country+'_change.json').then(function(data) {
 		instance_change = new DeviationPlot(data, 'vis-change', 'changeFig');
 		instance_change.setup();
 		instance_change.drawLayout();

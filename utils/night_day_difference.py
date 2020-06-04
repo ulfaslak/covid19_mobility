@@ -5,8 +5,9 @@ import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
+from countryinfo import CountryInfo
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def load_prepare(path,iso):
         data = pd.read_csv(path)
         data = data[(data != "\\N").all(1)]
@@ -35,7 +36,7 @@ def run(country,iso):
 
 
 
-    N_POP = 5_787_997  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+    N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
     def update_data_out(level, data08, data16):
         data_diff_b = (data08.n_baseline - data16.n_baseline)
@@ -71,14 +72,14 @@ def run(country,iso):
         # Load and filter
         data08 = load_prepare(PATH_IN + fn_day + "_" + "0800" + ".csv",iso)
         data08.index = data08['lat'].round(3).astype(str) + "," + data08['lon'].round(3).astype(str)
-        data08['kommune'] = data08['adm2'] 
+        data08['kommune'] = data08[adm_kommune]
         data08['n_baseline'] *= N_POP / data08.n_baseline.astype(float).sum()
         data08['n_crisis'] *= N_POP / data08.n_crisis.astype(float).sum()
         data08 = data08.drop(['lat', 'lon'], axis=1)
 
         data16 = load_prepare(PATH_IN + fn_day + "_" + "1600" + ".csv",iso)
         data16.index = data16['lat'].round(3).astype(str) + "," + data16['lon'].round(3).astype(str)
-        data16['kommune'] = data16['adm2']
+        data16['kommune'] = data16[adm_kommune]
         data16['n_baseline'] *= N_POP / data16.n_baseline.astype(float).sum()
         data16['n_crisis'] *= N_POP / data16.n_crisis.astype(float).sum()
         data16 = data16.drop(['lat', 'lon'], axis=1)

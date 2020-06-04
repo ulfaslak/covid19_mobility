@@ -4,8 +4,9 @@ import numpy as np
 import json
 import requests as rq
 from tqdm import tqdm
+from countryinfo import CountryInfo
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 	def tile_points(coord, dlat, dlon):
 		dlat_ = dlat[coord[0]]
 		return [
@@ -26,7 +27,7 @@ def run(country,iso):
 # 	with open('utils/globals/tile_kommune_map.json') as fp:
 # 		tile_kommune_map = json.load(fp)
 
-	N_POP = 5_787_997  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+	N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
 	# PATHS
 	PATH_IN = f"Facebook/{country}/population_tile/"
@@ -82,7 +83,7 @@ def run(country,iso):
 					"bl": round(float(row['n_baseline']), 1),
 					"gr": round(percent_change(row), 3),
 					"lo": round(float(row['n_crisis']), 1),
-					"ko": row['adm2']
+					"ko": row[adm_kommune]
 				}
 			})
 

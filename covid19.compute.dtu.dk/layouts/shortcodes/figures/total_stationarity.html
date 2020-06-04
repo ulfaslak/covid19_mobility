@@ -20,7 +20,7 @@
 
 	let instance_stationarity;
 
-	d3.json('/data/Denmark_total_stationarity.json').then(function(data) {
+	d3.json('/data/'+sessionStorage.country+'_total_stationarity.json').then(function(data) {
 		instance_stationarity = new DeviationPlot(data, 'vis-stationarity', 'stationarityFig');
 		instance_stationarity.setup();
 		instance_stationarity.drawLayout();

@@ -2,7 +2,6 @@
 {{< fontsize 14 >}}*Visualization and data analysis by [Ulf Aslak](mailto:ulfaslak@gmail.com) and [Peter Møllgaard](mailto:peter-em@hotmail.com).*{{< /fontsize >}}
 
 {{< figures/globals >}}
-
 By averaging the length of trips between tiles we get an estimate of the average distance traveled each day by users in the dataset. During the lockdown we should expect this quantity to be significantly reduced, primarily because people work from home.
 
 Note that this is *an extremely conservative lower bound* on mobility. The shortest distance we can measure is 2.63 km, and we only have information about trips if they start and end in different time windows (eight hours apart), in different places where the user spent large amounts of time. For example, if someone leaves their home in the suburbs during working hours (10–18) to spend the afternoon in the city yet overall spent most of that time window at home (not an unlikely scenario for a shopping trip on the weekend), the entire movement goes unrecorded, and it will appear as if the user stayed in at home the whole time. It is only if the user went to the city—or other place different than where they would spend the afternoon and night—for the majority part of the time window that the trip is recorded.

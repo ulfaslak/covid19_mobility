@@ -6,6 +6,7 @@ covid19.compute.dtu.dk/public/data/*
 .idea/*
 .ipynb_checkpoints/*
 *.py[cod]
+*.swp
 # Exception to keep folder
 !covid19.compute.dtu.dk/public/data/tile_vis
 !covid19.compute.dtu.dk/static/data/tile_vis

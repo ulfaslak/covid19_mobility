@@ -118,8 +118,8 @@ class data_updater:
     def get_links(self, path):
         self.driver.get(path)
         ele = self.driver.find_elements_by_tag_name('li')
-        links = [date.find_element_by_tag_name('a').get_attribute('href') for date in ele if len(date.text) > 0]
-        text = [date.text.replace('-','_').replace(' ','_') for date in ele if len(date.text) > 0]
+        links = [date.find_element_by_tag_name('a').get_attribute('href') for date in ele if len(re.findall("\d{4}-\d{2}-\d{2}[ +]\d{4}",date.text)) > 0]
+        text = [date.text.replace('-','_').replace(' ','_') for date in ele if len(re.findall("\d{4}-\d{2}-\d{2}[ +]\d{4}",date.text)) > 0]
         return links, text
 
     def download_links(self, links, text, outdir,country):
@@ -127,7 +127,6 @@ class data_updater:
         dates = [country + '_' + date + '.csv' for date in text]
         self.try_mkdir_silent(f'{outdir}')
         dl_links = np.array(links)[~np.isin(dates, os.listdir(f'{outdir}'))]
-
 
         wait_time = 1
         while len(dl_links) > 0:

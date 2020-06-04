@@ -5,8 +5,9 @@ import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
+from countryinfo import CountryInfo
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def load_prepare(path,iso):
         data = pd.read_csv(path)
         data = data[(data != "\\N").all(1)]
@@ -40,7 +41,7 @@ def run(country,iso):
             if depth== 2:
                 return defaultdict(list, {k: v for k, v in d.items()})
 
-    N_POP = 5_787_997  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+    N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
     def update_data_out1(time, label, data):
         data_out1[time][label].append(
@@ -105,26 +106,22 @@ def run(country,iso):
             
             # Add data to data_out
             update_data_out1(fn_time[:2], 'country', data)
-            #for adm1 in set(data['adm1'].loc[data['adm1'].notnull()]):
-            #    update_data_out1(fn_time[:2], adm1, data.loc[data['adm1'] == adm1])
-            for adm2 in set(data['adm2'].loc[data['adm2'].notnull()]):
-                update_data_out2(fn_time[:2], adm2, data.loc[data['adm2'] == adm2])
+            for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
+                update_data_out2(fn_time[:2], adm2, data.loc[data[adm_kommune] == adm2])
         
         # Concat
         data_allday = pd.concat(data_day, join="outer", axis=1)
         data = data_allday.copy()
-        data = data.drop(['n_baseline', 'n_crisis', 'adm1', 'adm2'], axis=1)
+        data = data.drop(['n_baseline', 'n_crisis', adm_region, adm_kommune], axis=1)
         data['n_baseline'] = data_allday['n_baseline'].mean(1)
         data['n_crisis'] = data_allday['n_crisis'].mean(1)
-        data['adm1'] = [getvalid(row) for _, row in data_allday['adm1'].iterrows()]
-        data['adm2'] = [getvalid(row) for _, row in data_allday['adm2'].iterrows()]
+        data[adm_region] = [getvalid(row) for _, row in data_allday[adm_region].iterrows()]
+        data[adm_kommune] = [getvalid(row) for _, row in data_allday[adm_kommune].iterrows()]
 
         # Add data to data_out
         update_data_out1('allday', 'country', data)
-        #for adm1 in set(data['adm1'].loc[data['adm1'].notnull()]):
-        #    update_data_out1('allday', adm1, data.loc[data['adm1'] == adm1])
-        for adm2 in set(data['adm2'].loc[data['adm2'].notnull()]):
-            update_data_out2('allday', adm2, data.loc[data['adm2'] == adm2])
+        for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
+            update_data_out2('allday', adm2, data.loc[data[adm_kommune] == adm2])
 
 
     # Time

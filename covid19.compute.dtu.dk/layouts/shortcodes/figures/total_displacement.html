@@ -20,7 +20,7 @@
 
 	let instance_displacement;
 
-	d3.json('/data/Denmark_total_displacement.json').then(function(data) {
+	d3.json('/data/'+sessionStorage.country+'_total_displacement.json').then(function(data) {
 		instance_displacement = new DeviationPlot(data, 'vis-displacement', 'displacementFig');
 		instance_displacement.setup();
 		instance_displacement.drawLayout();

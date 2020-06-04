@@ -19,7 +19,7 @@
 
 	let instance_difference;
 
-	d3.json('/data/Denmark_difference.json').then(function(data) {
+	d3.json('/data/'+sessionStorage.country+'_difference.json').then(function(data) {
 		instance_difference = new SingleLinePlot(data, 'vis-difference', 'differenceFig');
 		instance_difference.setup();
 		instance_difference.drawLayout();

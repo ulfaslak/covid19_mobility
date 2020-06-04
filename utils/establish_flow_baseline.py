@@ -14,8 +14,9 @@ import json
 import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
+from countryinfo import CountryInfo
 
-def run(country,iso):
+def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def load_prepare(path):
         data = pd.read_csv(path)
         data = data.drop([
@@ -55,7 +56,7 @@ def run(country,iso):
     PATH_IN_POP = f'Facebook/{country}/population_tile/'
     PATH_OUT = f'utils/globals/{country}_'
 
-    N_POP = 5_787_997  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+    N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
     # Aggregate
     weekday_window_data = defaultdict(lambda: defaultdict(list))
@@ -96,11 +97,11 @@ def run(country,iso):
             data['source_tile'] = source_tile
             data['target_tile'] = target_tile
 
-            data['source_kommune'] = [getvalid(row) for _, row in data_['start_adm2'].iterrows()]
-            data['target_kommune'] = [getvalid(row) for _, row in data_['end_adm2'].iterrows()]
+            data['source_kommune'] = [getvalid(row) for _, row in data_['start_'+adm_kommune].iterrows()]
+            data['target_kommune'] = [getvalid(row) for _, row in data_['end_'+adm_kommune].iterrows()]
             
-            data['source_region'] = [getvalid(row) for _, row in data_['start_adm1'].iterrows()]
-            data['target_region'] = [getvalid(row) for _, row in data_['end_adm1'].iterrows()]
+            data['source_region'] = [getvalid(row) for _, row in data_['start_'+adm_region].iterrows()]
+            data['target_region'] = [getvalid(row) for _, row in data_['end_'+adm_region].iterrows()]
             
             
             data = data.sort_values(['source_region', 'source_kommune', 'source_tile', 'target_region', 'target_kommune', 'target_tile'])
