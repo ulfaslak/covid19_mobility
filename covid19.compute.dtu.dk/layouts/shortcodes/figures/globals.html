@@ -214,6 +214,7 @@
 	function insertKSeperators(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
+
     // Session variable
     if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
     function createWorld() {
