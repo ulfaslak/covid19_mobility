@@ -92,7 +92,11 @@ def run():
         # Compute flow into kommune. This counts how many from the kommune are going
         # to work in other kommunes
         data_kommune_is_target = data.loc[data.target_kommune == kommune]
-        for neighbor in sorted(set(data_kommune_is_target.source_kommune)):
+        neighbors = sorted(set(data_kommune_is_target.source_kommune))
+        if len(neighbors) > 0:
+            neighbors += [kommune]
+
+        for neighbor in neighbors:  # putting `kommune` in here as a nighbor to `kommune` so if it has 0 within flow then that will show in the output data
 
             # Compute how many people that live in `kommune` and work in `neighbor`
             flow_from_neighbor = data_kommune_is_target.loc[data_kommune_is_target.source_kommune == neighbor].sum()
@@ -110,7 +114,11 @@ def run():
         # Compute flow out of kommune. This counts how many people that live outside 
         # of the kommune and go to work the kommune
         data_kommune_is_source = data.loc[data.source_kommune == kommune]
-        for neighbor in sorted(set(data_kommune_is_source.target_kommune)):
+        neighbors = sorted(set(data_kommune_is_source.target_kommune))
+        if len(neighbors) > 0:
+            neighbors += [kommune]
+            
+        for neighbor in neighbors:
 
             # Compute how many people that live elsewhere and work in `kommune`
             flow_to_neighbor = data_kommune_is_source.loc[data_kommune_is_source.target_kommune == neighbor].sum()
@@ -140,8 +148,6 @@ def run():
 
     # Data out mobile
     data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: [0, 0]))))
-    # data_out['Copenhagen']['Roskilde']['baseline'][idx] = [in, out]  # in: number of people that live here and go work anywhere; out: number of people that live anywhere and go to work here
-    # data_out['Copenhagen']['Copenhagen']['baseline'][idx] = [within, within]
     data_out['_meta']['datetime'] = defaultlist(lambda: 'undefined')
     
     # I could come up with a more memory efficient data structure, because here,

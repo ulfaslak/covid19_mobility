@@ -11,7 +11,6 @@ class MovementsMap {
 		this.datetime = data._meta.datetime;
 		this.t = data._meta.defaults.t;
 		this.radioOption = data._meta.defaults.radioOption;
-		this.selected = undefined;
 
 		// Dimensions and margins
 		let margin = {top: 70, right: 5, bottom: 30, left: 60},
@@ -63,6 +62,7 @@ class MovementsMap {
 		this.mapNamesToPolygons();
 		this.setColorDomain();
 		this.setKeyEvents();
+		this.resetState();
 	}
 
 	drawLayout() {
@@ -94,7 +94,7 @@ class MovementsMap {
 	mapNamesToPolygons() {
 		this.namePolygonMap = {};
 		this.geoData.forEach(d => {
-			this.namePolygonMap[d.kommune] = d.polygons;
+			this.namePolygonMap[d.kommune.replace(" ", "-")] = d.polygons;
 		})
 	}
 
@@ -113,11 +113,16 @@ class MovementsMap {
 		document.onkeydown = evt => {
 		    evt = evt || window.event;
 		    if (evt.key === "Escape" || evt.key === "Esc") {
-		    	this.selected = undefined;
+		    	this.resetState();
 		    	this.clearData();
 		    	this.redrawData();
 		    }
 		};
+	}
+
+	resetState() {
+		this.selected = undefined;
+		this.selected_polygons = [];
 	}
 
 	// Layout elements
@@ -253,64 +258,75 @@ class MovementsMap {
 	// Plot data
 	// ---------
 
-	// DEBUG: rewrite highlightRegion so it draws mp and rewrite unhighlightRegion so it removes it.
+	// DEBUG: rewrite highlightRegion so it draws polygon and rewrite unhighlightRegion so it removes it.
 
 	drawMap() {
 		for (let datum of this.geoData) {
+			let dataExists = this.exists(datum.kommune);
 			this.g.selectAll(datum.kommune)
 				.data(datum.polygons)
 				.enter().append("polygon")
-			    .attr("points", mp => mp.map(p => [this.x(p[0]), this.y(p[1])].join(",")).join(" "))
+			    .attr("points", polygon => polygon.map(p => [this.x(p[0]), this.y(p[1])].join(",")).join(" "))
 			    .attr("class", 'map-polygon-movements')
 			    .attr("id", datum.kommune)
-			    .style('fill', () => this.defaultFill(datum.kommune, this.t))
-				.on('mouseover', mp => {
-					if (datum.kommune in this.data) {
+			    .style('fill', () => {
+			    	if (typeof this.selected == 'undefined')
+			    		return this.defaultFill(datum.kommune, this.t)
+			    })
+				.on('mouseover', polygon => {
+					if (dataExists) {
 						this.mouseover();
-						if (typeof this.selected == 'undefined')
-							this.highlightRegion(datum.kommune, mp, 'black');
-						else if (datum.kommune != this.selected) {
-							this.highlightRegion(datum.kommune, mp, 'grey');
+						if (typeof this.selected == 'undefined') {
+							this.highlightRegion(datum.polygons, 'black');
+						} else {
+							if (datum.kommune != this.selected)
+								this.highlightRegion(datum.polygons, 'grey');
 						}
 					}
 				})
 				.on('mousemove', () => {
-					if (typeof this.selected == 'undefined') {
-						if (datum.kommune in this.data) 
+					if (dataExists) {
+						if (typeof this.selected == 'undefined')
 							this.tooltipDefault(datum.kommune, this.t);
-					} else {
-						if (datum.kommune in this.data[this.selected])
+						else {
 							this.tooltipSelected(datum.kommune, this.t);
-						else
-							this.mouseout();
 
+						}
 					}
 				})
-				.on('mouseout', mp => {
-					this.mouseout();
-					if (datum.kommune != this.selected)
-						this.unhighlightRegion(datum.kommune, mp)
+				.on('mouseout', polygon => {
+					if (dataExists) {
+						this.mouseout();
+						if (datum.kommune != this.selected)
+							this.unhighlightRegion()
+					}
 				})
-				.on('click', mp => {
-					if (datum.kommune in this.data) {
+				.on('click', polygon => {
+					if (dataExists) {
+						this.unhighlightAllRegions();
+						this.highlightRegion(datum.polygons, 'black');
 						if (typeof this.selected == 'undefined') {
-							this.highlightRegion(datum.kommune, mp, 'black')
 							this.recolorRegions(datum.kommune, this.t)
 							this.selected = datum.kommune;
+							this.tooltipSelected(datum.kommune, this.t);
 						} else {
 							if (datum.kommune == this.selected) {
-								this.unhighlightRegion(this.selected, mp);
 								this.restoreDefault(this.t);
 								this.selected = undefined;
+								this.tooltipDefault(datum.kommune, this.t);
 							} else {
-								this.unhighlightRegion(this.selected, mp);
-								this.highlightRegion(datum.kommune, mp, 'black');
 								this.recolorRegions(datum.kommune, this.t);
 								this.selected = datum.kommune;
+								this.tooltipSelected(datum.kommune, this.t);
 							}
 						}
 					}
 				});
+		}
+
+		if (typeof this.selected != 'undefined') {
+			this.recolorRegions(this.selected, this.t);
+			this.highlightRegion(this.namePolygonMap[this.selected], 'black');
 		}
 	}
 	// Event handling
@@ -341,13 +357,17 @@ class MovementsMap {
 	}
 
 	tooltipSelected(d, t) {
-		let count = this.data[this.selected][d][this.radioOption][this.t][0];
-		if (this.selected == d) {
-			Object.keys(this.data[this.selected]).forEach(n => {
-				if (n != d && this.t in this.data[this.selected][n][this.radioOption])
-					count -= this.data[this.selected][n][this.radioOption][this.t][0];
-			})
-		}
+		let count
+			if (d in this.data[this.selected])
+				count = this.data[this.selected][d][this.radioOption][this.t][0];
+			else
+				count = 0;
+		// if (this.selected == d) {
+		// 	Object.keys(this.data[this.selected]).forEach(n => {
+		// 		if (n != d && this.t in this.data[this.selected][n][this.radioOption])
+		// 			count -= this.data[this.selected][n][this.radioOption][this.t][0];
+		// 	})
+		// }
 
 		let tooltiptext = "<b>" + d + "</b><br>";
 		if (this.radioOption == 'percent_change')
@@ -363,7 +383,7 @@ class MovementsMap {
 
 	// Coloring
 	defaultFill(d, t) {
-		if (d in this.data && this.t in this.data[d]["_" + d][this.radioOption]) {
+		if (this.exists(d)) {
     		let count = this.data[d]["_" + d][this.radioOption][this.t][0];
     		return this.colorScale(count).hex();
     	} else {
@@ -371,21 +391,32 @@ class MovementsMap {
     	}
 	}
 
-	highlightRegion(d, mp, color) {
-		// this.pushPolygonToFront(mp);
-		this.pushMultiPolygonToFront(this.namePolygonMap[d])
-		this.svg.selectAll('#' + d)
-			.style('stroke', color)
-			.style('stroke-width', 1)
+	highlightRegion(d, color) {
+		this.selected_polygons.push(
+			d.map(polygon => {
+				return this.g.append("polygon")
+				    .attr("points", polygon.map(p => [this.x(p[0]), this.y(p[1])].join(",")).join(" "))
+				    .style('fill', 'none')
+				    .style('stroke', color)
+				    .style('stroke-width', 1)
+			})
+		)
 	}
 
-	unhighlightRegion(d, mp) {
-		if (typeof this.selected != 'undefined') {
-			this.pushMultiPolygonToFront(this.namePolygonMap[this.selected])
-		}
-		this.svg.selectAll('#' + d)
-			.style('stroke', 'white')
-			.style('stroke-width', 0.3)
+	unhighlightRegion() {
+		this.selected_polygons[this.selected_polygons.length-1].forEach(polygon => {
+			polygon.remove();
+		})
+		this.selected_polygons.pop()
+	}
+
+	unhighlightAllRegions() {
+		this.selected_polygons.forEach(multiPolygon => {
+			multiPolygon.forEach(polygon => {
+				polygon.remove();
+			})
+		})
+		this.selected_polygons = [];
 	}
 
 	recolorRegions(d, t) {
@@ -396,16 +427,7 @@ class MovementsMap {
 		// Color each kommune by their flow into `d`
 		Object.keys(this.data[d]).forEach(neighbor => {
 			if (t in this.data[d][neighbor][this.radioOption]) {
-				let count;
-				if (neighbor != d) {
-					count = this.data[d][neighbor][this.radioOption][this.t][0]
-				} else {
-					count = this.data[d][d][this.radioOption][this.t][0]
-					Object.keys(this.data[d]).forEach(n => {
-						if (n != d & this.t in this.data[d][n][this.radioOption])
-							count -= this.data[d][n][this.radioOption][this.t][0]
-					})
-				}
+				let count = this.data[d][neighbor][this.radioOption][this.t][0]
 				this.svg.selectAll('#' + neighbor)
 					.style('fill', this.colorScale(count).hex())
 			}
@@ -483,6 +505,10 @@ class MovementsMap {
 	      	if (!d.includes(a)) return -1
 	      	else return 1;
 	  	});
+	}
+
+	exists(d) {
+		return d in this.data && this.t in this.data[d]["_" + d][this.radioOption];
 	}
 
 }
