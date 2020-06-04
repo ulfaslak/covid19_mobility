@@ -449,7 +449,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 	// ----------
 
 	drawValueTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]))
+		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level])).slice(3,-3)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'trendline')
@@ -719,7 +719,7 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawCrisisTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['crisis']))
+		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['crisis'])).slice(3,-3)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'trendline')
@@ -745,7 +745,7 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawPercentChangeTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['percent_change']))
+		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['percent_change'])).slice(3,-3)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'trendline')
