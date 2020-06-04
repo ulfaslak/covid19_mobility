@@ -719,7 +719,7 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawCrisisTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['crisis']))
+		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['crisis'])).slice(3,-3)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'trendline')
