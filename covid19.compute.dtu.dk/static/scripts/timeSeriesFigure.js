@@ -449,7 +449,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 	// ----------
 
 	drawValueTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]))
+		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level])).slice(3,-3)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'trendline')
