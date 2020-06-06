@@ -11,6 +11,7 @@ class MovementsMap {
 		this.datetime = data._meta.datetime;
 		this.t = data._meta.defaults.t;
 		this.radioOption = data._meta.defaults.radioOption;
+		this.idx0or1 = data._meta.defaults.idx0or1;
 
 		// Dimensions and margins
 		let margin = {top: 70, right: 5, bottom: 30, left: 60},
@@ -21,6 +22,8 @@ class MovementsMap {
 		maindiv.style.height = figureHeight + "px";
 		this.width = figureWidth - margin.left - margin.right;
 		this.height = figureHeight - margin.top - margin.bottom;
+		this.rwidth = 180;
+		this.rheight = 27;
 
 		let latMin = data._meta.defaults.latMin,
 			latMax = data._meta.defaults.latMax,
@@ -116,12 +119,31 @@ class MovementsMap {
 		    	this.resetState();
 		    	this.clearData();
 		    	this.redrawData();
+		    } else
+		    if (evt.key === "Shift") {
+		    	this.idx0or1 = 1;
+		    	if (typeof this.selected != 'undefined') {
+		    		this.tooltipSelected(this.hovering);
+		    		this.recolorRegions(this.selected);
+		    	}
+		    }
+		};
+
+		document.onkeyup = evt => {
+		    evt = evt || window.event;
+		    if (evt.key === "Shift") {
+		    	this.idx0or1 = 0;
+		    	if (typeof this.selected != 'undefined') {
+		    		this.tooltipSelected(this.hovering);
+		    		this.recolorRegions(this.selected);
+		    	}
 		    }
 		};
 	}
 
 	resetState() {
 		this.selected = undefined;
+		this.hovering = undefined;
 		this.selected_polygons = [];
 	}
 
@@ -178,12 +200,11 @@ class MovementsMap {
 	}
 
 	setRadio() {
-		let rwidth = 180, rheight=27;
-
 		this.radiosvg = d3.select("#radio-" + this.uniqueId)
 			.append("svg")
-			.attr('width', rwidth)
-			.attr('height', rheight);
+			.attr('width', this.rwidth)
+			.attr('height', this.rheight)
+			.style('margin-top', 5);
 
 		this.data._meta.radioOptions.forEach((option, i) => {
 			// radio boxes
@@ -195,10 +216,10 @@ class MovementsMap {
 						return 'radio-rect'
 				})
 				.attr('id', 'radio-rect-' + option)
-				.attr('x', rwidth/3 * i)
+				.attr('x', this.rwidth/3 * i)
 				.attr('y', 0)
-				.attr('width', rwidth/3)
-				.attr('height', rheight)
+				.attr('width', this.rwidth/3)
+				.attr('height', this.rheight)
 				.on('click', () => this.radioClick(option))
 
 			// radio texts
@@ -211,8 +232,8 @@ class MovementsMap {
 						return 'radio-text'
 				})
 				.attr('id', 'radio-text-' + option)
-				.attr("x", rwidth/3 * i + rwidth/6)
-				.attr("y", rheight / 2 + 4)
+				.attr("x", this.rwidth/3 * i + this.rwidth/6)
+				.attr("y", this.rheight / 2 + 4)
 				.attr('font-size', 12)
 				.text(() => {
 					if (option == 'crisis')
@@ -232,11 +253,11 @@ class MovementsMap {
 		let sliderStep = d3.sliderBottom()
 			.min(0)
 			.max(N-1)
-			.width(this.width)
+			.width(this.width - this.rwidth)
 			.tickValues(d3.range(2, N, 7))
 			.tickFormat(this.idxToDate)
 			.step(1)
-			.default(0)
+			.default(this.t)
 			.on('onchange', t => {
 				this.t = t;
 				this.clearData();
@@ -246,10 +267,10 @@ class MovementsMap {
 		// Append to div
 		let gStep = d3.select('#slider-' + this.uniqueId)
 			.append('svg')
-			.attr('width', this.width + 60)
-			.attr('height', 100)
+			.attr('width', this.width - this.rwidth + 60)
+			.attr('height', 60)
 			.append('g')
-			.attr('transform', 'translate(40,55)');
+			.attr('transform', 'translate(15,10)');
 
 		gStep.call(sliderStep);
 	}
@@ -276,6 +297,7 @@ class MovementsMap {
 				.on('mouseover', polygon => {
 					if (dataExists) {
 						this.mouseover();
+						this.hovering = datum.kommune;
 						if (typeof this.selected == 'undefined') {
 							this.highlightRegion(datum.polygons, 'black');
 						} else {
@@ -287,9 +309,9 @@ class MovementsMap {
 				.on('mousemove', () => {
 					if (dataExists) {
 						if (typeof this.selected == 'undefined')
-							this.tooltipDefault(datum.kommune, this.t);
+							this.tooltipDefault(datum.kommune);
 						else {
-							this.tooltipSelected(datum.kommune, this.t);
+							this.tooltipSelected(datum.kommune);
 
 						}
 					}
@@ -297,6 +319,7 @@ class MovementsMap {
 				.on('mouseout', polygon => {
 					if (dataExists) {
 						this.mouseout();
+						this.hovering = undefined;
 						if (datum.kommune != this.selected)
 							this.unhighlightRegion()
 					}
@@ -306,18 +329,18 @@ class MovementsMap {
 						this.unhighlightAllRegions();
 						this.highlightRegion(datum.polygons, 'black');
 						if (typeof this.selected == 'undefined') {
-							this.recolorRegions(datum.kommune, this.t)
+							this.recolorRegions(datum.kommune)
 							this.selected = datum.kommune;
-							this.tooltipSelected(datum.kommune, this.t);
+							this.tooltipSelected(datum.kommune);
 						} else {
 							if (datum.kommune == this.selected) {
 								this.restoreDefault(this.t);
 								this.selected = undefined;
-								this.tooltipDefault(datum.kommune, this.t);
+								this.tooltipDefault(datum.kommune);
 							} else {
-								this.recolorRegions(datum.kommune, this.t);
+								this.recolorRegions(datum.kommune);
 								this.selected = datum.kommune;
-								this.tooltipSelected(datum.kommune, this.t);
+								this.tooltipSelected(datum.kommune);
 							}
 						}
 					}
@@ -325,7 +348,7 @@ class MovementsMap {
 		}
 
 		if (typeof this.selected != 'undefined') {
-			this.recolorRegions(this.selected, this.t);
+			this.recolorRegions(this.selected);
 			this.highlightRegion(this.namePolygonMap[this.selected], 'black');
 		}
 	}
@@ -341,14 +364,16 @@ class MovementsMap {
 		this.tooltip.style("display", "none");
 	}
 
-	tooltipDefault(d, t) {
-		let count = this.data[d]["_" + d][this.radioOption][this.t][0];
+	tooltipDefault(d) {
+		let crisis = this.data[d]["_" + d]['crisis'][this.t][this.idx0or1];
+		let baseline = this.data[d]["_" + d]['baseline'][this.t][this.idx0or1];
+		let percent_change = this.data[d]["_" + d]['percent_change'][this.t][this.idx0or1];
 
-		let tooltiptext = "<b>" + d + "</b><br>";
-		if (this.radioOption == 'percent_change')
-			tooltiptext += "Deviation: <b>" + round(count*100, 1e1) + "%</b>";
-		else
-			tooltiptext += "Share: <b>" + round(this.data[d]["_" + d][this.radioOption][this.t][0] * 100, 1e1) + "%</b>";
+		let tooltiptext = "Share of <b>" + d + "</b> population<br>going to work anywhere<br><br>";
+		tooltiptext += "On date: <b>" + round(crisis * 100, 1e1) + "%</b><br>";
+		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e1) + "%</b><br>";
+		if (baseline > 0)
+			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e1) + "%</b>";
 
 		this.tooltip
 			.html(tooltiptext)
@@ -356,29 +381,43 @@ class MovementsMap {
 			.style("top", (d3.event.pageY - 10) + "px");
 	}
 
-	tooltipSelected(d, t) {
-		let count
-			if (d in this.data[this.selected])
-				count = this.data[this.selected][d][this.radioOption][this.t][0];
-			else
-				count = 0;
-		// if (this.selected == d) {
-		// 	Object.keys(this.data[this.selected]).forEach(n => {
-		// 		if (n != d && this.t in this.data[this.selected][n][this.radioOption])
-		// 			count -= this.data[this.selected][n][this.radioOption][this.t][0];
-		// 	})
-		// }
+	tooltipSelected(d) {
 
-		let tooltiptext = "<b>" + d + "</b><br>";
-		if (this.radioOption == 'percent_change')
-			tooltiptext += "Deviation: <b>" + round(count * 100, 1e1) + "%</b>";
-		else
-			tooltiptext += "Share: <b>" + round(count * 100, 1e2) + "%</b>";
+		let crisis = 0,
+			baseline = 0, 
+			percent_change = 'N/A';
+		if (d in this.data[this.selected]) {
+			if (this.t in this.data[this.selected][d]['crisis'])
+				crisis = this.data[this.selected][d]['crisis'][this.t][this.idx0or1];
+			if (this.t in this.data[this.selected][d]['baseline'])
+				baseline = this.data[this.selected][d]['baseline'][this.t][this.idx0or1];
+			if (this.t in this.data[this.selected][d]['percent_change'])
+				percent_change = this.data[this.selected][d]['percent_change'][this.t][this.idx0or1];			
+		}
 
-		this.tooltip
-			.html(tooltiptext)
-			.style("left", (d3.event.pageX + 10) + "px")
-			.style("top", (d3.event.pageY - 10) + "px");
+		let tooltiptext;
+		if (this.idx0or1 == 0) 
+			tooltiptext = "Share of <b>" + this.selected + "</b> population<br>going to work in <b>" + this.hovering + "</b><br><br>";
+		else if (this.idx0or1 == 1) 
+			tooltiptext = "Share of <b>" + this.hovering + "</b> population<br>going to work in <b>" + this.selected + "</b><br><br>";
+		tooltiptext += "On date: <b>" + round(crisis * 100, 1e1) + "%</b><br>";
+		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e1) + "%</b><br>";
+		if (baseline > 0)
+			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e1) + "%</b>";
+
+		if (d3.event != null) {
+			this.tooltip
+				.html(tooltiptext)
+				.style("left", (d3.event.pageX + 10) + "px")
+				.style("top", (d3.event.pageY - 10) + "px");
+			this.eventX = d3.event.pageX;
+			this.eventY = d3.event.pageY;
+		} else {
+			this.tooltip
+				.html(tooltiptext)
+				.style("left", (this.eventX + 10) + "px")
+				.style("top", (this.eventY - 10) + "px");
+		}
 	}
 
 	// Coloring
@@ -419,17 +458,17 @@ class MovementsMap {
 		this.selected_polygons = [];
 	}
 
-	recolorRegions(d, t) {
+	recolorRegions(d) {
 		// Make everything gray
 		this.svg.selectAll('.map-polygon-movements')
 			.style('fill', '#ecf0f1')
 
 		// Color each kommune by their flow into `d`
 		Object.keys(this.data[d]).forEach(neighbor => {
-			if (t in this.data[d][neighbor][this.radioOption]) {
-				let count = this.data[d][neighbor][this.radioOption][this.t][0]
+			if (this.t in this.data[d][neighbor][this.radioOption]) {
+				let count = this.data[d][neighbor][this.radioOption][this.t][this.idx0or1]
 				this.svg.selectAll('#' + neighbor)
-					.style('fill', this.colorScale(count).hex())
+					.style('fill', this.colorScale(count).hex());
 			}
 		})
 	}
@@ -491,20 +530,6 @@ class MovementsMap {
 		dateString += date.getDate() + "/";
 		dateString += date.getMonth() + 1
 		return dateString
-	}
-
-	pushPolygonToFront(d) {
-		this.svg.selectAll("polygon").sort(a => {
-	      	if (a != d) return -1
-	      	else return 1;
-	  	});
-	}
-
-	pushMultiPolygonToFront(d) {
-		this.svg.selectAll("polygon").sort(a => {
-	      	if (!d.includes(a)) return -1
-	      	else return 1;
-	  	});
 	}
 
 	exists(d) {

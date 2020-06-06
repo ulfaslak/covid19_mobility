@@ -83,25 +83,25 @@ def run():
     # Danish population as of Thursday, April 16, 2020 (Worldometer)
     N_POP = 5_787_997
 
-    def update_data_out(kommune, idx, data_):
+    def update_data_out(kommune, idx, data_, data_pop):
         # Get population count inside kommune and remove 0 length trips
-        n_pop_baseline = data_.loc[data_.target_kommune == kommune].n_baseline.sum()
-        n_pop_crisis = data_.loc[data_.target_kommune == kommune].n_crisis.sum()
+        # n_pop_baseline = data_.loc[data_.target_kommune == kommune].n_baseline.sum()
+        # n_pop_crisis = data_.loc[data_.target_kommune == kommune].n_crisis.sum()
         data = data_.loc[data_.length_km > 0]
 
         # Compute flow into kommune. This counts how many from the kommune are going
         # to work in other kommunes
         data_kommune_is_target = data.loc[data.target_kommune == kommune]
-        neighbors = sorted(set(data_kommune_is_target.source_kommune))
+        neighbors = set(data_kommune_is_target.source_kommune)
         if len(neighbors) > 0:
-            neighbors += [kommune]
+            neighbors = sorted(neighbors | {kommune})
 
         for neighbor in neighbors:  # putting `kommune` in here as a nighbor to `kommune` so if it has 0 within flow then that will show in the output data
 
             # Compute how many people that live in `kommune` and work in `neighbor`
             flow_from_neighbor = data_kommune_is_target.loc[data_kommune_is_target.source_kommune == neighbor].sum()
-            data_out[kommune][neighbor]['baseline'][idx][0] = flow_from_neighbor.n_baseline / n_pop_baseline
-            data_out[kommune][neighbor]['crisis'][idx][0] = flow_from_neighbor.n_crisis / n_pop_crisis
+            data_out[kommune][neighbor]['baseline'][idx][0] = flow_from_neighbor.n_baseline / data_pop.loc[kommune, 'n_baseline']
+            data_out[kommune][neighbor]['crisis'][idx][0] = flow_from_neighbor.n_crisis / data_pop.loc[kommune, 'n_crisis']
             data_out[kommune][neighbor]['percent_change'][idx][0] = percent_change(
                 data_out[kommune][neighbor]['crisis'][idx][0], data_out[kommune][neighbor]['baseline'][idx][0]
             )
@@ -114,16 +114,16 @@ def run():
         # Compute flow out of kommune. This counts how many people that live outside 
         # of the kommune and go to work the kommune
         data_kommune_is_source = data.loc[data.source_kommune == kommune]
-        neighbors = sorted(set(data_kommune_is_source.target_kommune))
+        neighbors = set(data_kommune_is_source.target_kommune)
         if len(neighbors) > 0:
-            neighbors += [kommune]
+            neighbors = sorted(neighbors | {kommune})
             
         for neighbor in neighbors:
 
             # Compute how many people that live elsewhere and work in `kommune`
             flow_to_neighbor = data_kommune_is_source.loc[data_kommune_is_source.target_kommune == neighbor].sum()
-            data_out[kommune][neighbor]['baseline'][idx][1] = flow_to_neighbor.n_baseline / n_pop_baseline
-            data_out[kommune][neighbor]['crisis'][idx][1] = flow_to_neighbor.n_crisis / n_pop_crisis
+            data_out[kommune][neighbor]['baseline'][idx][1] = flow_to_neighbor.n_baseline / data_pop.loc[neighbor, 'n_baseline']
+            data_out[kommune][neighbor]['crisis'][idx][1] = flow_to_neighbor.n_crisis / data_pop.loc[neighbor, 'n_crisis']
             data_out[kommune][neighbor]['percent_change'][idx][1] = percent_change(
                 data_out[kommune][neighbor]['crisis'][idx][1], data_out[kommune][neighbor]['baseline'][idx][1]
             )
@@ -228,9 +228,11 @@ def run():
         # Filter list of names to remove inconsistencies
         kommunes = [k if k not in to_actual else to_actual[k] for k in kommunes]
         
+        data_pop = data[['target_kommune', 'n_crisis', 'n_baseline']].groupby('target_kommune').sum()
+
         # Update data_out
         for kommune in kommunes:
-            update_data_out(kommune, idx, data)
+            update_data_out(kommune, idx, data, data_pop)
 
     # Get max values
     data_out['_meta']['inMax'] = 0
@@ -262,13 +264,15 @@ def run():
     # Add to _meta
     data_out['_meta']['radioOptions'] = ['percent_change', 'crisis', 'baseline']
     data_out['_meta']['defaults']['radioOption'] = 'percent_change'
-    data_out['_meta']['defaults']['t'] = 0
+    data_out['_meta']['defaults']['t'] = idx
     data_out['_meta']['defaults']['latMin'] = 54.53   # DEBUG: These should be infered from data
     data_out['_meta']['defaults']['latMax'] = 57.82   # DEBUG: These should be infered from data
     data_out['_meta']['defaults']['lonMin'] = 7.9     # DEBUG: These should be infered from data
     data_out['_meta']['defaults']['lonMax'] = 12.81   # DEBUG: These should be infered from data
+    data_out['_meta']['defaults']['idx0or1'] = 0
     data_out['_meta']['variables']['legend_label_count'] = "Going to work"
     data_out['_meta']['variables']['legend_label_relative'] = "Percent change"
+
 
     with open(f"{PATH_OUT}Denmark_movements_between_admin_regions.json", 'w') as fp:
         json.dump(data_out, fp)

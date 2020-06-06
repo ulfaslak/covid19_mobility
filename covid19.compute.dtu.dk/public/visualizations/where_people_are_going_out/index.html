@@ -8,7 +8,7 @@
 <meta property="og:description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/" />
-<meta property="article:modified_time" content="2020-05-28T11:53:44+02:00" />
+<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
 <title>Where People Are Going Out | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -211,6 +211,14 @@ https://github.com/alex-shpak/hugo-book
 	.histEventDot {
 		fill: grey;
 	}
+	.map-polygon-movements {
+		stroke: white;
+		stroke-width: 0.3;
+	}
+	.map-polygon-movements-circumference {
+		stroke: black;
+		stroke-width: 1;
+	}
 	.dot-baseline {
 		fill: white;
 		stroke: #2c3e50;
@@ -253,6 +261,9 @@ https://github.com/alex-shpak/hugo-book
 	.flex {
 		display: flex;
 	}
+	.flex-col {
+		flex-direction: column;
+	}
 	.radio-rect {
 		cursor: pointer;
 		fill: #636e72;
@@ -290,6 +301,9 @@ https://github.com/alex-shpak/hugo-book
 	    <pattern id="lines" height="10" width="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
 	      <line x1="0" y1="4" x2="10" y2="4" stroke-width="2" stroke="black"/>
 	    </pattern>
+	    <pattern id="thinlines" height="5" width="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="2" x2="10" y2="2" stroke-width="0.5" stroke="black"/>
+	    </pattern>
 	  </defs>
 	</svg>
 </div>
@@ -307,6 +321,7 @@ https://github.com/alex-shpak/hugo-book
 
 <script src="/scripts/eventDates.js"></script>
 <script src="/scripts/timeSeriesFigure.js"></script>
+<script src="/scripts/choroplethMap.js"></script>
 
 <script>
 
