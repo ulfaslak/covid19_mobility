@@ -17,9 +17,11 @@
 <!-- Code -->
 <script>
 
+	let spinnergini = new Spinner(spinnerOpts).spin(document.getElementById('vis-gini'));
+
 	let instance_gini;
-	
 	d3.json('/data/'+sessionStorage.country+'_gini_over_time.json').then(function(data) {
+		spinnergini.stop();
 		instance_gini = new DeviationPlot(data, 'vis-gini', 'giniFig');
 		instance_gini.setup();
 		instance_gini.drawLayout();

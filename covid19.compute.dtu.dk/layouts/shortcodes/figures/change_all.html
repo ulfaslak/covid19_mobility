@@ -17,9 +17,11 @@
 <!-- Code -->
 <script>
 
-	let instance_changeAll;
+	let spinnerchangeAll = new Spinner(spinnerOpts).spin(document.getElementById('vis-changeAll'));
 
+	let instance_changeAll;
 	d3.json('/data/'+sessionStorage.country+'_change.json').then(function(data) {
+		spinnerchangeAll.stop();
 		instance_changeAll = new MultiLinePlot(data, 'vis-changeAll', 'changeAllFig');
 		instance_changeAll.setup();
 		instance_changeAll.drawLayout();

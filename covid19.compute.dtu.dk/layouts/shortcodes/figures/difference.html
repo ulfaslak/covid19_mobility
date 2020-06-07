@@ -17,9 +17,11 @@
 <!-- Code -->
 <script>
 
-	let instance_difference;
+	let spinnerdifference = new Spinner(spinnerOpts).spin(document.getElementById('vis-difference'));
 
+	let instance_difference;
 	d3.json('/data/'+sessionStorage.country+'_difference.json').then(function(data) {
+		spinnerdifference.stop();
 		instance_difference = new SingleLinePlot(data, 'vis-difference', 'differenceFig');
 		instance_difference.setup();
 		instance_difference.drawLayout();
