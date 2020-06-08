@@ -5,12 +5,11 @@
 
 <!-- Div that SVG objects are appended to -->
 <div class="flex">
+	<div id="slider-movementsFig"></div>
 	<div class="radio-timeframe" id='radio-movementsFig'></div>
-	<div class="select-place" id='select-movementsFig'></div>
 </div>
 <div class="flex flex-col">
 	<div class='vis' id='vis-movementsFig'></div>
-	<div id="slider-movementsFig"></div>
 </div>
 
 
@@ -20,10 +19,12 @@
 <!-- Code -->
 <script>
 
-	let instance_movements;
+	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsFig'));
 
-	d3.json("/data/Denmark_geojson.json").then(function(geoData) {
-		d3.json('/data/Denmark_movements_between_admin_regions.json').then(function(data) {
+	let instance_movements;
+	d3.json("/data/Sweden_geojson.json").then(function(geoData) {
+		d3.json('/data/Sweden_movements_between_admin_regions.json').then(function(data) {
+			spinnermovements.stop();
 			console.log(data)
 			console.log(geoData)
 			instance_movements = new MovementsMap(data, geoData, 'movementsFig');

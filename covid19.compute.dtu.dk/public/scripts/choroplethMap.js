@@ -5,9 +5,9 @@ class MovementsMap {
 		this.data = data;
 		this.geoData = geoData;
 		this.uniqueId = uniqueId;
-		this.betweenMax = data._meta.variables.betweenMax;
-		this.inMax = data._meta.variables.inMax;
-		this.outMax = data._meta.variables.outMax;
+		this.betweenMax = data._meta.betweenMax;
+		this.inMax = data._meta.inMax;
+		this.outMax = data._meta.outMax;
 		this.datetime = data._meta.datetime;
 		this.t = data._meta.defaults.t;
 		this.radioOption = data._meta.defaults.radioOption;
@@ -370,10 +370,10 @@ class MovementsMap {
 		let percent_change = this.data[d]["_" + d]['percent_change'][this.t][this.idx0or1];
 
 		let tooltiptext = "Share of <b>" + d + "</b> population<br>going to work anywhere<br><br>";
-		tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
-		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
+		tooltiptext += "On date: <b>" + round(crisis * 100, 1e1) + "%</b><br>";
+		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e1) + "%</b><br>";
 		if (baseline > 0)
-			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";
+			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e1) + "%</b>";
 
 		this.tooltip
 			.html(tooltiptext)
@@ -400,10 +400,10 @@ class MovementsMap {
 			tooltiptext = "Share of <b>" + this.selected + "</b> population<br>going to work in <b>" + this.hovering + "</b><br><br>";
 		else if (this.idx0or1 == 1) 
 			tooltiptext = "Share of <b>" + this.hovering + "</b> population<br>going to work in <b>" + this.selected + "</b><br><br>";
-		tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
-		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
+		tooltiptext += "On date: <b>" + round(crisis * 100, 1e1) + "%</b><br>";
+		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e1) + "%</b><br>";
 		if (baseline > 0)
-			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";
+			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e1) + "%</b>";
 
 		if (d3.event != null) {
 			this.tooltip

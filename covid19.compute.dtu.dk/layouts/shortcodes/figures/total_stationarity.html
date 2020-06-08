@@ -18,9 +18,11 @@
 <!-- Code -->
 <script>
 
-	let instance_stationarity;
+	let spinnerstationarity = new Spinner(spinnerOpts).spin(document.getElementById('vis-stationarity'));
 
+	let instance_stationarity;
 	d3.json('/data/'+sessionStorage.country+'_total_stationarity.json').then(function(data) {
+		spinnerstationarity.stop();
 		instance_stationarity = new DeviationPlot(data, 'vis-stationarity', 'stationarityFig');
 		instance_stationarity.setup();
 		instance_stationarity.drawLayout();

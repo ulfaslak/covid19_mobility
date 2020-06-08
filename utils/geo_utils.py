@@ -17,6 +17,15 @@ def poly_convert(polygon):
         all_coords.append(*coords)
     return all_coords
 
+def inconsistency_map(name):
+    incmap = {
+        'Århus': 'Aarhus',
+        'Høje Taastrup': 'Høje-Taastrup'
+    }
+    if name in incmap:
+        return incmap[name]
+    return name
+
 # Example that creates shape_file and saves it in current directory:  create_shape_file('Denmark',adm = 2,save_dir='')
 def create_shape_file(country, adm, save_dir=False, file_return=True):
     iso3 = pycountry.countries.get(name=country).alpha_3
@@ -26,12 +35,15 @@ def create_shape_file(country, adm, save_dir=False, file_return=True):
     with fiona.io.ZipMemoryFile(data_bytes) as zip_memory_file:
         with zip_memory_file.open(f"gadm36_{iso3}_{adm}.shp") as collection:
             geodf = gpd.GeoDataFrame.from_features(collection, crs=collection.crs)
-            geodf.geometry = geodf.geometry.simplify(0.002)
+            geodf.geometry = geodf.geometry.simplify(0.01)
 
-    shape_file = [{'kommune': loc['NAME_2'].replace(" ", "-"), 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
+    shape_file = [{'kommune': inconsistency_map(loc['NAME_2']), 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
     if save_dir != False:
         full_path = save_dir + country.capitalize() + '_geojson.json'
         with open(full_path, 'w') as f:
             json.dump(shape_file, f)
     if file_return:
         return shape_file
+
+if __name__ == '__main__':
+    create_shape_file('Denmark', adm=2, save_dir='/Users/ulfaslak/Documents/git/covid19_mobility/covid19.compute.dtu.dk/static/data/')

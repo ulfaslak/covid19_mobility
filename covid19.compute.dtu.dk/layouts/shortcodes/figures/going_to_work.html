@@ -18,9 +18,11 @@
 <!-- Code -->
 <script>
 
-	let instance_working;
+	let spinnerworking = new Spinner(spinnerOpts).spin(document.getElementById('vis-working'));
 
+	let instance_working;
 	d3.json('/data/'+sessionStorage.country+'_night_day_difference.json').then(function(data) {
+		spinnerworking.stop();
 		instance_working = new DeviationPlot(data, 'vis-working', 'workingFig');
 		instance_working.setup();
 		instance_working.drawLayout();

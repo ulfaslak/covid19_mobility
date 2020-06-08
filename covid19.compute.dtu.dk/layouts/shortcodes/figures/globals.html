@@ -103,13 +103,6 @@
 		-ms-user-select: none; /* IE10+/Edge */
 		user-select: none; /* Standard */
 	}
-	/*.radio-group {
-		position: absolute;
-		border: solid 1px #999999;
-		display: inline-block;
-		border-radius: 5px;
-		overflow: hidden;
-	}*/
 	.select-place {
 		position: absolute;
 		right: 0px;
@@ -144,6 +137,15 @@
 		font-weight: 600;
 	}
 
+@keyframes spinner-line-fade-quick {
+  0%, 39%, 100% {
+    opacity: 0.25; /* minimum opacity */
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
 </style>
 
 
@@ -170,9 +172,10 @@
 <!-- ---------- -->
 
 <!-- Remote packages -->
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="https://unpkg.com/d3-simple-slider"></script>
-<script src="https://unpkg.com/chroma-js@2.0.3/chroma.min.js"></script>
+<script src="/dist/d3.v5.min.js"></script>
+<script src="/dist/d3-simple-slider.min.js"></script>
+<script src="/dist/chroma.min.js"></script>
+<script src="/dist/spin.min.js"></script>
 
 <!-- Local scripts -->
 <script src="/scripts/eventDates.js"></script>
@@ -181,8 +184,22 @@
 
 <script>
 
-	// Utility functions //
-	// ----------------- //
+	// Utilities //
+	// --------- //
+
+	// Spinner options
+	let spinnerOpts = {
+		lines: 8, // The number of lines to draw
+		length: 0, // The length of each line
+		width: 8, // The line thickness
+		radius: 18, // The radius of the inner circle
+		corners: 10, // Corner roundness (0..1)
+		color: '#313131', // CSS color or array of colors
+		fadeColor: 'transparent', // CSS color or array of colors
+		speed: 1, // Rounds per second
+		rotate: 0, // The rotation offset
+		animation: 'spinner-line-fade-quick', // The CSS animation name for the lines
+	};
 
 	// Recompute baseline so each week is exactly the same
 	function adjustBaseline(datum) {

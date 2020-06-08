@@ -1,14 +1,16 @@
 import matplotlib.pylab as plt
 import pandas as pd
 import numpy as np
-import os
+import os, sys
 import json
 import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
+from functools import partial
+from countryinfo import CountryInfo
 
-def run():
+def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
 
     class defaultlist(list):
         def __init__(self, fx):
@@ -23,9 +25,9 @@ def run():
             self._fill(index)
             return list.__getitem__(self, index)
 
-    def load_prepare_tile(path):
+    def load_prepare_tile(path, iso):
         data = pd.read_csv(path)
-        data = data.loc[data.country == 'DK']
+        data = data.loc[data.country == iso]
         data = data.drop([
             'country', 'date_time','start_polygon_id', 'end_polygon_id', 'n_difference',
             'tile_size', 'level', 'is_statistically_significant', 'percent_change',
@@ -36,6 +38,7 @@ def run():
             geom[12:-1].split(", ")
             for geom in data.geometry
         ])
+
         slon, slat = zip(*[list(map(float, sll.split())) for sll in slonlat])
         elon, elat = zip(*[list(map(float, ell.split())) for ell in elonlat])
 
@@ -46,10 +49,39 @@ def run():
 
         return data
 
+    def defaultify(d, depth=0):
+        if isinstance(d, dict):
+            if depth == 0:
+                return defaultdict(
+                    lambda: defaultdict(
+                        lambda: defaultdict(
+                            lambda: defaultlist(lambda: [0, 0]))
+                    ),
+                    {k: defaultify(v, depth + 1) for k, v in d.items()}
+                )
+            if depth == 1:
+                return defaultdict(
+                    lambda: defaultdict(
+                        lambda: defaultlist(lambda: [0, 0])
+                    ), 
+                    {k: defaultify(v, depth + 1) for k, v in d.items()}
+                )
+            if depth == 2:
+                return defaultdict(
+                    lambda: defaultlist(lambda: [0, 0]),
+                    {k: defaultify(v) for k, v in d.items()}
+                )
+        elif isinstance(d, list):
+            tmp = defaultlist(lambda: [0, 0])
+            tmp.extend(d)
+            return tmp
+        else:
+            return d
 
-    def load_prepare_admin(path):
+
+    def load_prepare_admin(path, iso):
         data = pd.read_csv(path)
-        data = data.loc[data.country == 'DK']
+        data = data.loc[data.country == iso]
         data = data.drop([
             'country', 'date_time','start_polygon_id', 'end_polygon_id', 'n_difference',
             'tile_size', 'level', 'is_statistically_significant', 'percent_change',
@@ -72,36 +104,31 @@ def run():
     to_actual = {'Nordfyn': 'Nordfyns'}
 
     # Global paths
-    PATH_IN_TILE = 'Facebook/Denmark/movement_tile/'
-    PATH_IN_ADMIN = 'Facebook/Denmark/movement_admin/'
+    PATH_IN_TILE = f'Facebook/{country}/movement_tile/'
+    PATH_IN_ADMIN = f'Facebook/{country}/movement_admin/'
     PATH_OUT = 'covid19.compute.dtu.dk/static/data/'
 
-    # Boolean to check if `kommune_region_map` was updated
-    updated_region = False
-    updated_kommune = False
 
     # Danish population as of Thursday, April 16, 2020 (Worldometer)
-    N_POP = 5_787_997
+    N_POP = CountryInfo(country).population()
 
-    def update_data_out(kommune, idx, data_):
-        # Get population count inside kommune and remove 0 length trips
-        n_pop_baseline = data_.loc[data_.target_kommune == kommune].n_baseline.sum()
-        n_pop_crisis = data_.loc[data_.target_kommune == kommune].n_crisis.sum()
+    def update_data_out(kommune, idx, data_, data_pop):
+        # Remove 0 length trips
         data = data_.loc[data_.length_km > 0]
 
         # Compute flow into kommune. This counts how many from the kommune are going
         # to work in other kommunes
         data_kommune_is_target = data.loc[data.target_kommune == kommune]
-        neighbors = sorted(set(data_kommune_is_target.source_kommune))
+        neighbors = set(data_kommune_is_target.source_kommune)
         if len(neighbors) > 0:
-            neighbors += [kommune]
+            neighbors = sorted(neighbors | {kommune})
 
         for neighbor in neighbors:  # putting `kommune` in here as a nighbor to `kommune` so if it has 0 within flow then that will show in the output data
 
             # Compute how many people that live in `kommune` and work in `neighbor`
             flow_from_neighbor = data_kommune_is_target.loc[data_kommune_is_target.source_kommune == neighbor].sum()
-            data_out[kommune][neighbor]['baseline'][idx][0] = flow_from_neighbor.n_baseline / n_pop_baseline
-            data_out[kommune][neighbor]['crisis'][idx][0] = flow_from_neighbor.n_crisis / n_pop_crisis
+            data_out[kommune][neighbor]['baseline'][idx][0] = flow_from_neighbor.n_baseline / data_pop.loc[kommune, 'n_baseline']
+            data_out[kommune][neighbor]['crisis'][idx][0] = flow_from_neighbor.n_crisis / data_pop.loc[kommune, 'n_crisis']
             data_out[kommune][neighbor]['percent_change'][idx][0] = percent_change(
                 data_out[kommune][neighbor]['crisis'][idx][0], data_out[kommune][neighbor]['baseline'][idx][0]
             )
@@ -114,16 +141,18 @@ def run():
         # Compute flow out of kommune. This counts how many people that live outside 
         # of the kommune and go to work the kommune
         data_kommune_is_source = data.loc[data.source_kommune == kommune]
-        neighbors = sorted(set(data_kommune_is_source.target_kommune))
+        neighbors = set(data_kommune_is_source.target_kommune)
         if len(neighbors) > 0:
-            neighbors += [kommune]
+            neighbors = sorted(neighbors | {kommune})
+            if not kommune in data_pop.index:
+                neighbors = []
             
         for neighbor in neighbors:
 
             # Compute how many people that live elsewhere and work in `kommune`
             flow_to_neighbor = data_kommune_is_source.loc[data_kommune_is_source.target_kommune == neighbor].sum()
-            data_out[kommune][neighbor]['baseline'][idx][1] = flow_to_neighbor.n_baseline / n_pop_baseline
-            data_out[kommune][neighbor]['crisis'][idx][1] = flow_to_neighbor.n_crisis / n_pop_crisis
+            data_out[kommune][neighbor]['baseline'][idx][1] = flow_to_neighbor.n_baseline / data_pop.loc[neighbor, 'n_baseline']
+            data_out[kommune][neighbor]['crisis'][idx][1] = flow_to_neighbor.n_crisis / data_pop.loc[neighbor, 'n_crisis']
             data_out[kommune][neighbor]['percent_change'][idx][1] = percent_change(
                 data_out[kommune][neighbor]['crisis'][idx][1], data_out[kommune][neighbor]['baseline'][idx][1]
             )
@@ -146,57 +175,55 @@ def run():
                 data_out[kommune]["_" + kommune]['baseline'][idx][1]
             )
 
+
     # Data out mobile
-    data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: [0, 0]))))
-    data_out['_meta']['datetime'] = defaultlist(lambda: 'undefined')
+    path_boo = os.path.exists(f"{PATH_OUT}{country}_movements_between_admin_regions.json")
+    if path_boo:
+        with open(f"{PATH_OUT}{country}_movements_between_admin_regions.json", 'r') as fp:
+            data_out = json.load(fp)
+            data_out = defaultify(data_out, 0)
+        first_region = list(set(data_out.keys()) - {'_meta'})[0]
+        start = len(data_out[first_region]['_'+first_region]['baseline'])
+    else:
+        data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: [0, 0]))))
+        start = 0
     
-    # I could come up with a more memory efficient data structure, because here,
-    # each flow is written twice. A cleverer way, though more complicated, is to
-    # sort each pair of destinations by initial letter, then sort names when
-    # querying. But this might cost some computation in the browser...
+    #data_out['_meta']['datetime'] = defaultlist(lambda: 'undefined')
+
+    data_out['_meta']['defaults'] = {}
+    data_out['_meta']['variables'] = {}
+    data_out['_meta']['datetime'] = []
 
     # Filenames
     fn_days_tile = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_TILE) if fn.endswith('.csv')]))
     fn_days_admin = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_ADMIN) if fn.endswith('.csv')]))
 
     # Loop
-    for idx, fn_day in tqdm(enumerate(fn_days_tile), total=len(fn_days_tile)):
+    for idx, fn_day in tqdm(enumerate(fn_days_tile[start:], start), total=len(fn_days_tile[start:])):
         
         # Get weekday
         dt_obj = dt.datetime(year=int(fn_day[-10:-6]), month=int(fn_day[-5:-3]), day=int(fn_day[-2:]))
         weekday = dt_obj.weekday()
-
         window = "1600"
+
 
         # Load data
         filename = fn_day + "_" + window + ".csv"
-        data_tile = load_prepare_tile(PATH_IN_TILE + filename)
+        data_tile = load_prepare_tile(PATH_IN_TILE + filename, iso)
         filename = fn_days_admin[idx] + "_" + window + ".csv"
-        data_admin = load_prepare_admin(PATH_IN_ADMIN + filename)
+        data_admin = load_prepare_admin(PATH_IN_ADMIN + filename, iso)
 
         # Relabel
-        data_tile['source_kommune'] = data_tile['start_polygon_name']
-        data_tile['target_kommune'] = data_tile['end_polygon_name']
-        data_admin['source_kommune'] = data_admin['start_polygon_name']
-        data_admin['target_kommune'] = data_admin['end_polygon_name']
+        data_tile['source_kommune'] = data_tile['start_'+adm_kommune]
+        data_tile['target_kommune'] = data_tile['end_'+adm_kommune]
+        data_admin['source_kommune'] = data_admin['start_'+adm_kommune]
+        data_admin['target_kommune'] = data_admin['end_'+adm_kommune]
         
         # Keep only within-municipality flow in tile data
         data_tile = data_tile.loc[data_tile['source_kommune'] == data_tile['target_kommune']]
 
         # Keep only between-municipality flow in admin data
         data_admin = data_admin.loc[data_admin['source_kommune'] != data_admin['target_kommune']]
-
-        # Index
-        data_tile.index = [
-            f"{source} → {target}" if source != target else f"{source}"
-            for source, target in
-            zip(data_tile['source_tile'], data_tile['target_tile'])
-        ]
-        data_admin.index = [
-            f"{source} → {target}"
-            for source, target in
-            zip(data_admin['source_kommune'], data_admin['target_kommune'])
-        ]
 
         # Merge data_tile and data_admin. Since we have removed within flow in admin and between
         # in tile, population counts should be preserved and no individual should be represnted
@@ -207,19 +234,6 @@ def run():
         data['n_crisis'] *= N_POP / data.n_crisis.sum()
         data['n_baseline'] *= N_POP / data.n_baseline.sum()
         
-        # # Get max values
-        # inMax = data.groupby('end_polygon_name').sum()[['n_baseline', 'n_crisis']].max().max()
-        # outMax = data.loc[data.source_kommune != data.target_kommune].groupby('source_kommune').sum()[['n_baseline', 'n_crisis']].max().max()
-        # betweenMax = data.loc[data.source_kommune != data.target_kommune][['n_baseline', 'n_crisis']].max().max()
-        # data_out['_meta']['inMax'] = max(inMax, data_out['_meta']['inMax'])
-        # data_out['_meta']['outMax'] = max(outMax, data_out['_meta']['outMax'])
-        # data_out['_meta']['betweenMax'] = max(betweenMax, data_out['_meta']['betweenMax'])
-
-        # Time #
-        # ---- #
-        d = fn_day[-10:]
-        tstring = str(dt.datetime(int(d[:4]), int(d[5:7]), int(d[8:10])))
-        data_out['_meta']['datetime'][idx] = tstring
         
         # Get list of municipalities
         data_nn = data.loc[(data.source_kommune.notnull()) & (data.target_kommune.notnull())]
@@ -228,14 +242,22 @@ def run():
         # Filter list of names to remove inconsistencies
         kommunes = [k if k not in to_actual else to_actual[k] for k in kommunes]
         
+        data_pop = data[['target_kommune', 'n_crisis', 'n_baseline']].groupby('target_kommune').sum()
+
         # Update data_out
         for kommune in kommunes:
-            update_data_out(kommune, idx, data)
+            update_data_out(kommune, idx, data, data_pop)
+
+    # Time
+    data_out['_meta']['datetime'] = [
+        str(dt.datetime(int(d[-10:-6]), int(d[-5:-3]), int(d[-2:])))
+        for d in fn_days_tile
+    ]
 
     # Get max values
-    data_out['_meta']['inMax'] = 0
-    data_out['_meta']['outMax'] = 0
-    data_out['_meta']['betweenMax'] = 0
+    data_out['_meta']['variables']['inMax'] = 0
+    data_out['_meta']['variables']['outMax'] = 0
+    data_out['_meta']['variables']['betweenMax'] = 0
     for source in data_out:
         if source == '_meta':
             continue
@@ -243,39 +265,46 @@ def run():
             baseline_in, baseline_out = zip(*data['baseline'])
             crisis_in, crisis_out = zip(*data['crisis'])
             if "_" + source == target:
-                data_out['_meta']['inMax'] = max(
-                    data_out['_meta']['inMax'],
+                data_out['_meta']['variables']['inMax'] = max(
+                    data_out['_meta']['variables']['inMax'],
                     max(crisis_in), max(baseline_in)
                 )
-                data_out['_meta']['outMax'] = max(
-                    data_out['_meta']['outMax'],
+                data_out['_meta']['variables']['outMax'] = max(
+                    data_out['_meta']['variables']['outMax'],
                     max(crisis_out), max(baseline_out)
                 )
             else:
-                data_out['_meta']['betweenMax'] = max(
-                    data_out['_meta']['betweenMax'],
+                data_out['_meta']['variables']['betweenMax'] = max(
+                    data_out['_meta']['variables']['betweenMax'],
                     max(baseline_in), max(baseline_out),
                     max(crisis_in), max(crisis_out)
                 )
 
-
     # Add to _meta
     data_out['_meta']['radioOptions'] = ['percent_change', 'crisis', 'baseline']
     data_out['_meta']['defaults']['radioOption'] = 'percent_change'
-    data_out['_meta']['defaults']['t'] = 0
-    data_out['_meta']['defaults']['latMin'] = 54.53   # DEBUG: These should be infered from data
-    data_out['_meta']['defaults']['latMax'] = 57.82   # DEBUG: These should be infered from data
-    data_out['_meta']['defaults']['lonMin'] = 7.9     # DEBUG: These should be infered from data
-    data_out['_meta']['defaults']['lonMax'] = 12.81   # DEBUG: These should be infered from data
+    data_out['_meta']['defaults']['t'] = len(fn_days_tile)-1
+    data_out['_meta']['defaults']['idx0or1'] = 0
     data_out['_meta']['variables']['legend_label_count'] = "Going to work"
     data_out['_meta']['variables']['legend_label_relative'] = "Percent change"
 
-    with open(f"{PATH_OUT}Denmark_movements_between_admin_regions.json", 'w') as fp:
+    with open('utils/data/country-bb.json') as fp:
+        cbb = json.load(fp)[iso][1]
+
+    data_out['_meta']['defaults']['latMin'] = cbb[1]
+    data_out['_meta']['defaults']['latMax'] = cbb[3]
+    data_out['_meta']['defaults']['lonMin'] = cbb[0]
+    data_out['_meta']['defaults']['lonMax'] = cbb[2]
+
+
+    with open(f"{PATH_OUT}{country}_movements_between_admin_regions.json", 'w') as fp:
         json.dump(data_out, fp)
 
 if __name__ == "__main__":
     os.chdir("../")
-    run()
+    _, country, iso, adm_region, adm_kommune = sys.argv
+    run(country, iso, adm_region, adm_kommune)
+    # e.g. python movements.py Denmark DK adm1 adm2
 
 
 
