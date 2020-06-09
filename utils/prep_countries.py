@@ -15,17 +15,16 @@ def run(path):
     for country_name in country_list:
 
         # Make into a function
-        list_dat = utils.load_kdtree(country_name)
 
         print(f'Preprocessing {country_name}')
         data_path = f'{path}{country_name}/population_tile/'
-        utils.Update_CSV(data_path, country_name, list_dat, dat_type="popu")
+        utils.Update_CSV(data_path, country_name, dat_type="popu")
 
         data_path = f'{path}{country_name}/movement_tile/'
-        utils.Update_CSV(data_path, country_name, list_dat, dat_type='move')
+        utils.Update_CSV(data_path, country_name, dat_type='move')
 
         data_path = f'{path}{country_name}/movement_admin/'
-        utils.Update_CSV(data_path, country_name, list_dat, dat_type='move')
+        utils.Update_CSV(data_path, country_name, dat_type='move')
 
 
 if __name__ == "__main__":
