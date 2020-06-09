@@ -17,27 +17,31 @@ def poly_convert(polygon):
         all_coords.append(*coords)
     return all_coords
 
-def inconsistency_map(name):
-    incmap = {
-        'Århus': 'Aarhus',
-        'Høje Taastrup': 'Høje-Taastrup'
-    }
-    if name in incmap:
-        return incmap[name]
-    return name
+# def inconsistency_map(name):
+#     incmap = {
+#         'Århus': 'Aarhus',
+#         'Høje Taastrup': 'Høje-Taastrup'
+#     }
+#     if name in incmap:
+#         return incmap[name]
+#     return name
 
 # Example that creates shape_file and saves it in current directory:  create_shape_file('Denmark',adm = 2,save_dir='')
-def create_shape_file(country, adm, save_dir=False, file_return=True):
+def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo_pd = False):
     iso3 = pycountry.countries.get(name=country).alpha_3
     response = requests.get(f"https://biogeo.ucdavis.edu/data/gadm3.6/shp/gadm36_{iso3}_shp.zip")
     data_bytes = response.content
 
     with fiona.io.ZipMemoryFile(data_bytes) as zip_memory_file:
         with zip_memory_file.open(f"gadm36_{iso3}_{adm}.shp") as collection:
-            geodf = gpd.GeoDataFrame.from_features(collection, crs=collection.crs)
+            geodf = gpd.GeoDataFrame.from_features(collection, crs="epsg:4326")
+            if return_geo_pd:
+                return geodf
             geodf.geometry = geodf.geometry.simplify(0.01)
 
-    shape_file = [{'kommune': inconsistency_map(loc['NAME_2']), 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
+
+
+    shape_file = [{'kommune': loc['NAME_2'], 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
     if save_dir != False:
         full_path = save_dir + country.capitalize() + '_geojson.json'
         with open(full_path, 'w') as f:

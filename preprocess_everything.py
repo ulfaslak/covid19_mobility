@@ -40,7 +40,7 @@ def run():
     for country in country_list:
         print(f'Processing {country}')
         if country == "Germany":
-            adm_kommune = 'adm3'
+            adm_kommune = 'adm2'
             adm_region = 'adm1'
         else:
             adm_kommune = 'adm2'
