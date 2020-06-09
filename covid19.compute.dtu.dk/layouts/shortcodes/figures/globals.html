@@ -243,32 +243,34 @@
     // Session variable
     if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
     function createWorld() {
-        var countries = ['Denmark','Sweden','Germany','Brazil'].sort();
-        body = document.getElementsByClassName('container flex')[0];
-        toc = document.createElement('aside');
-        toc.className = "book-toc";
-        nav = document.createElement('nav');
-        nav.id = "countries";
-        ul = document.createElement('ul');
-        countries.forEach(function (item,index){
-            li = document.createElement('li');
-            a = document.createElement('a');
-            a.text = item;
-            a.style.cursor = "pointer";
-            if (item != sessionStorage.country) {
-                a.onclick = function() {
-                    sessionStorage.country=item;
-                    window.location.reload();
-                };
-            } else {
-                a.style.color = "red";
-            }   
-            li.appendChild(a);
-            ul.appendChild(li);
-        });
-        nav.appendChild(ul);
-        toc.appendChild(nav);
-        body.appendChild(toc);
-    }
+        var countries = []
+        d3.json("/data/countries.json").then(function(data){
+            countries = data.sort();
+            body = document.getElementsByClassName('container flex')[0];
+            toc = document.createElement('aside');
+            toc.className = "book-toc";
+            nav = document.createElement('nav');
+            nav.id = "countries";
+            ul = document.createElement('ul');
+            countries.forEach(function (item,index){
+                li = document.createElement('li');
+                a = document.createElement('a');
+                a.text = item;
+                a.style.cursor = "pointer";
+                if (item != sessionStorage.country) {
+                    a.onclick = function() {
+                        sessionStorage.country=item;
+                        window.location.reload();
+                    };
+                } else {
+                    a.style.color = "red";
+                }   
+                li.appendChild(a);
+                ul.appendChild(li);
+            });
+            nav.appendChild(ul);
+            toc.appendChild(nav);
+            body.appendChild(toc);
+        })}
     createWorld();
 </script>
