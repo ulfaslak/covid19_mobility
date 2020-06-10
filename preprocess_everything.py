@@ -50,6 +50,7 @@ def run():
         adm_kommune = 'adm2'
         adm_region = 'adm1'
         iso = pycountry.countries.get(name=country).alpha_2
+        movements.run(country,iso,adm_region,adm_kommune)
         if country == 'Denmark':
             pscripts = [
                 absolute_deviation,

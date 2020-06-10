@@ -178,8 +178,7 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
         with open(f"{PATH_OUT}{country}_movements_between_admin_regions.json", 'r') as fp:
             data_out = json.load(fp)
             data_out = defaultify(data_out, 0)
-        first_region = list(set(data_out.keys()) - {'_meta'})[0]
-        start = len(data_out[first_region]['_'+first_region]['baseline'])
+        start = len(data_out['_meta']['datetime'])
     else:
         data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: [0, 0]))))
         start = 0
