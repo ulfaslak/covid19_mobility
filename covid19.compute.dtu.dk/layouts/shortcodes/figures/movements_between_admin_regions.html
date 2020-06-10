@@ -22,8 +22,8 @@
 	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsFig'));
 
 	let instance_movements;
-	d3.json("/data/Sweden_geojson.json").then(function(geoData) {
-		d3.json('/data/Sweden_movements_between_admin_regions.json').then(function(data) {
+	d3.json("/data/Denmark_geojson.json").then(function(geoData) {
+		d3.json('/data/Denmark_movements_between_admin_regions.json').then(function(data) {
 			spinnermovements.stop();
 			console.log(data)
 			console.log(geoData)
