@@ -45,8 +45,8 @@ def run():
     for country in country_list:
         print(f'Processing {country}')
         create_shape_file(country,2,data_path)
-        if country == "France":
-            continue
+        #if country == "France":
+        #    continue
         adm_kommune = 'adm2'
         adm_region = 'adm1'
         iso = pycountry.countries.get(name=country).alpha_2

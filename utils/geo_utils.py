@@ -45,7 +45,7 @@ def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo
                 geodf = gpd.GeoDataFrame.from_features(collection, crs="epsg:4326")
                 if return_geo_pd:
                     return geodf
-                geodf.geometry = geodf.geometry.simplify(0.001)
+                geodf.geometry = geodf.geometry.simplify(0.01)
 
     shape_file = [{'kommune': loc['NAME_2'], 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
     if save_dir != False:
