@@ -28,24 +28,20 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
     def load_prepare_tile(path, iso):
         data = pd.read_csv(path)
         data = data.loc[data.country == iso]
+        slon = data['start_lon'].to_list()
+        slat = data['start_lat'].to_list()
+        elon = data['end_lon'].to_list()
+        elat = data['end_lat'].to_list()
+
         data = data.drop([
             'country', 'date_time','start_polygon_id', 'end_polygon_id', 'n_difference',
             'tile_size', 'level', 'is_statistically_significant', 'percent_change',
-            'z_score', 'start_lat', 'start_lon', 'end_lat', 'end_lon'
-        ], axis=1)
+            'z_score', 'start_lat', 'start_lon', 'end_lat', 'end_lon','geometry'
+        ], axis=1,errors = 'ignore')
 
-        slonlat, elonlat = zip(*[
-            geom[12:-1].split(", ")
-            for geom in data.geometry
-        ])
-
-        slon, slat = zip(*[list(map(float, sll.split())) for sll in slonlat])
-        elon, elat = zip(*[list(map(float, ell.split())) for ell in elonlat])
 
         data['source_tile'] = [f"{lat},{lon}" for lat, lon in zip(np.array(slat).round(3), np.array(slon).round(3))]
         data['target_tile'] = [f"{lat},{lon}" for lat, lon in zip(np.array(elat).round(3), np.array(elon).round(3))]
-
-        data = data.drop(['geometry'], axis=1)
 
         return data
 
