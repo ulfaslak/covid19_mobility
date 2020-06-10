@@ -19,5 +19,9 @@ let eventDates = {
 	'germany': [
 	],
 	'brazil': [
-	]
+	],
+    'france': [
+    ],
+    'spain' :[
+    ]
 }

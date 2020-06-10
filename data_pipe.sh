@@ -1,12 +1,10 @@
 # Change dir
 cd ~/HOPE/WorldCovid19/
 
-# Activate env
-conda activate geo_env
 
 # execute all python scripts
 /home/petem/Applications/anaconda3/bin/python3 pull_data/pull.py
-/home/petem/Applications/anaconda3/bin/python3 preprocess_everything.py;
+/home/petem/Applications/anaconda3/envs/geo_env/bin/python3 preprocess_everything.py;
 
 # then build the website
 cd covid19.compute.dtu.dk/static;

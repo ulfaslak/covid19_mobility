@@ -29,7 +29,10 @@ def poly_convert(polygon):
 
 # Example that creates shape_file and saves it in current directory:  create_shape_file('Denmark',adm = 2,save_dir='')
 def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo_pd = False,exists_skip = True):
-    full_path = save_dir + country.capitalize() + '_geojson.json'
+    if save_dir != False:
+        full_path = save_dir + country.capitalize() + '_geojson.json'
+    else:
+        full_path = ''
     if (path.exists(full_path)) and (exists_skip):
         return None
     else: 

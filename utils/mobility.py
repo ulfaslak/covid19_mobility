@@ -116,6 +116,14 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     fn_days_tile = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_TILE) if fn.endswith('.csv')]))
     fn_days_admin = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_ADMIN) if fn.endswith('.csv')]))
 
+    if fn_days_admin[0]!=fn_days_tile[0]:
+        if fn_days_admin[0] in fn_days_tile:
+            start_idx = fn_days_tile.index(fn_days_admin[0])
+            fn_days_tile = fn_days_tile[start_idx:]
+        elif fn_days_tile[0] in fn_days_admin:
+            start_idx = fn_days_admin.index(fn_days_tile[0])
+            fn_days_admin= fn_days_admin[start_idx:]
+
     # Loop
     for idx, fn_day in tqdm(enumerate(fn_days_tile[start:]), total=len(fn_days_tile[start:])):
         # Get the actual id for the date
