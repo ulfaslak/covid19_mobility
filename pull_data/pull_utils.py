@@ -42,7 +42,7 @@ class data_updater:
             df.index.names = ['Index']
             self.data = df
 
-    def save_data(self, path_out):
+    def save_data(self, path_out='/home/petem/HOPE/WorldCovid19/pull_data/country_list.csv'):
         # Save country dataframe
         self.data.to_csv(path_out)
 
