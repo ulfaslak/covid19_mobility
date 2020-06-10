@@ -1,6 +1,7 @@
 Facebook/*
 notebooks/*
 utils/kdtrees/*
+utils/shapefiles/*
 utils/globals/*
 covid19.compute.dtu.dk/static/data/*
 covid19.compute.dtu.dk/public/data/*
