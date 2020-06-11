@@ -78,7 +78,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             'country', 'date_time','start_polygon_id', 'end_polygon_id', 'n_difference',
             'tile_size', 'level', 'is_statistically_significant', 'percent_change',
             'z_score', 'start_lat', 'start_lon', 'end_lat', 'end_lon', 'geometry'
-        ], axis=1)
+        ], axis=1, errors = 'ignore')
         return data
 
 
