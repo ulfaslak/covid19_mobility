@@ -105,7 +105,10 @@ class MovementsMap {
 				})
 			})
 		})
-		return [Math.min(...lats), Math.max(...lats), Math.min(...lons), Math.max(...lons)];
+		lats_max_min = minMaxArray(lats);
+		lons_max_min = minMaxArray(lons);
+		return [lats_max_min.min, lats_max_min.max, lons_max_min.min, lons_max_min.max];
+		//return [Math.min(...lats), Math.max(...lats), Math.min(...lons), Math.max(...lons)];
 	}
 
 	setScaling() {
@@ -590,4 +593,17 @@ class MovementsMap {
 
 		return R * c;
 	}
+	minMaxArray(arr) {
+    var max = -Number.MAX_VALUE,
+        min = Number.MAX_VALUE;
+    arr.forEach(function(e) {
+        if (max < e) {
+            max = e;
+        }
+        if (min > e) {
+           min = e;
+       }
+    });
+    return {max: max, min: min};
+    }
 }
