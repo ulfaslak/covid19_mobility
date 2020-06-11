@@ -139,17 +139,18 @@ def remove_adms(path):
         df_file.to_csv(file, index=False)
 
 def latlon_from_geo(data):
-    slonlat, elonlat = zip(*[
-        geom[12:-1].split(", ")
-        for geom in data.geometry
-    ])
-    slon, slat = zip(*[list(map(float, sll.split())) for sll in slonlat])
-    elon, elat = zip(*[list(map(float, ell.split())) for ell in elonlat])
+    if 'geometry' in data:
+        slonlat, elonlat = zip(*[
+            geom[12:-1].split(", ")
+            for geom in data.geometry
+        ])
+        slon, slat = zip(*[list(map(float, sll.split())) for sll in slonlat])
+        elon, elat = zip(*[list(map(float, ell.split())) for ell in elonlat])
 
-    data['start_lat'] = np.array(slat)
-    data['start_lon'] = np.array(slon)
-    data['end_lat'] = np.array(elat)
-    data['end_lon'] = np.array(elon)
+        data['start_lat'] = np.array(slat)
+        data['start_lon'] = np.array(slon)
+        data['end_lat'] = np.array(elat)
+        data['end_lon'] = np.array(elon)
     return data
 
 

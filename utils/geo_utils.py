@@ -43,6 +43,10 @@ def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo
         with fiona.io.ZipMemoryFile(data_bytes) as zip_memory_file:
             with zip_memory_file.open(f"gadm36_{iso3}_{adm}.shp") as collection:
                 geodf = gpd.GeoDataFrame.from_features(collection, crs="epsg:4326")
+                columns_replace = geodf.columns[geodf.columns.str.startswith('NAME_')]
+                for column in columns_replace:
+                    geodf[column] = geodf[column].str.replace('\W+',' ')
+
                 if return_geo_pd:
                     return geodf
                 geodf.geometry = geodf.geometry.simplify(0.001)
