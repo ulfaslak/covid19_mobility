@@ -105,8 +105,8 @@ class MovementsMap {
 				})
 			})
 		})
-		lats_max_min = minMaxArray(lats);
-		lons_max_min = minMaxArray(lons);
+		lats_max_min = this.minMaxArray(lats);
+		lons_max_min = this.minMaxArray(lons);
 		return [lats_max_min.min, lats_max_min.max, lons_max_min.min, lons_max_min.max];
 		//return [Math.min(...lats), Math.max(...lats), Math.min(...lons), Math.max(...lons)];
 	}
