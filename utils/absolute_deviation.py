@@ -145,13 +145,13 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
 
     #Variables
-    data_out2['_meta']['variables']['startDate'] = "2020-02-23 00:00:00"
+    data_out2['_meta']['variables']['startDate'] = "2020-02-19 00:00:00"
     data_out2['_meta']['variables']['y_label_count'] = "Population size"
     data_out2['_meta']['variables']['y_label_relative'] = "Deviation from baseline"
     data_out2['_meta']['variables']['title'] = "Change in population size"
     data_out2['_meta']['variables']['country_name'] = country.lower()
 
-    data_out1['_meta']['variables']['startDate'] = "2020-02-23 00:00:00"
+    data_out1['_meta']['variables']['startDate'] = "2020-02-19 00:00:00"
     data_out1['_meta']['variables']['y_label'] = "Share of population"
     data_out1['_meta']['variables']['title'] = "Share of population relocated"
     data_out1['_meta']['variables']['country_name'] = country.lower()
