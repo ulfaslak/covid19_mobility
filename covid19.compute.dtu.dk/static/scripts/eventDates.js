@@ -23,5 +23,11 @@ let eventDates = {
     'france': [
     ],
     'spain' :[
+    ],
+    'norway':[
+    ],
+    'italy':[
+    ],
+    'iceland':[
     ]
 }
