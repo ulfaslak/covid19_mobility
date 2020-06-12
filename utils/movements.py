@@ -201,9 +201,11 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
             start_idx = fn_days_admin.index(fn_days_tile[0])
             fn_days_admin= fn_days_admin[start_idx:]
 
+    end_idx = min(len(fn_days_tile),min(fn_days_admin))
+
 
     # Loop
-    for idx, fn_day in tqdm(enumerate(fn_days_tile[start:], start), total=len(fn_days_tile[start:])):
+    for idx, fn_day in tqdm(enumerate(fn_days_tile[start:end_idx], start), total=len(fn_days_tile[start:end_idx])):
         
         # Get weekday
         dt_obj = dt.datetime(year=int(fn_day[-10:-6]), month=int(fn_day[-5:-3]), day=int(fn_day[-2:]))
@@ -255,7 +257,7 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
     # Time
     data_out['_meta']['datetime'] = [
         str(dt.datetime(int(d[-10:-6]), int(d[-5:-3]), int(d[-2:])))
-        for d in fn_days_tile
+        for d in fn_days_tile[:end_idx]
     ]
 
     # Get max values
@@ -287,7 +289,7 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
     # Add to _meta
     data_out['_meta']['radioOptions'] = ['percent_change', 'crisis', 'baseline']
     data_out['_meta']['defaults']['radioOption'] = 'percent_change'
-    data_out['_meta']['defaults']['t'] = len(fn_days_tile)-1
+    data_out['_meta']['defaults']['t'] = len(fn_days_tile[:end_idx])-1
     data_out['_meta']['defaults']['idx0or1'] = 0
     data_out['_meta']['variables']['legend_label_count'] = "Going to work"
     data_out['_meta']['variables']['legend_label_relative'] = "Percent change"
