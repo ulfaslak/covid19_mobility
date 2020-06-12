@@ -5,32 +5,24 @@ class MovementsMap {
 		this.data = data;
 		this.geoData = geoData;
 		this.uniqueId = uniqueId;
-		this.betweenMax = data._meta.betweenMax;
-		this.inMax = data._meta.inMax;
-		this.outMax = data._meta.outMax;
+		this.betweenMax = data._meta.variables.betweenMax;
+		this.inMax = data._meta.variables.inMax;
+		this.outMax = data._meta.variables.outMax;
 		this.datetime = data._meta.datetime;
 		this.t = data._meta.defaults.t;
 		this.radioOption = data._meta.defaults.radioOption;
 		this.idx0or1 = data._meta.defaults.idx0or1;
 
-		// Dimensions and margins
-		let margin = {top: 70, right: 5, bottom: 30, left: 60},
-			figureWidth = 770,
-			figureHeight = 660;
+		// Dimensions
+		let figureWidth = 770,
+			figureHeight = 770;
 		let maindiv = document.getElementById("vis-" + this.uniqueId);
 		maindiv.style.width = figureWidth + "px";
 		maindiv.style.height = figureHeight + "px";
-		this.width = figureWidth - margin.left - margin.right;
-		this.height = figureHeight - margin.top - margin.bottom;
+		this.width = figureWidth;
+		this.height = figureHeight;
 		this.rwidth = 180;
 		this.rheight = 27;
-
-		let latMin = data._meta.defaults.latMin,
-			latMax = data._meta.defaults.latMax,
-			lonMin = data._meta.defaults.lonMin,
-			lonMax = data._meta.defaults.lonMax;
-		this.x = d3.scaleLinear().domain([lonMin-1.2, lonMax+1.2]).range([0, this.width]);
-		this.y = d3.scaleLinear().domain([latMin+0.3, latMax+0.3]).range([this.height, 0]);
 
 		// Color scale
 		this.n_steps = 5;
@@ -44,8 +36,8 @@ class MovementsMap {
 		// SVG
 		this.svg = d3.select("#vis-" + this.uniqueId)
 			.append("svg")
-				.attr("width", this.width + margin.left + margin.right)
-				.attr("height", this.height + margin.top + margin.bottom);
+				.attr("width", this.width)
+				.attr("height", this.height);
 
 		this.g = this.svg.append("g");
 
@@ -63,6 +55,7 @@ class MovementsMap {
 
 	setup() {
 		this.mapNamesToPolygons();
+		this.setScaling();
 		this.setColorDomain();
 		this.setKeyEvents();
 		this.resetState();
@@ -99,6 +92,54 @@ class MovementsMap {
 		this.geoData.forEach(d => {
 			this.namePolygonMap[d.kommune.replace(" ", "-")] = d.polygons;
 		})
+	}
+
+	getBoundingBox() {
+		let lats = [],
+			lons = [];
+		this.geoData.forEach(arr => {
+			arr.polygons.forEach(poly => {
+				poly.forEach(point => {
+					lats.push(point[1]);
+					lons.push(point[0]);
+				})
+			})
+		})
+		var lats_max_min = this.minMaxArray(lats);
+		var lons_max_min = this.minMaxArray(lons);
+		return [lats_max_min.min, lats_max_min.max, lons_max_min.min, lons_max_min.max];
+		//return [Math.min(...lats), Math.max(...lats), Math.min(...lons), Math.max(...lons)];
+	}
+
+	setScaling() {
+		let bbCoords = this.getBoundingBox();
+		let latMin = bbCoords[0],
+			latMax = bbCoords[1],
+			lonMin = bbCoords[2],
+			lonMax = bbCoords[3],
+			latMid = (latMin + latMax) / 2;
+
+		let mapWidth = this.haversine(latMid, lonMin, latMid, lonMax);  // at midpoint
+		let mapHeight = this.haversine(latMin, lonMin, latMax, lonMin);
+		
+		console.log("mapWidth", mapWidth*1e-3)
+		console.log("mapHeight", mapHeight*1e-3)
+		console.log("latMin", latMin)
+		console.log("lonMin", lonMin)
+		console.log("latMax", latMax)
+		console.log("lonMax", lonMax)
+
+		if (mapWidth < mapHeight) {
+			let newWidth = this.width * mapWidth / mapHeight;
+			let dw = this.width - newWidth;
+			this.x = d3.scaleLinear().domain([lonMin, lonMax]).range([dw/2, dw/2 + newWidth]);
+			this.y = d3.scaleLinear().domain([latMin, latMax]).range([this.height, 0]);
+		} else {
+			let newHeight = this.width * mapHeight / mapWidth;
+			let dh = this.height - newHeight;
+			this.x = d3.scaleLinear().domain([lonMin, lonMax]).range([0, this.width]);
+			this.y = d3.scaleLinear().domain([latMin, latMax]).range([this.height - dh/2, dh/2]);
+		}
 	}
 
 	setColorDomain() {
@@ -164,7 +205,7 @@ class MovementsMap {
 
 		// Title text
 		this.svg.append('text')
-			.attr('x', this.width-53)
+			.attr('x', this.width-120)
 			.attr('y', 20)
 			.attr('font-weight', 700)
 			.text(legendTitle)
@@ -174,7 +215,7 @@ class MovementsMap {
 
 			// Rects
 			this.svg.append('rect')
-				.attr('x', this.width-53)
+				.attr('x', this.width-120)
 				.attr('y', idx * 23 + 40)
 				.attr('width', 15)
 				.attr('height', 15)
@@ -187,7 +228,7 @@ class MovementsMap {
 
 			// labels
 			this.svg.append('text')
-				.attr('x', this.width-30)
+				.attr('x', this.width-95)
 				.attr('y', idx * 23 + 52.5)
 				.attr('font-size', 13)
 				.text(() => {
@@ -253,7 +294,7 @@ class MovementsMap {
 		let sliderStep = d3.sliderBottom()
 			.min(0)
 			.max(N-1)
-			.width(this.width - this.rwidth)
+			.width(this.width - this.rwidth - 60)
 			.tickValues(d3.range(2, N, 7))
 			.tickFormat(this.idxToDate)
 			.step(1)
@@ -267,7 +308,7 @@ class MovementsMap {
 		// Append to div
 		let gStep = d3.select('#slider-' + this.uniqueId)
 			.append('svg')
-			.attr('width', this.width - this.rwidth + 60)
+			.attr('width', this.width - this.rwidth)
 			.attr('height', 60)
 			.append('g')
 			.attr('transform', 'translate(15,10)');
@@ -370,10 +411,10 @@ class MovementsMap {
 		let percent_change = this.data[d]["_" + d]['percent_change'][this.t][this.idx0or1];
 
 		let tooltiptext = "Share of <b>" + d + "</b> population<br>going to work anywhere<br><br>";
-		tooltiptext += "On date: <b>" + round(crisis * 100, 1e1) + "%</b><br>";
-		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e1) + "%</b><br>";
+		tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
+		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
 		if (baseline > 0)
-			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e1) + "%</b>";
+			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";
 
 		this.tooltip
 			.html(tooltiptext)
@@ -400,10 +441,10 @@ class MovementsMap {
 			tooltiptext = "Share of <b>" + this.selected + "</b> population<br>going to work in <b>" + this.hovering + "</b><br><br>";
 		else if (this.idx0or1 == 1) 
 			tooltiptext = "Share of <b>" + this.hovering + "</b> population<br>going to work in <b>" + this.selected + "</b><br><br>";
-		tooltiptext += "On date: <b>" + round(crisis * 100, 1e1) + "%</b><br>";
-		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e1) + "%</b><br>";
+		tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
+		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
 		if (baseline > 0)
-			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e1) + "%</b>";
+			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";
 
 		if (d3.event != null) {
 			this.tooltip
@@ -536,4 +577,33 @@ class MovementsMap {
 		return d in this.data && this.t in this.data[d]["_" + d][this.radioOption];
 	}
 
+	haversine(lat1, lon1, lat2, lon2) {
+		function toRad(x) {
+			return x * Math.PI / 180;
+		}
+
+		let R = 6371e3;
+
+		let dLat = toRad(lat2 - lat1);
+		let dLon = toRad(lon2 - lon1)
+		let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+			Math.sin(dLon / 2) * Math.sin(dLon / 2);
+		let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+		return R * c;
+	}
+	minMaxArray(arr) {
+    var max = -Number.MAX_VALUE,
+        min = Number.MAX_VALUE;
+    arr.forEach(function(e) {
+        if (max < e) {
+            max = e;
+        }
+        if (min > e) {
+           min = e;
+       }
+    });
+    return {max: max, min: min};
+    }
 }

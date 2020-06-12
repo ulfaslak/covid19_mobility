@@ -8,12 +8,12 @@
 <meta property="og:description" content="Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/how_people_move_movements_between_municipalities/" />
-<meta property="article:modified_time" content="2020-06-06T21:44:04+02:00" />
+<meta property="article:modified_time" content="2020-06-08T09:58:11+02:00" />
 <title>How People Move Movements Between Municipalities | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
 
-<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+<link rel="stylesheet" href="/book.min.8b34b0846c7c6544613b2301559d146e1ddebf7ee7068ccc53d2fd0e9b3701b9.css" integrity="sha256-izSwhGx8ZURhOyMBVZ0Ubh3ev37nBozMU9L9Dps3Abk=">
 
 
 <script type="application/javascript">
@@ -135,7 +135,7 @@ https://github.com/alex-shpak/hugo-book
   <strong>How People Move Movements Between Municipalities</strong>
 
   <label for="toc-control">
-    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
   </label>
 </div>
 
@@ -253,7 +253,6 @@ https://github.com/alex-shpak/hugo-book
 		-ms-user-select: none;  
 		user-select: none;  
 	}
-	 
 	.select-place {
 		position: absolute;
 		right: 0px;
@@ -288,6 +287,15 @@ https://github.com/alex-shpak/hugo-book
 		font-weight: 600;
 	}
 
+@keyframes spinner-line-fade-quick {
+  0%, 39%, 100% {
+    opacity: 0.25;  
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
 </style>
 
 
@@ -314,9 +322,10 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="https://unpkg.com/d3-simple-slider"></script>
-<script src="https://unpkg.com/chroma-js@2.0.3/chroma.min.js"></script>
+<script src="/dist/d3.v5.min.js"></script>
+<script src="/dist/d3-simple-slider.min.js"></script>
+<script src="/dist/chroma.min.js"></script>
+<script src="/dist/spin.min.js"></script>
 
 
 <script src="/scripts/eventDates.js"></script>
@@ -327,6 +336,20 @@ https://github.com/alex-shpak/hugo-book
 
 	
 	
+
+	
+	let spinnerOpts = {
+		lines: 8, 
+		length: 0, 
+		width: 8, 
+		radius: 18, 
+		corners: 10, 
+		color: '#313131', 
+		fadeColor: 'transparent', 
+		speed: 1, 
+		rotate: 0, 
+		animation: 'spinner-line-fade-quick', 
+	};
 
 	
 	function adjustBaseline(datum) {
@@ -366,7 +389,42 @@ https://github.com/alex-shpak/hugo-book
 	function insertKSeperators(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
+
+    
+    if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
+    function createWorld() {
+        var countries = []
+        d3.json("/data/countries.json").then(function(data){
+            countries = data.sort();
+            body = document.getElementsByClassName('container flex')[0];
+            toc = document.createElement('aside');
+            toc.className = "book-toc";
+            nav = document.createElement('nav');
+            nav.id = "countries";
+            ul = document.createElement('ul');
+            countries.forEach(function (item,index){
+                li = document.createElement('li');
+                a = document.createElement('a');
+                a.text = item;
+                a.style.cursor = "pointer";
+                if (item != sessionStorage.country) {
+                    a.onclick = function() {
+                        sessionStorage.country=item;
+                        window.location.reload();
+                    };
+                } else {
+                    a.style.color = "red";
+                }   
+                li.appendChild(a);
+                ul.appendChild(li);
+            });
+            nav.appendChild(ul);
+            toc.appendChild(nav);
+            body.appendChild(toc);
+        })}
+    createWorld();
 </script>
+
 <!-- raw HTML omitted -->
 <p>Using the Movement Maps we can visualize the distribution of the working population, and where people work relative to where they live.</p>
 <p>The Movement Maps segment daily travel into three time windows. Specifically, for time window <em>t</em>, the travel count from region/tile <em>i</em> into <em>j</em> represents the number of active Facebook users that spend the majority of their time during time window <em>t</em> - 1 inside <em>i</em> and the majority of their time during time window <em>t</em> inside <em>j</em>.</p>
@@ -396,10 +454,12 @@ https://github.com/alex-shpak/hugo-book
 
 <script>
 
-	let instance_movements;
+	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsFig'));
 
-	d3.json("/data/Denmark_geojson.json").then(function(geoData) {
-		d3.json('/data/Denmark_movements_between_admin_regions.json').then(function(data) {
+	let instance_movements;
+	d3.json("/data/"+sessionStorage.country+"_geojson.json").then(function(geoData) {
+		d3.json('/data/'+sessionStorage.country+'_movements_between_admin_regions.json').then(function(data) {
+			spinnermovements.stop();
 			instance_movements = new MovementsMap(data, geoData, 'movementsFig');
 			instance_movements.setup();
 			instance_movements.drawLayout();
@@ -408,6 +468,7 @@ https://github.com/alex-shpak/hugo-book
 	})
 
 </script>
+
 <blockquote>
 <p><strong>This figure is interactive!</strong> You can:</p>
 <ul>

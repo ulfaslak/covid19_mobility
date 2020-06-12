@@ -8,12 +8,12 @@
 <meta property="og:description" content="Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/where_people_are_population_concentration/" />
-<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
+<meta property="article:modified_time" content="2020-06-02T08:10:17+02:00" />
 <title>Where People Are Population Concentration | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
 
-<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+<link rel="stylesheet" href="/book.min.8b34b0846c7c6544613b2301559d146e1ddebf7ee7068ccc53d2fd0e9b3701b9.css" integrity="sha256-izSwhGx8ZURhOyMBVZ0Ubh3ev37nBozMU9L9Dps3Abk=">
 
 
 <script type="application/javascript">
@@ -135,7 +135,7 @@ https://github.com/alex-shpak/hugo-book
   <strong>Where People Are Population Concentration</strong>
 
   <label for="toc-control">
-    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
   </label>
 </div>
 
@@ -253,7 +253,6 @@ https://github.com/alex-shpak/hugo-book
 		-ms-user-select: none;  
 		user-select: none;  
 	}
-	 
 	.select-place {
 		position: absolute;
 		right: 0px;
@@ -288,6 +287,15 @@ https://github.com/alex-shpak/hugo-book
 		font-weight: 600;
 	}
 
+@keyframes spinner-line-fade-quick {
+  0%, 39%, 100% {
+    opacity: 0.25;  
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
 </style>
 
 
@@ -314,9 +322,10 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="https://unpkg.com/d3-simple-slider"></script>
-<script src="https://unpkg.com/chroma-js@2.0.3/chroma.min.js"></script>
+<script src="/dist/d3.v5.min.js"></script>
+<script src="/dist/d3-simple-slider.min.js"></script>
+<script src="/dist/chroma.min.js"></script>
+<script src="/dist/spin.min.js"></script>
 
 
 <script src="/scripts/eventDates.js"></script>
@@ -327,6 +336,20 @@ https://github.com/alex-shpak/hugo-book
 
 	
 	
+
+	
+	let spinnerOpts = {
+		lines: 8, 
+		length: 0, 
+		width: 8, 
+		radius: 18, 
+		corners: 10, 
+		color: '#313131', 
+		fadeColor: 'transparent', 
+		speed: 1, 
+		rotate: 0, 
+		animation: 'spinner-line-fade-quick', 
+	};
 
 	
 	function adjustBaseline(datum) {
@@ -366,7 +389,42 @@ https://github.com/alex-shpak/hugo-book
 	function insertKSeperators(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
+
+    
+    if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
+    function createWorld() {
+        var countries = []
+        d3.json("/data/countries.json").then(function(data){
+            countries = data.sort();
+            body = document.getElementsByClassName('container flex')[0];
+            toc = document.createElement('aside');
+            toc.className = "book-toc";
+            nav = document.createElement('nav');
+            nav.id = "countries";
+            ul = document.createElement('ul');
+            countries.forEach(function (item,index){
+                li = document.createElement('li');
+                a = document.createElement('a');
+                a.text = item;
+                a.style.cursor = "pointer";
+                if (item != sessionStorage.country) {
+                    a.onclick = function() {
+                        sessionStorage.country=item;
+                        window.location.reload();
+                    };
+                } else {
+                    a.style.color = "red";
+                }   
+                li.appendChild(a);
+                ul.appendChild(li);
+            });
+            nav.appendChild(ul);
+            toc.appendChild(nav);
+            body.appendChild(toc);
+        })}
+    createWorld();
 </script>
+
 <p>The figure below displays the <strong>fraction of people that have changed location</strong> compared to a similar time frame before the lockdown. We estimate this variable by summing the positive and absolute negative baseline population deviation across all tiles and dividing my two. Simply, this corresponds to averaging the amount of red and green in the <a href="/mobility/popdensevis/index.html">Landscape visualization</a>, which signals that someone is not where they usually are during this time of the week.</p>
 <p>Note that the change we see here is <em>a lower bound</em> of the actual movement because we can assume there are cases where pairs of people (coincidentally) trade places, which cancels out any measurable deviation in the population distribution. This point is important in interpreting the figure.</p>
 
@@ -388,9 +446,11 @@ https://github.com/alex-shpak/hugo-book
 
 <script>
 
-	let instance_difference;
+	let spinnerdifference = new Spinner(spinnerOpts).spin(document.getElementById('vis-difference'));
 
-	d3.json('/data/Denmark_difference.json').then(function(data) {
+	let instance_difference;
+	d3.json('/data/'+sessionStorage.country+'_difference.json').then(function(data) {
+		spinnerdifference.stop();
 		instance_difference = new SingleLinePlot(data, 'vis-difference', 'differenceFig');
 		instance_difference.setup();
 		instance_difference.drawLayout();
@@ -398,6 +458,7 @@ https://github.com/alex-shpak/hugo-book
 	})
 
 </script>
+
 <blockquote>
 <p><strong>The figure is interactive!</strong> You can:</p>
 <ul>
@@ -428,9 +489,11 @@ https://github.com/alex-shpak/hugo-book
 
 <script>
 
+	let spinnergini = new Spinner(spinnerOpts).spin(document.getElementById('vis-gini'));
+
 	let instance_gini;
-	
-	d3.json('/data/Denmark_gini_over_time.json').then(function(data) {
+	d3.json('/data/'+sessionStorage.country+'_gini_over_time.json').then(function(data) {
+		spinnergini.stop();
 		instance_gini = new DeviationPlot(data, 'vis-gini', 'giniFig');
 		instance_gini.setup();
 		instance_gini.drawLayout();
@@ -438,6 +501,7 @@ https://github.com/alex-shpak/hugo-book
 	})
 
 </script>
+
 <blockquote>
 <p><strong>The figure is interactive!</strong> You can:</p>
 <ul>

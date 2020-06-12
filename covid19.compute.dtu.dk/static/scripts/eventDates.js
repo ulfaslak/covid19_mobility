@@ -29,5 +29,7 @@ let eventDates = {
     'italy':[
     ],
     'iceland':[
+    ],
+    'new zealand':[
     ]
 }
