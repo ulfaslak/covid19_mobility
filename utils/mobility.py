@@ -197,7 +197,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     data_out['_meta']['defaults']['mode'] = 'relative'
 
     #Variables
-    data_out['_meta']['variables']['startDate'] = "2020-03-10 00:00:00"
+    data_out['_meta']['variables']['startDate'] = "2020-02-18 00:00:00"
     data_out['_meta']['variables']['y_label_count'] = "Daily dist. traveled [km]"
     data_out['_meta']['variables']['y_label_relative'] = "Deviation from baseline"
     data_out['_meta']['variables']['title'] = f"Per capita travel"
