@@ -17,5 +17,17 @@ let eventDates = {
 		["2020-05-27 00:00:00", 'Everything except nightclubs, festivals, etc. reopen', 'event11']
 	],
 	'germany': [
-	]
+	],
+	'brazil': [
+	],
+    'france': [
+    ],
+    'spain' :[
+    ],
+    'norway':[
+    ],
+    'italy':[
+    ],
+    'iceland':[
+    ]
 }

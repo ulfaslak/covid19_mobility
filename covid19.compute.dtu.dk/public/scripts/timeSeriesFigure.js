@@ -241,7 +241,6 @@ class TimeSeriesFigure {
 					d3.select("#" + d[2] + this.uniqueId)
 						.transition().duration(50)
 						.attr('y2', this.height);
-					console.log('lol')
 				})
 		}
 	}
@@ -400,13 +399,12 @@ class SingleLinePlot extends TimeSeriesFigure {
 		// Infer meaningful y-ticks. DEBUG: bad heuristics. If used for other than
 		// percentage, this should be revised.
 		let yExtent = this.yrange[1] - this.yrange[0];
-		if (yExtent <= 1)
+		if (yExtent <= 1.5)
 			this.yAxis = d3.axisLeft(this.y).ticks(6, ".0%")
 		else if (yExtent < 1000)
-			this.yAxis = d3.axisLeft(this.y).tickFormat(v);
+			this.yAxis = d3.axisLeft(this.y).tickFormat(v => v);
 		else
 			this.yAxis = d3.axisLeft(this.y).tickFormat(v => v/1e3 + "k");
-
 		// Removed by `clearData()`
 		this.svg.append("g")
 			.attr("class", "y axis")
@@ -449,7 +447,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 	// ----------
 
 	drawValueTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]))
+		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level])).slice(3,-3)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'trendline')
@@ -644,14 +642,10 @@ class DeviationPlot extends TimeSeriesFigure {
 	drawYAxis() {
 		if (this.mode == 'count') {
 			let yExtent = this.yrange[1] - this.yrange[0];
-			if (yExtent <= 1.5)
-				this.yAxis = d3.axisLeft(this.y).ticks(6, ".0%")
-			else if (yExtent < 1000)
+			if (yExtent < 1000)
 				this.yAxis = d3.axisLeft(this.y).tickFormat(v => v);
 			else
 				this.yAxis = d3.axisLeft(this.y).tickFormat(v => v/1e3 + "k");
-
-			console.log(yExtent)
 		}
 		else if (this.mode == 'relative') {
 			this.yAxis = d3.axisLeft(this.y).ticks(6, ".0%")
@@ -719,7 +713,7 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawCrisisTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['crisis']))
+		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['crisis'])).slice(3,-3)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'trendline')
@@ -745,7 +739,7 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawPercentChangeTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['percent_change']))
+		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['percent_change'])).slice(3,-3)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'trendline')

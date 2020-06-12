@@ -25,7 +25,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/how_people_move_distance_traveled/</guid>
-      <description>Distance traveled Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
+      <description>Distance traveled Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
     </item>
     
     <item>
@@ -44,6 +44,15 @@
       
       <guid>https://covid19.compute.dtu.dk/visualizations/how_people_move_staying_home/</guid>
       <description>Staying home Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://covid19.compute.dtu.dk/visualizations/telco/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/visualizations/telco/</guid>
+      <description>Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
     </item>
     
     <item>
@@ -109,7 +118,7 @@ Description: A Movement map seperates the country into different areas. It then 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/mobility/population/</guid>
-      <description>Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 10:50:19
+      <description>Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 8:10:17
 .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.</description>
     </item>
     
@@ -150,7 +159,7 @@ As discussed in the Population Landscape post, we observed a massive decrease of
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/mobility/mobility/</guid>
-      <description>Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 10:50:19
+      <description>Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 8:10:17
 .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.</description>
     </item>
     

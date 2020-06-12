@@ -156,7 +156,7 @@ def change_adms(path):
 def latlon_from_geo(data):
     if 'geometry' in data:
         slonlat, elonlat = zip(*[
-            geom[12:-1].splt(", ")
+            geom[12:-1].split(", ")
             for geom in data.geometry
         ])
         slon, slat = zip(*[list(map(float, sll.split())) for sll in slonlat])

@@ -4,18 +4,18 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 10:50:19
+<meta name="description" content="Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 8:10:17
 .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0."><meta property="og:title" content="Travel and mobility" />
-<meta property="og:description" content="Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 10:50:19
+<meta property="og:description" content="Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 8:10:17
 .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/mobility/mobility/" />
-<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
+<meta property="article:modified_time" content="2020-06-02T08:10:17+02:00" />
 <title>Travel and mobility | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
 
-<link rel="stylesheet" href="/book.min.e72951d38884f3b48fa43ce2d729bd3729c1122733c26acf563840728c13c88f.css" integrity="sha256-5ylR04iE87SPpDzi1ym9NynBEiczwmrPVjhAcowTyI8=">
+<link rel="stylesheet" href="/book.min.8b34b0846c7c6544613b2301559d146e1ddebf7ee7068ccc53d2fd0e9b3701b9.css" integrity="sha256-izSwhGx8ZURhOyMBVZ0Ubh3ev37nBozMU9L9Dps3Abk=">
 
 
 <script type="application/javascript">
@@ -137,7 +137,7 @@ https://github.com/alex-shpak/hugo-book
   <strong>Travel and mobility</strong>
 
   <label for="toc-control">
-    <img src="/svg/toc.svg" class="book-icon" alt="Table of Contents" />
+    
   </label>
 </div>
 
@@ -149,7 +149,7 @@ https://github.com/alex-shpak/hugo-book
       
       
   <article class="markdown"><h1 id="traveling-patterns-and-mobility"><strong>Traveling patterns and mobility</strong></h1>
-<p><span style="font-size:14px"><em>Report by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:sljo@dtu.dk">Sune Lehmann</a>.</em></span> <span style="font-size:14px"><em>Updated: June, 2, 2020 10:50:19</em></span></p>
+<p><span style="font-size:14px"><em>Report by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:sljo@dtu.dk">Sune Lehmann</a>.</em></span> <span style="font-size:14px"><em>Updated: June, 2, 2020 8:10:17</em></span></p>
 
 
 
@@ -255,7 +255,6 @@ https://github.com/alex-shpak/hugo-book
 		-ms-user-select: none;  
 		user-select: none;  
 	}
-	 
 	.select-place {
 		position: absolute;
 		right: 0px;
@@ -290,6 +289,15 @@ https://github.com/alex-shpak/hugo-book
 		font-weight: 600;
 	}
 
+@keyframes spinner-line-fade-quick {
+  0%, 39%, 100% {
+    opacity: 0.25;  
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
 </style>
 
 
@@ -316,9 +324,10 @@ https://github.com/alex-shpak/hugo-book
 
 
 
-<script src="https://d3js.org/d3.v5.min.js"></script>
-<script src="https://unpkg.com/d3-simple-slider"></script>
-<script src="https://unpkg.com/chroma-js@2.0.3/chroma.min.js"></script>
+<script src="/dist/d3.v5.min.js"></script>
+<script src="/dist/d3-simple-slider.min.js"></script>
+<script src="/dist/chroma.min.js"></script>
+<script src="/dist/spin.min.js"></script>
 
 
 <script src="/scripts/eventDates.js"></script>
@@ -329,6 +338,20 @@ https://github.com/alex-shpak/hugo-book
 
 	
 	
+
+	
+	let spinnerOpts = {
+		lines: 8, 
+		length: 0, 
+		width: 8, 
+		radius: 18, 
+		corners: 10, 
+		color: '#313131', 
+		fadeColor: 'transparent', 
+		speed: 1, 
+		rotate: 0, 
+		animation: 'spinner-line-fade-quick', 
+	};
 
 	
 	function adjustBaseline(datum) {
@@ -368,7 +391,42 @@ https://github.com/alex-shpak/hugo-book
 	function insertKSeperators(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
+
+    
+    if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
+    function createWorld() {
+        var countries = []
+        d3.json("/data/countries.json").then(function(data){
+            countries = data.sort();
+            body = document.getElementsByClassName('container flex')[0];
+            toc = document.createElement('aside');
+            toc.className = "book-toc";
+            nav = document.createElement('nav');
+            nav.id = "countries";
+            ul = document.createElement('ul');
+            countries.forEach(function (item,index){
+                li = document.createElement('li');
+                a = document.createElement('a');
+                a.text = item;
+                a.style.cursor = "pointer";
+                if (item != sessionStorage.country) {
+                    a.onclick = function() {
+                        sessionStorage.country=item;
+                        window.location.reload();
+                    };
+                } else {
+                    a.style.color = "red";
+                }   
+                li.appendChild(a);
+                ul.appendChild(li);
+            });
+            nav.appendChild(ul);
+            toc.appendChild(nav);
+            body.appendChild(toc);
+        })}
+    createWorld();
 </script>
+
 <p>Human mobility is a proxy of overall activity within a country. As Denmark reopens, we gain insight to a number of important trends by carefully monitoring the state of mobility:</p>
 <ul>
 <li>How fast is activity returning to normal levels?</li>
@@ -401,16 +459,19 @@ https://github.com/alex-shpak/hugo-book
 
 <script>
 
-	let instance_displacement;
+	let spinnerdisplacement = new Spinner(spinnerOpts).spin(document.getElementById('vis-displacement'));
 
-	d3.json('/data/Denmark_total_displacement.json').then(function(data) {
+	let instance_displacement;
+	d3.json('/data/'+sessionStorage.country+'_total_displacement.json').then(function(data) {
 		instance_displacement = new DeviationPlot(data, 'vis-displacement', 'displacementFig');
+		spinnerdisplacement.stop();
 		instance_displacement.setup();
 		instance_displacement.drawLayout();
 		instance_displacement.drawData();
 	})
 
 </script>
+
 <p>Plotting this data reveals, as expected, a significant reduction in mobility.</p>
 <h2 id="staying-near-home"><strong>Staying near home</strong></h2>
 
@@ -433,9 +494,11 @@ https://github.com/alex-shpak/hugo-book
 
 <script>
 
-	let instance_stationarity;
+	let spinnerstationarity = new Spinner(spinnerOpts).spin(document.getElementById('vis-stationarity'));
 
-	d3.json('/data/Denmark_total_stationarity.json').then(function(data) {
+	let instance_stationarity;
+	d3.json('/data/'+sessionStorage.country+'_total_stationarity.json').then(function(data) {
+		spinnerstationarity.stop();
 		instance_stationarity = new DeviationPlot(data, 'vis-stationarity', 'stationarityFig');
 		instance_stationarity.setup();
 		instance_stationarity.drawLayout();
@@ -443,6 +506,7 @@ https://github.com/alex-shpak/hugo-book
 	})
 
 </script>
+
 <h2 id="mapping-movements-between-municipalities"><strong>Mapping movements between municipalities</strong></h2>
 
 
@@ -465,10 +529,12 @@ https://github.com/alex-shpak/hugo-book
 
 <script>
 
-	let instance_movements;
+	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsFig'));
 
-	d3.json("/data/Denmark_geojson.json").then(function(geoData) {
-		d3.json('/data/Denmark_movements_between_admin_regions.json').then(function(data) {
+	let instance_movements;
+	d3.json("/data/"+sessionStorage.country+"_geojson.json").then(function(geoData) {
+		d3.json('/data/'+sessionStorage.country+'_movements_between_admin_regions.json').then(function(data) {
+			spinnermovements.stop();
 			instance_movements = new MovementsMap(data, geoData, 'movementsFig');
 			instance_movements.setup();
 			instance_movements.drawLayout();
@@ -477,6 +543,7 @@ https://github.com/alex-shpak/hugo-book
 	})
 
 </script>
+
 <h2 id="data-description"><strong>Data description</strong></h2>
 <p>Data was made available through Facebook&rsquo;s <a href="https://dataforgood.fb.com/">Data for Good</a> initiative. The earliest data made available starts March 28; at the lowest level it details population counts in geographical tiles up to 3 km by 3 km in size in three timebines each day (0–8, 8–16, and 16–24 GMT). For this report we combine two aggregated datasets: mobility within municipalities tracks movements between tiles, and mobility between municipalities tracks movements between municipalities. The movements measured between tiles are much sparser due to Facebooks privacy preservation preprocessing steps. <strong>For privacy preservation</strong>, data is unavailale in tiles/municipalties where at a given time &lt; 10 people are present. This introduces an important limitation: It significantly reduces the amount of available data, because if for a given movement there is less than 10 active users present in either the source tile or the destination tile (which is likely), the movement is not reported. Therefore, in municipalies with little movement within, almost no data is available. Moreover, it biases <em>Distance traveled</em> (negatively) and <em>Staying near home</em> (positively).</p>
 </article>
