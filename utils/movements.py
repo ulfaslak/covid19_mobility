@@ -201,7 +201,7 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
             start_idx = fn_days_admin.index(fn_days_tile[0])
             fn_days_admin= fn_days_admin[start_idx:]
 
-    end_idx = min(len(fn_days_tile),min(fn_days_admin))
+    end_idx = min(len(fn_days_tile),len(fn_days_admin))
 
 
     # Loop
