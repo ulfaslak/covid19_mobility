@@ -115,7 +115,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     data_out['_meta']['defaults']['timeframe'] = 'allday'
 
     # Variables
-    data_out['_meta']['variables']['startDate'] = "2020-03-10 00:00:00"
+    data_out['_meta']['variables']['startDate'] = "2020-02-23 00:00:00"
     data_out['_meta']['variables']['y_label_count'] = "Number of people"
     data_out['_meta']['variables']['y_label_relative'] = "Deviation from baseline"
     data_out['_meta']['variables']['title'] = f"Going out during working hours"

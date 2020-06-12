@@ -138,10 +138,25 @@ def remove_adms(path):
         df_file = df_file.drop(remove_columns, axis=1, errors='ignore')
         df_file.to_csv(file, index=False)
 
+def change_adms(path):
+    files = [f for f in glob(path + "**/*.csv", recursive=True)]
+    for file in tqdm(files):
+        with open(file, encoding='iso-8859-1') as f:
+            head = next(csv.reader(f), [])
+        if not (("start_adm1" in head) | ("adm1" in head)):
+            continue
+
+        df_file = pd.read_csv(file)
+        change_columns = df_file[df_file['A'].str.contains("adm")]
+        for column in change_columns:
+            df_file[column] = df_file[column].str.replace('\W+',' ')
+
+        df_file.to_csv(file, index=False)
+
 def latlon_from_geo(data):
     if 'geometry' in data:
         slonlat, elonlat = zip(*[
-            geom[12:-1].split(", ")
+            geom[12:-1].splt(", ")
             for geom in data.geometry
         ])
         slon, slat = zip(*[list(map(float, sll.split())) for sll in slonlat])
