@@ -5,19 +5,17 @@
 
 <!-- {{< vspace 20 >}} -->
 
-Using the Movement Maps we can visualize the distribution of the working population, and where people work relative to where they live.
+Using the Movement Maps we can visualize the distribution where people spend their days relative to their nights. While not accurate in every single case, it's perhaps easier to say that we are albe to see where people *live* (spend their nights) and *work* (spend their nights). Or even more compactly, that we can look at communting patterns over time.
 
-The Movement Maps segment daily travel into three time windows. Specifically, for time window *t*, the travel count from region/tile *i* into *j* represents the number of active Facebook users that spend the majority of their time during time window *t* - 1 inside *i* and the majority of their time during time window *t* inside *j*.
+Based on three daily time windows, the *Movement Maps* provide a "travel count" for some area *i* which is the number of active Facebook uses who spent the majority of the previous time window inside some other area *j*. As discussed in '**Data** > Movement Maps', this choice of aggregation by Facebook **implies that we cannot accurately assess the full amount of travel happening between and within regions**.
 
-As discussed in '**Data** > Movement Maps', this choice of aggregation from the Facebook Data for Good team costs us the ability to accurately assess the amount of travel happening between and within regions.
+As noted above, however, we can reliably quantify is what share of the population **spends the working hours away from home**. Specifically, given the way travel is aggregated in the Movement Maps, travel counts into regions/tiles in the night hours (16–00 window) represents the number of people that spend the majority of their working hours (8—16) somewhere else. Thus, it's not unreasonable to think of these travel counts as representing people **commuting**.
 
-However, something we can reliably quantify is, on a given day, what share of the population **spends the working hours away from home**. Specifically, given the way travel is aggregated in the Movement Maps, travel counts into regions/tiles in the night hours (16–00 window) represents the number of people that spend the majority of their working hours (8—16) somewhere else. It is fair to believe that most of these travel counts represent people **going to work**.
+**The map below** looks at day-to-day between-municipality commuting patterns before and after the lockdown. By default the map displays *Change*, which is the percentage deviation between the size of the working population on the date selected with the slider, and the corresponding baseline (before lockdown). Clicking *On date* shows value for the date selected in the slider and *Baseline* for the corresponding baseline day. You can click any municipality to reveal where people who live there go to work.
 
-**The map below** compares, how many people are going to work in each municipality before and after the lockdown. By default it displays *Change*, which is the percentage deviation between the size of the working population on the date selected with the slider, and the corresponding baseline (before lockdown). Clicking *On date* shows value for the date selected in the slider and *Baseline* for the corresponding baseline day. You can click any municipality to reveals where people who live there go to work.
+A general pattern is that people who live in urban municipalities also work where they live, whereas people who live in municipalities next to more urbanized municipalities tend to work away from their home municipality.
 
-A general pattern you will find is that people living in urban municipalities also work there, whereas people living in municipalities next to more urbanized municipalities will work in these.
-
-When moving the slider through time you will see that the deviation—the *change*—between *Baseline* and *On date* decreases. This is the same pattern that we summarize in '**Visualizations** > Staying home' and '**Visualizations** > Going out'.
+When moving the slider through time it is clear that that the deviation—the *change*—between *Baseline* and *On date* decreases. This is the same pattern that we summarize in '**Visualizations** > Staying home' and '**Visualizations** > Going out'.
 
 {{< figures/movements_between_admin_regions >}}
 
