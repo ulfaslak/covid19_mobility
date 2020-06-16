@@ -312,8 +312,10 @@ def Update_CSV(data_path, country_name, save_path=None, dat_type='popu'):
         print('There is nothing to update')
         return None
     file = files[0]
-
-    country = pycountry.countries.get(name=country_name).alpha_2
+    if country_name == "Britain":
+        country = pycountry.countries.get(name="United Kingdom").alpha_2
+    else:
+        country = pycountry.countries.get(name=country_name).alpha_2
 
     # Get the information from GeoNames.org and the computed kdtree for each admin level
     #   list_dat = [get_dat_and_kdtree(country,i) for i in range(1,5)]

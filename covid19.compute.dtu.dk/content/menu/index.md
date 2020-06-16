@@ -6,10 +6,14 @@ headless: true
 - **Posts**
 
     - *May*
-    	- [18: Back to work]({{< relref "/posts/going_to_work.md" >}})
-    	- [14: Population re-distributed!]({{< relref "/posts/spread_of_population.md" >}})
-    	- [11: What's happening in my city?]({{< relref "/posts/change_in_population_sizes.md" >}})
-    	- [7: Population landscape]({{< relref "/posts/population_landscape.md" >}})
+    	- [18 - *Denmark*:   
+        Back to work]({{< relref "/posts/going_to_work.md" >}})
+    	- [14 - *Denmark*:   
+        Population re-distributed!]({{< relref "/posts/spread_of_population.md" >}})
+    	- [11 - *Denmark*:    
+        What's happening in my city?]({{< relref "/posts/change_in_population_sizes.md" >}})
+    	- [7 - *Denmark*:    
+        Population landscape]({{< relref "/posts/population_landscape.md" >}})
 - **Visualizations**
 	- *Where people are*
 		- [Landscape]({{< relref "/visualizations/where_people_are_landscape.md" >}})

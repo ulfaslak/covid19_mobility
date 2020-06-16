@@ -49,7 +49,10 @@ def run():
         #    continue
         adm_kommune = 'adm2'
         adm_region = 'adm1'
-        iso = pycountry.countries.get(name=country).alpha_2
+        if country == 'Britain':
+            iso = pycountry.countries.get(name='United Kingdom').alpha_2
+        else:
+            iso = pycountry.countries.get(name=country).alpha_2
         movements.run(country,iso,adm_region,adm_kommune)
         if country == 'Denmark':
             pscripts = [

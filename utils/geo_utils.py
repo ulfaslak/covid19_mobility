@@ -30,13 +30,19 @@ def poly_convert(polygon):
 # Example that creates shape_file and saves it in current directory:  create_shape_file('Denmark',adm = 2,save_dir='')
 def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo_pd = False,exists_skip = True):
     if save_dir != False:
-        full_path = save_dir + country.capitalize() + '_geojson.json'
+        full_path = save_dir + country.title() + '_geojson.json'
     else:
         full_path = ''
     if (path.exists(full_path)) and (exists_skip):
         return None
-    else: 
-        iso3 = pycountry.countries.get(name=country).alpha_3
+    else:
+        if country == "Britain":
+            iso3 = pycountry.countries.get(name="United Kingdom").alpha_3
+        else:
+            iso3 = pycountry.countries.get(name=country).alpha_3
+
+
+        #iso3 = pycountry.countries.get(name=country).alpha_3
         response = requests.get(f"https://biogeo.ucdavis.edu/data/gadm3.6/shp/gadm36_{iso3}_shp.zip")
         data_bytes = response.content
                 
@@ -53,7 +59,7 @@ def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo
 
     shape_file = [{'kommune': loc['NAME_2'], 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
     if save_dir != False:
-        full_path = save_dir + country.capitalize() + '_geojson.json'
+        full_path = save_dir + country.title() + '_geojson.json'
         with open(full_path, 'w') as f:
             json.dump(shape_file, f)
     if file_return:
