@@ -5,11 +5,11 @@
 
 <!-- {{< vspace 20 >}} -->
 
-Using the Movement Maps we can visualize the distribution where people spend their days relative to their nights. While not accurate in every single case, it's perhaps easier to say that we are albe to see where people *live* (spend their nights) and *work* (spend their nights). Or even more compactly, that we can look at communting patterns over time.
+Using the Movement Maps we can visualize the distribution where people spend their days relative to their nights. While not accurate in every single case, it's perhaps easier to say that we are able to see where people *live* (spend their nights) and *work* (spend their nights). Or even more compactly, that we can look at commuting patterns over time.
 
 Based on three daily time windows, the *Movement Maps* provide a "travel count" for some area *i* which is the number of active Facebook uses who spent the majority of the previous time window inside some other area *j*. As discussed in '**Data** > Movement Maps', this choice of aggregation by Facebook **implies that we cannot accurately assess the full amount of travel happening between and within regions**.
 
-As noted above, however, we can reliably quantify is what share of the population **spends the working hours away from home**. Specifically, given the way travel is aggregated in the Movement Maps, travel counts into regions/tiles in the night hours (16–00 window) represents the number of people that spend the majority of their working hours (8—16) somewhere else. Thus, it's not unreasonable to think of these travel counts as representing people **commuting**.
+As noted above, however, we can reliably quantify which share of the population **spends the working hours away from home**. Specifically, given the way travel is aggregated in the Movement Maps, travel counts into regions/tiles in the night hours (16–00 window) represents the number of people that spend the majority of their working hours (8—16) somewhere else. Thus, it's not unreasonable to think of these travel counts as representing people **commuting**.
 
 **The map below** looks at day-to-day between-municipality commuting patterns before and after the lockdown. By default the map displays *Change*, which is the percentage deviation between the size of the working population on the date selected with the slider, and the corresponding baseline (before lockdown). Clicking *On date* shows value for the date selected in the slider and *Baseline* for the corresponding baseline day. You can click any municipality to reveal where people who live there go to work.
 
