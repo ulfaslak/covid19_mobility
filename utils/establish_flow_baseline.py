@@ -23,7 +23,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             'country', 'date_time','start_polygon_id', 'end_polygon_id', 'n_difference', 'n_crisis',
             'tile_size', 'level', 'is_statistically_significant', 'percent_change',
             'z_score','geometry'
-        ], axis=1)
+        ], axis=1, errors='ignore')
         
 
         data[['start_lat','start_lon','end_lat','end_lon']] = data[['start_lat','start_lon','end_lat','end_lon']].round(3)
