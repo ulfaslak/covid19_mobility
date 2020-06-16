@@ -27,7 +27,7 @@ def run():
     # First run serially
     print("Adding the admin locations to the CSV files:")
     prep_countries.run(path)
-    '''
+    #'''
     for country in country_list:
         print(f'\nUpdating {country}')
         iso = pycountry.countries.get(name=country).alpha_2
@@ -37,7 +37,7 @@ def run():
         fill_baseline.run(country,iso)
         print('\nestablish_flow_baseline\n' + '-'*len('establish_flow_baseline'))
         establish_flow_baseline.run(country,iso)
-    '''
+    #'''
 
 
     # Then run in parallel
@@ -45,14 +45,9 @@ def run():
     for country in country_list:
         print(f'Processing {country}')
         create_shape_file(country,2,data_path)
-        #if country == "France":
-        #    continue
         adm_kommune = 'adm2'
         adm_region = 'adm1'
-        if country == 'Britain':
-            iso = pycountry.countries.get(name='United Kingdom').alpha_2
-        else:
-            iso = pycountry.countries.get(name=country).alpha_2
+        iso = pycountry.countries.get(name=country).alpha_2
         movements.run(country,iso,adm_region,adm_kommune)
         if country == 'Denmark':
             pscripts = [
