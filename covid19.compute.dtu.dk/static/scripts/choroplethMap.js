@@ -117,14 +117,25 @@ class MovementsMap {
 		return [lats_max_min.min, lats_max_min.max, lons_max_min.min, lons_max_min.max];
 	}
 
+	// projection([lon, lat]) {
+	// 	// https://mathworld.wolfram.com/GnomonicProjection.html
+	// 	let lam0 = lon / 180 * Math.PI;
+	// 	let phi1 = lat / 180 * Math.PI;
+	// 	let cosc = Math.sin(phi1) * Math.sin(this.phi) + Math.cos(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0);
+		
+	// 	let x = Math.cos(this.phi) * Math.sin(this.lam - lam0) / cosc;
+	// 	let y = Math.cos(phi1) * Math.sin(this.phi) - Math.sin(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0) / cosc;
+
+	// 	return [x, y];
+	// }
+
 	projection([lon, lat]) {
-		// https://mathworld.wolfram.com/GnomonicProjection.html
+		// https://mathworld.wolfram.com/OrthographicProjection.html
 		let lam0 = lon / 180 * Math.PI;
 		let phi1 = lat / 180 * Math.PI;
-		let cosc = Math.sin(phi1) * Math.sin(this.phi) + Math.cos(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0);
 		
-		let x = Math.cos(this.phi) * Math.sin(this.lam - lam0) / cosc;
-		let y = Math.cos(phi1) * Math.sin(this.phi) - Math.sin(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0) / cosc;
+		let x = Math.cos(this.phi) * Math.sin(this.lam - lam0);
+		let y = Math.cos(phi1) * Math.sin(this.phi) - Math.sin(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0);
 
 		return [x, y];
 	}
@@ -428,7 +439,7 @@ class MovementsMap {
 		}
 	}
 
-	
+
 	// Event handling
 	// --------------
 
