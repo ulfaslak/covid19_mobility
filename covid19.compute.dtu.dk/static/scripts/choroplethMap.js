@@ -24,6 +24,10 @@ class MovementsMap {
 		this.rwidth = 180;
 		this.rheight = 27;
 
+		// Parse the date / time
+		this.parseDate = d3.timeParse("%Y-%m-%d %H:%M:%S");
+		this.formatDate = d3.timeFormat("%e %B");
+
 		// Color scale
 		this.n_steps = 5;
 		this.colorScale = chroma.scale(['#b71540', '#e55039', '#C4C4C4', '#4a69bd', '#0c2461']);
@@ -97,6 +101,7 @@ class MovementsMap {
 	getBoundingBox() {
 		let lats = [],
 			lons = [];
+
 		this.geoData.forEach(arr => {
 			arr.polygons.forEach(poly => {
 				poly.forEach(point => {
@@ -105,51 +110,78 @@ class MovementsMap {
 				})
 			})
 		})
-		var lats_max_min = this.minMaxArray(lats);
-		var lons_max_min = this.minMaxArray(lons);
+
+		let lats_max_min = this.minMaxArray(lats);
+		let lons_max_min = this.minMaxArray(lons);
+
 		return [lats_max_min.min, lats_max_min.max, lons_max_min.min, lons_max_min.max];
-		//return [Math.min(...lats), Math.max(...lats), Math.min(...lons), Math.max(...lons)];
+	}
+
+	projection([lon, lat]) {
+		// https://mathworld.wolfram.com/GnomonicProjection.html
+		let lam0 = lon / 180 * Math.PI;
+		let phi1 = lat / 180 * Math.PI;
+		let cosc = Math.sin(phi1) * Math.sin(this.phi) + Math.cos(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0);
+		
+		let x = Math.cos(this.phi) * Math.sin(this.lam - lam0) / cosc;
+		let y = Math.cos(phi1) * Math.sin(this.phi) - Math.sin(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0) / cosc;
+
+		return [x, y];
+	}
+
+	proj([lon, lat]) {
+		let pp = this.projection([lon, lat]);
+		let newpp = [this.xScaler(pp[0]), this.yScaler(pp[1])];
+		return newpp;
 	}
 
 	setScaling() {
+		// lat,lon bounding box
 		let bbCoords = this.getBoundingBox();
 		let latMin = bbCoords[0],
 			latMax = bbCoords[1],
 			lonMin = bbCoords[2],
 			lonMax = bbCoords[3],
-			latMid = (latMin + latMax) / 2;
+			latMid = (latMin + latMax) / 2,
+			lonMid = (lonMin + lonMax) / 2;
 
-		let mapWidth = this.haversine(latMid, lonMin, latMid, lonMax);  // at midpoint
-		let mapHeight = this.haversine(latMin, lonMin, latMax, lonMin);
-		
-		console.log("mapWidth", mapWidth*1e-3)
-		console.log("mapHeight", mapHeight*1e-3)
-		console.log("latMin", latMin)
-		console.log("lonMin", lonMin)
-		console.log("latMax", latMax)
-		console.log("lonMax", lonMax)
+		// Center point of projection
+		this.lam = lonMid / 180 * Math.PI;
+		this.phi = latMid / 180 * Math.PI;
 
+		// Projection bounding box
+		let lowerLeft = this.projection([lonMin, latMin]),
+    		upperLeft = this.projection([lonMin, latMax]),
+    		upperRight = this.projection([lonMax, latMax]),
+    		lowerRight = this.projection([lonMax, latMin]);
+
+    	// Extremes
+    	let maxX = Math.min(lowerLeft[0], upperLeft[0]),
+    		minX = Math.max(lowerRight[0], upperRight[0]),
+    		minY = upperLeft[1],
+    		maxY = lowerLeft[1];
+
+    	// Width and height
+		let mapWidth = maxX - minX,
+			mapHeight = maxY - minY;
+
+		// Set scaling according to aspect
 		if (mapWidth < mapHeight) {
-			let newWidth = this.width * mapWidth / mapHeight;
-			let dw = this.width - newWidth;
-			this.x = d3.scaleLinear().domain([lonMin, lonMax]).range([dw/2, dw/2 + newWidth]);
-			this.y = d3.scaleLinear().domain([latMin, latMax]).range([this.height, 0]);
+	    	this.xScaler = d3.scaleLinear().domain([maxY, minY]).range([0, this.height]);
+			this.yScaler = d3.scaleLinear().domain([maxY, minY]).range([this.height, 0]);
 		} else {
-			let newHeight = this.width * mapHeight / mapWidth;
-			let dh = this.height - newHeight;
-			this.x = d3.scaleLinear().domain([lonMin, lonMax]).range([0, this.width]);
-			this.y = d3.scaleLinear().domain([latMin, latMax]).range([this.height - dh/2, dh/2]);
+			this.xScaler = d3.scaleLinear().domain([minX, maxX]).range([this.width, 0]);
+			this.yScaler = d3.scaleLinear().domain([minX, maxX]).range([0, this.width]);
 		}
 	}
 
 	setColorDomain() {
 		this.domain = undefined;
-		if (this.radioOption == "percent_change") {
+		if (this.radioOption == "percent_change")
 			this.domain = [-1, 1];  // reverse scale so blue (good) is less travel
-		}
-		else {
+		else
 			this.domain = [-this.inMax, this.inMax];
-		}
+
 		this.colorScale.domain(this.domain)
 	}
 
@@ -296,7 +328,7 @@ class MovementsMap {
 			.max(N-1)
 			.width(this.width - this.rwidth - 60)
 			.tickValues(d3.range(2, N, 7))
-			.tickFormat(this.idxToDate)
+			.tickFormat(i => this.idxToDate(i))
 			.step(1)
 			.default(this.t)
 			.on('onchange', t => {
@@ -320,15 +352,17 @@ class MovementsMap {
 	// Plot data
 	// ---------
 
-	// DEBUG: rewrite highlightRegion so it draws polygon and rewrite unhighlightRegion so it removes it.
-
 	drawMap() {
 		for (let datum of this.geoData) {
 			let dataExists = this.exists(datum.kommune);
 			this.g.selectAll(datum.kommune)
 				.data(datum.polygons)
 				.enter().append("polygon")
-			    .attr("points", polygon => polygon.map(p => [this.x(p[0]), this.y(p[1])].join(",")).join(" "))
+			    .attr("points", polygon => polygon.map(p => {
+			    		let pp = this.proj(p);
+			    		return [pp[0], pp[1]].join(",")
+					}).join(" ")
+			    )
 			    .attr("class", 'map-polygon-movements')
 			    .attr("id", datum.kommune)
 			    .style('fill', () => {
@@ -393,6 +427,8 @@ class MovementsMap {
 			this.highlightRegion(this.namePolygonMap[this.selected], 'black');
 		}
 	}
+
+	
 	// Event handling
 	// --------------
 
@@ -475,7 +511,11 @@ class MovementsMap {
 		this.selected_polygons.push(
 			d.map(polygon => {
 				return this.g.append("polygon")
-				    .attr("points", polygon.map(p => [this.x(p[0]), this.y(p[1])].join(",")).join(" "))
+				    .attr("points", polygon.map(p => {
+					    	let pp = this.proj(p);
+				    		return [pp[0], pp[1]].join(",")
+				    	}).join(" ")
+				    )
 				    .style('fill', 'none')
 				    .style('stroke', color)
 				    .style('stroke-width', 1)
@@ -563,9 +603,9 @@ class MovementsMap {
 	// ---------
 
 	idxToDate(i) {
-		let days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-		let date = new Date(2020, 2, 28);
-		date.setHours(date.getHours() + 24 * (i-1));
+		let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		let date = this.parseDate(this.datetime[0]);
+		date.setHours(date.getHours() + 24 * i);
 		let dateString = "";
 		dateString += days[date.getDay()] + " ";
 		dateString += date.getDate() + "/";
@@ -593,17 +633,15 @@ class MovementsMap {
 
 		return R * c;
 	}
+
 	minMaxArray(arr) {
-    var max = -Number.MAX_VALUE,
-        min = Number.MAX_VALUE;
-    arr.forEach(function(e) {
-        if (max < e) {
-            max = e;
-        }
-        if (min > e) {
-           min = e;
-       }
-    });
-    return {max: max, min: min};
+	    let max = -Number.MAX_VALUE,
+	        min = Number.MAX_VALUE;
+
+	    arr.forEach(function(e) {
+	        if (max < e) max = e;
+	        if (min > e) min = e;
+	    });
+	    return {max: max, min: min};
     }
 }
