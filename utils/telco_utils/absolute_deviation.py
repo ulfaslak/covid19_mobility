@@ -62,8 +62,8 @@ def run(country):
 
 
     def update_data_out(time, label, data):
-        data_out[time][label]['baseline'].append(sum(data.n_baseline))
-        data_out[time][label]['crisis'].append(sum(data.n_crisis))
+        data_out[time][label]['baseline'].append(int(sum(data.n_baseline)))
+        data_out[time][label]['crisis'].append(int(sum(data.n_crisis)))
         data_out[time][label]['percent_change'].append(float(data.percent_change.mean()))
 
 
