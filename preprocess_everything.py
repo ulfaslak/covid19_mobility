@@ -48,7 +48,8 @@ def run():
         adm_kommune = 'adm2'
         adm_region = 'adm1'
         iso = pycountry.countries.get(name=country).alpha_2
-        #movements.run(country,iso,adm_region,adm_kommune)
+        #tile_csv_to_geojson.run(country,iso,adm_region,adm_kommune)
+        #absolute_deviation.run(country,iso,adm_region,adm_kommune)
         if country == 'Denmark':
             pscripts = [
                 absolute_deviation,
@@ -63,7 +64,7 @@ def run():
             pscripts = [
                 absolute_deviation,
                 gini_over_time,
-                #tile_csv_to_geojson,
+                tile_csv_to_geojson,
                 mobility,
                 stationarity,
                 night_day_difference,
