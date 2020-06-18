@@ -1,10 +1,8 @@
 import pandas as pd
-import numpy as np
 import os, json
 import datetime as dt
 from collections import defaultdict
 from tqdm import tqdm
-import requests as rq
 from countryinfo import CountryInfo
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
@@ -16,7 +14,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             'country', 'date_time','ds', 'n_difference',#'n_baseline', 'n_crisis',
             'density_baseline', 'density_crisis', 'percent_change', 'clipped_z_score'
         ], axis=1)
-        data = data.astype({'lat':float, 'lon':float, 'n_baseline':float, 'n_crisis':float})
+        data = data.astype({'lat':float, 'lon':float,'n_baseline':float, 'n_crisis':float})
         return data
 
 
@@ -96,15 +94,14 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             filename = fn_day + "_" + fn_time + ".csv"
             data = load_prepare(PATH_IN + filename,iso)
             data.index = data['lat'].round(3).astype(str) + "," + data['lon'].round(3).astype(str)
-            #data['region'], updated_region = get_update_region(data, updated_region)
-            #data['kommune'], updated_kommune = get_update_kommune(data, updated_kommune)
-            #import pdb; pdb.set_trace()
+            data = data.drop(['lat', 'lon'], axis=1)
+
             data['n_baseline'] *= N_POP / data.n_baseline.astype(float).sum()
             data['n_crisis'] *= N_POP / data.n_crisis.astype(float).sum()
-            data = data.drop(['lat', 'lon'], axis=1)
             data_day.append(data)
             
             # Add data to data_out
+            #import pdb;pdb.set_trace()
             update_data_out1(fn_time[:2], 'country', data)
             for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
                 update_data_out2(fn_time[:2], adm2, data.loc[data[adm_kommune] == adm2])
