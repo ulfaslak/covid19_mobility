@@ -110,7 +110,7 @@ def run(country):
 
 
     # Time
-    data_out['_meta']['datetime'] = [str(dt.datetime(int(d[-10:-6]), int(d[-5:-3]), int(d[-2:]))) for d in fn_days]
+    data_out['_meta']['datetime'] = fn_days
 
     # Save meta data
     big_location = max(data_out['within'], key=lambda key: data_out['within'][key]['baseline'])
@@ -142,4 +142,4 @@ def run(country):
 
 if __name__ == "__main__":
     os.chdir("../../")
-    run()
+    run('Denmark')
