@@ -116,12 +116,14 @@ class TimeSeriesFigure {
 				.text(() => {
 					if (t == 'allday')
 						return 'All day';
-					if (t == '00')
+					else if (t == '00')
 						return "02–10";
-					if (t == '08')
+					else if (t == '08')
 						return "10–18";
-					if (t == '16')
+					else if (t == '16')
 						return "18–02";
+                    else
+                        return t;
 				})
 				.on('click', () => this.radioClick(t));
 		})

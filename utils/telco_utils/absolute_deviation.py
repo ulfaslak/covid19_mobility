@@ -5,13 +5,13 @@ from collections import defaultdict
 from tqdm import tqdm
 
 def run(country):
-    def load_prepare(path,path_zips):
+    def load_prepare(path,path_zips,ref_date):
         df1 = pd.read_csv(f'{path}df_safe.csv.gz', parse_dates=['date'],
                           dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
         df2 = pd.read_csv(f'{path}df_safe_within.csv.gz', parse_dates=['date'],
                           dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
-        df1 = compute_relative_change(df1)
-        df2 = compute_relative_change(df2)
+        df1 = compute_relative_change(df1,ref_date)
+        df2 = compute_relative_change(df2,ref_date)
         data = pd.concat([df1, df2])
 
         zips = pd.read_csv(f'{path_zips}zipcodes.csv')
@@ -42,7 +42,7 @@ def run(country):
         df_change = pd.merge(trips_by_day_by_place, tot_trips_ref,
                              on=['weekday', 'origin_area_code', 'destination_area_code'],
                              how='left',
-                             suffixes=['', '_ref'])
+                             suffixes=['', '_ref']).fillna(5)
 
         # Compute relative change
         df_change['rel_change'] = (df_change['all'] - df_change['all_ref']) / df_change['all_ref']
@@ -76,6 +76,7 @@ def run(country):
     PATH_IN = f'/data/ctdk/raw/'
     PATH_IN_ZIPS = f'/data/ctdk/notebooks/'
     PATH_OUT = 'covid19.compute.dtu.dk/static/data/'
+    start_date = dt.datetime(2020, 3, 1)
 
     path_boo = os.path.exists(f'{PATH_OUT}{country}_telco_change.json')
 
@@ -83,7 +84,7 @@ def run(country):
         with open(f'{PATH_OUT}{country}_telco_change.json', 'r') as fp:
             data_out = json.load(fp)
             data_out = defaultify(data_out,0)
-        start = len(data_out['allday']['country'])
+        start = len(data_out['within']['country'])
     else:
         data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
         start = 0
@@ -94,8 +95,8 @@ def run(country):
 
     # usage: data_out1['08']['country'].append(value)
     # fn_days = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN) if fn.endswith('.csv')]))
-    data = load_prepare(PATH_IN,PATH_IN_ZIPS)
-    fn_days = data.index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
+    data = load_prepare(PATH_IN,PATH_IN_ZIPS,start_date)
+    fn_days = data[data.index>start_date].index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
 
     #import pdb; pdb.set_trace()
     for fn_day in tqdm(fn_days[start:]):
@@ -116,13 +117,14 @@ def run(country):
 
 
     # Time
-    data_out['_meta']['datetime'] = [str(dt.datetime(int(d[-10:-6]), int(d[-5:-3]), int(d[-2:]))) for d in fn_days]
+    data_out['_meta']['datetime'] = fn_days
 
     # Save meta data
     big_location = max(data_out['within'], key=lambda key: data_out['within'][key]['baseline'])
 
     #Locations
-    data_out['_meta']['locations'] = sorted([*data_out['within']])
+    data_out['_meta']['locations'] = sorted([*data_out['between']])
+    #data_out['_meta']['locations'] = sorted(data['source_kommune'].unique())
 
     #Defaults
     data_out['_meta']['defaults']['timeframe'] = 'between'
@@ -138,7 +140,7 @@ def run(country):
     data_out['_meta']['variables']['country_name'] = country.lower()
 
     #Extra
-    data_out['_meta']['timeframes'] = ['wihtin','between']
+    data_out['_meta']['timeframes'] = ['within','between']
 
 
     # Save data
@@ -148,4 +150,4 @@ def run(country):
 
 if __name__ == "__main__":
     os.chdir("../../")
-    run()
+    run('Denmark')

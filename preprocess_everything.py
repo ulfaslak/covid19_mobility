@@ -64,7 +64,7 @@ def run():
             pscripts = [
                 absolute_deviation,
                 gini_over_time,
-                tile_csv_to_geojson,
+                #tile_csv_to_geojson,
                 mobility,
                 stationarity,
                 night_day_difference,
