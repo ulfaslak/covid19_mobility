@@ -59,12 +59,18 @@ def run(country):
             if depth== 2:
                 return defaultdict(list, {k: v for k, v in d.items()})
 
+    def percent_change(crisis, baseline):
+        if baseline == 0:
+            return 0
+        return (crisis - baseline) / baseline
+
 
 
     def update_data_out(time, label, data):
         data_out[time][label]['baseline'].append(int(sum(data.n_baseline)))
         data_out[time][label]['crisis'].append(int(sum(data.n_crisis)))
-        data_out[time][label]['percent_change'].append(float(data.percent_change.mean()))
+        #data_out[time][label]['percent_change'].append(float(data.percent_change.mean()))
+        data_out[time][label]['percent_change'].append(percent_change(int(sum(data.n_crisis)),int(sum(data.n_baseline))))
 
 
     PATH_IN = f'/data/ctdk/raw/'
