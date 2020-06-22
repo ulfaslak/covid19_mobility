@@ -1,7 +1,9 @@
 let eventDates = {
 	'sweden': [
 		["2020-04-30 00:00:00", 'Valborgmässoafton', 'event1'],
-		["2020-05-01 00:00:00", 'Förste maj, Public holiday in Sweden', 'event2']
+		["2020-05-01 00:00:00", 'Förste maj, Public holiday in Sweden', 'event2'],
+        ["2020-06-19 00:00:00", 'Midsommar, Public holiday in Sweden', 'event3']
+
 	],
 	'denmark': [
 		["2020-03-11 00:00:00", 'PM announces lockdown starting March 16', 'event1'],
