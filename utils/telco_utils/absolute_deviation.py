@@ -124,7 +124,9 @@ def run(country):
     big_location = max(data_out['within'], key=lambda key: data_out['within'][key]['baseline'])
 
     #Locations
-    data_out['_meta']['locations'] = sorted([*data_out['between']])
+    locations = sorted([*data_out['between']])
+    locations.remove('all')
+    data_out['_meta']['locations'] = ['all']+locations
     #data_out['_meta']['locations'] = sorted(data['source_kommune'].unique())
 
     #Defaults
