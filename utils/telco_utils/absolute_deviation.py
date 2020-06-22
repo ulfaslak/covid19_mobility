@@ -114,7 +114,13 @@ def run(country):
             for adm2 in set(data_day_type['source_kommune']):
                 update_data_out(fn_time, adm2, data_day_type[data_day_type['source_kommune'] == adm2])
 
-
+    for fn_time in ['between', 'within']:
+        # Filter
+        if fn_time == 'between':
+            data_type = data[data['origin_area_code'] != data['destination_area_code']]
+        elif fn_time == 'within':
+            data_type = data[data['origin_area_code'] == data['destination_area_code']]
+        update_data_out(fn_time, 'all', data_type)
 
     # Time
     data_out['_meta']['datetime'] = fn_days
