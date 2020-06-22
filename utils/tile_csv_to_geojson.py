@@ -60,7 +60,16 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 		# Get tile sizes
 		sorted_lats = np.sort(data['lat'].unique())
 		latdiffs = sorted_lats[1:] - sorted_lats[:-1]
-		latdiffs = [v for v in latdiffs if v < 0.015]
+		#latdiffs_old = [v for v in latdiffs if v < min(latdiffs)*2]
+		#latdiffs = [v for v in latdiffs if v < 0.015]
+		tmp = []
+		for i, v in enumerate(latdiffs):
+			if (len(tmp) == 0):
+				if (v<min(latdiffs)*1.9):
+					tmp.append(v)
+			elif v < tmp[-1]*1.9:
+				tmp.append(v)
+		latdiffs = tmp
 		dlat = dict(zip(sorted_lats, np.linspace(latdiffs[0], latdiffs[-1], len(sorted_lats))))
 		sorted_lons = np.sort(data['lon'].unique())
 		londiffs = sorted_lons[1:] - sorted_lons[:-1]
