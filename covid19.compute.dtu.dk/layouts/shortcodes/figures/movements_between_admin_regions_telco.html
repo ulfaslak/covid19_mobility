@@ -1,0 +1,36 @@
+<!-- HTML -->
+<!-- ---- -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class="flex">
+	<div id="slider-movementsFig"></div>
+	<div class="radio-timeframe" id='radio-movementsFig'></div>
+</div>
+<div class="flex flex-col">
+	<div class='vis' id='vis-movementsFig'></div>
+</div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsFig'));
+
+	let instance_movements;
+	d3.json("/data/"+sessionStorage.country+"_geojson.json").then(function(geoData) {
+		//d3.json('/data/'+sessionStorage.country+'_movements_between_admin_regions.json').then(function(data) {
+	    d3.json('/data/telco_map.json').then(function(data) {
+			spinnermovements.stop();
+			instance_movements = new MovementsMap(data, geoData, 'movementsFig');
+			instance_movements.setup();
+			instance_movements.drawLayout();
+			instance_movements.drawData();
+		})
+	})
+
+</script>
