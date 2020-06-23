@@ -751,6 +751,7 @@ class DeviationPlot extends TimeSeriesFigure {
 
 	drawPercentChange() {
 		let datum = zip(this.time, this.data[this.timeframe][this.level]['percent_change'])
+        console.log(datum)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'line')
@@ -762,7 +763,7 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr("class", "dot")
 			.attr("id", "data" + this.uniqueId)
 			.attr("cx", d => this.x(d[0]))
-			.attr("cy", d => this.y(d[1]))
+			.attr("cy", function(d) {if (d[1] === "undefined") {return this.y(0)} else {return this.y(d[1])}}.bind(this))
 			.attr("r", 2.5)
 	}
 
@@ -861,15 +862,15 @@ class MultiLinePlot extends DeviationPlot {
 		if (this.mode == 'count') {
 			this.drawHorizontalLineAt(0);    		  // Removed by `clearData()`
 			this.data._meta.locations.forEach(level => {
-			    if (level != 'all')
-				    this.drawCrisisCount(level);              // Removed by `clearData()`
+			if (level != 'all')
+			    this.drawCrisisCount(level);              // Removed by `clearData()`
 			});  
 		} else
 		if (this.mode == 'relative') {
 			this.drawHorizontalLineAt(0);			  // Removed by `clearData()`
 			this.data._meta.locations.forEach(level => {
-			    if (level != 'all')
-				    this.drawCrisisRelative(level);			  // Removed by `clearData()`
+		    if (level != 'all')
+			    this.drawCrisisRelative(level);			  // Removed by `clearData()`
 			});
 		}
 	}
@@ -993,7 +994,8 @@ class MultiLinePlot extends DeviationPlot {
 				return Math.abs(curveY - mouseY);
 			})
 		}
-		let minLevelIdx = diffsY.indexOf(Math.min(...diffsY));
+		// let minLevelIdx = diffsY.indexOf(Math.min(...diffsY));
+        let minLevelIdx = diffsY.indexOf(d3.min(diffsY));
 		let minLevel = locations[minLevelIdx];
 
 		// Load its values into variables for easy reuse
