@@ -30,8 +30,8 @@ class TimeSeriesFigure {
 
 		// Line
 		this.valueline = d3.line()
-			.x(d => this.x(d[0]))
-			.y(d => this.y(d[1]));
+			.x(d => this.x(this.checkUndefined(d[0])))
+			.y(d => this.y(this.checkUndefined(d[1])));
 
 		// Define tooltip div
 		this.tooltip = d3.select("body").append("div")
@@ -321,7 +321,7 @@ class TimeSeriesFigure {
 	// utils
 	// --------------
 	checkUndefined(d) {
-         if (d == 'undefined'){
+         if (d == 'undefined' || d === undefined || isNaN(d)){
             return 0
          } else {
             return d
@@ -574,8 +574,8 @@ class DeviationPlot extends TimeSeriesFigure {
 	setYDomain() {
 		let yMin, yMax;
 		if (this.mode == 'relative') {
-			yMin = d3.min(this.data[this.timeframe][this.level]['percent_change']);
-			yMax = d3.max(this.data[this.timeframe][this.level]['percent_change']);
+			yMin = d3.min(this.data[this.timeframe][this.level]['percent_change'],Number);
+			yMax = d3.max(this.data[this.timeframe][this.level]['percent_change'],Number);
 		
 			if (yMax < 0) yMax = 0;
 			if (yMin > 0) yMin = 0;
@@ -590,7 +590,7 @@ class DeviationPlot extends TimeSeriesFigure {
 			yMax = d3.max([
 				...this.data[this.timeframe][this.level]['baseline'],
 				...this.data[this.timeframe][this.level]['crisis']
-			])
+			],Number)
 
 			this.yrange = [
 				yMin,
@@ -746,8 +746,9 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr("class", "dot")
 			.attr("id", "data" + this.uniqueId)
 			.attr("cx", d => this.x(d[0]))
-			.attr("cy", d => this.y(d[1]))
+			.attr("cy", d => this.y(this.checkUndefined(d[1])))
 			.attr("r", 2.5)
+            .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
 	}
 
 	drawPercentChangeTrendline() {
@@ -761,7 +762,6 @@ class DeviationPlot extends TimeSeriesFigure {
 
 	drawPercentChange() {
 		let datum = zip(this.time, this.data[this.timeframe][this.level]['percent_change'])
-        console.log(datum)
 		this.svg.append("path")
 			.datum(datum)
 			.attr('class', 'line')
@@ -773,8 +773,9 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr("class", "dot")
 			.attr("id", "data" + this.uniqueId)
 			.attr("cx", d => this.x(d[0]))
-			.attr("cy", function(d) {if (d[1] === "undefined") {return this.y(0)} else {return this.y(d[1])}}.bind(this))
+			.attr("cy", d => this.y(this.checkUndefined(d[1])))
 			.attr("r", 2.5)
+            .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
 	}
 
 
@@ -803,9 +804,9 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('y1', mouseY)
 			.attr('y2', () => {
 				if (this.mode == 'relative')
-					return this.y(yvals[2])
+					return this.y(this.checkUndefined(yvals[2]))
 				else if (this.mode == 'count')
-					return this.y(yvals[0])
+					return this.y(this.checkUndefined(yvals[0]))
 			})
 
 		// Display the tooltip
