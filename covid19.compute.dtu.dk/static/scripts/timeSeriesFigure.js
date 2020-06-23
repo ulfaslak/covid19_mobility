@@ -318,6 +318,16 @@ class TimeSeriesFigure {
 		}
 	}
 
+	// utils
+	// --------------
+	checkUndefined(d) {
+         if (d == 'undefined'){
+            return 0
+         } else {
+            return d
+         }
+    }
+
 }
 
 
