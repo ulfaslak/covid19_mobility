@@ -148,7 +148,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     data_out2['_meta']['datetime'] = [str(dt.datetime(int(d[-10:-6]), int(d[-5:-3]), int(d[-2:]))) for d in fn_days]
 
     # Save meta data
-    big_location = max(data_out2['allday'], key=lambda key: data_out2['allday'][key]['baseline'])
+    big_location = max(data_out2['allday'], key=lambda key: [x for x in data_out2['allday'][key]['baseline'] if x != 'undefined'])
 
     #Locations
     data_out2['_meta']['locations'] = sorted([*data_out2['00']])
