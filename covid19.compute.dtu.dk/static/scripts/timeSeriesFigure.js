@@ -861,13 +861,15 @@ class MultiLinePlot extends DeviationPlot {
 		if (this.mode == 'count') {
 			this.drawHorizontalLineAt(0);    		  // Removed by `clearData()`
 			this.data._meta.locations.forEach(level => {
-				this.drawCrisisCount(level);              // Removed by `clearData()`
+			    if (level != 'all')
+				    this.drawCrisisCount(level);              // Removed by `clearData()`
 			});  
 		} else
 		if (this.mode == 'relative') {
 			this.drawHorizontalLineAt(0);			  // Removed by `clearData()`
 			this.data._meta.locations.forEach(level => {
-				this.drawCrisisRelative(level);			  // Removed by `clearData()`
+			    if (level != 'all')
+				    this.drawCrisisRelative(level);			  // Removed by `clearData()`
 			});
 		}
 	}
