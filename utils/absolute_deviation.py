@@ -6,6 +6,20 @@ from tqdm import tqdm
 from countryinfo import CountryInfo
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
+
+    class defaultlist(list):
+        def __init__(self, fx):
+            self._fx = fx
+        def _fill(self, index):
+            while len(self) <= index:
+                self.append(self._fx())
+        def __setitem__(self, index, value):
+            self._fill(index)
+            list.__setitem__(self, index, value)
+        def __getitem__(self, index):
+            self._fill(index)
+            return list.__getitem__(self, index)
+
     def load_prepare(path,iso):
         data = pd.read_csv(path)
         data = data[(data != "\\N").all(1)]
@@ -19,7 +33,10 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
 
     def percent_change(v0, v1):
-        return (v1 - v0) / v0
+        if (v0 != 'undefined') and (v1 != 'undefined'):
+            return (v1 - v0) / v0
+        else:
+            return 'undefined'
 
     def getvalid(row):
         notnull = row.notnull()
@@ -33,11 +50,17 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def defaultify(d, depth = 0):
         if isinstance(d, dict):
             if depth == 0:
-                return defaultdict(lambda: defaultdict(lambda: defaultdict(list)), {k: defaultify(v,depth+1) for k, v in d.items()})
+                return defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined"))), {k: defaultify(v,depth+1) for k, v in d.items()})
             if depth ==1:
-                return defaultdict(lambda: defaultdict(list), {k: defaultify(v, depth + 1) for k, v in d.items()})
+                return defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined")), {k: defaultify(v, depth + 1) for k, v in d.items()})
             if depth== 2:
-                return defaultdict(list, {k: v for k, v in d.items()})
+                return defaultdict(lambda: defaultlist(lambda: "undefined"), {k: v for k, v in d.items()})
+        elif isinstance(d, list):
+            tmp = defaultlist(lambda: "undefined")
+            tmp.extend(d)
+            return tmp
+        else:
+            return d
 
     N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
@@ -46,12 +69,11 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             (sum(abs(data.n_crisis - data.n_baseline)) / 2) / sum(data.n_baseline)
         )
 
-    def update_data_out2(time, label, data):
-        data_out2[time][label]['baseline'].append(sum(data.n_baseline))
-        data_out2[time][label]['crisis'].append(sum(data.n_crisis))
-        data_out2[time][label]['percent_change'].append(
-            percent_change(data_out2[time][label]['baseline'][-1], data_out2[time][label]['crisis'][-1])
-        )
+    def update_data_out2(time, label, data,idx):
+        data_out2[time][label]['baseline'][idx] = sum(data.n_baseline)
+        data_out2[time][label]['crisis'][idx] = sum(data.n_crisis)
+        data_out2[time][label]['percent_change'][idx] = percent_change(data_out2[time][label]['baseline'][-1], data_out2[time][label]['crisis'][-1])
+
 
 
     PATH_IN = f'Facebook/{country}/population_tile/'
@@ -70,7 +92,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         start = len(data_out1['allday']['country'])
     else:
         data_out1 = defaultdict(lambda: defaultdict(list))
-        data_out2 = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+        data_out2 = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined"))))
         start = 0
 
     data_out2['_meta']['defaults'] = {}
@@ -85,7 +107,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     fn_days = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN) if fn.endswith('.csv')]))
 
     #import pdb; pdb.set_trace()
-    for fn_day in tqdm(fn_days[start:]):
+    for idx, fn_day in tqdm(enumerate(fn_days[start:]), total=len(fn_days[start:])):
            
         data_day = []
         for fn_time in ['0000', '0800', '1600']:
@@ -104,7 +126,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             #import pdb;pdb.set_trace()
             update_data_out1(fn_time[:2], 'country', data)
             for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
-                update_data_out2(fn_time[:2], adm2, data.loc[data[adm_kommune] == adm2])
+                update_data_out2(fn_time[:2], adm2, data.loc[data[adm_kommune] == adm2],idx)
         
         # Concat
         data_allday = pd.concat(data_day, join="outer", axis=1)
@@ -118,7 +140,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         # Add data to data_out
         update_data_out1('allday', 'country', data)
         for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
-            update_data_out2('allday', adm2, data.loc[data[adm_kommune] == adm2])
+            update_data_out2('allday', adm2, data.loc[data[adm_kommune] == adm2],idx)
 
 
     # Time
