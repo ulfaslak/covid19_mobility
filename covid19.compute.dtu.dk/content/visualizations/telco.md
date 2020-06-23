@@ -6,7 +6,7 @@
 <!-- {{< vspace 20 >}} -->
 
 
-<!--{{< figures/movements_between_admin_regions_telco >}}-->
 {{< figures/change_telco >}}
 {{< figures/change_all_telco >}}
+{{< figures/movements_between_admin_regions_telco >}}
 

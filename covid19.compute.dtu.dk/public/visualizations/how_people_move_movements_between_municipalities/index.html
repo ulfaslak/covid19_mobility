@@ -8,7 +8,7 @@
 <meta property="og:description" content="Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/how_people_move_movements_between_municipalities/" />
-<meta property="article:modified_time" content="2020-06-08T09:58:11+02:00" />
+<meta property="article:modified_time" content="2020-06-16T13:53:03+02:00" />
 <title>How People Move Movements Between Municipalities | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -66,10 +66,14 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><em>May</em>
 <ul>
-<li><a href="/posts/going_to_work/">18: Back to work</a></li>
-<li><a href="/posts/spread_of_population/">14: Population re-distributed!</a></li>
-<li><a href="/posts/change_in_population_sizes/">11: What&rsquo;s happening in my city?</a></li>
-<li><a href="/posts/population_landscape/">7: Population landscape</a></li>
+<li><a href="/posts/going_to_work/">18 - <em>Denmark</em>:<br>
+Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14 - <em>Denmark</em>:<br>
+Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11 - <em>Denmark</em>: <br>
+What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7 - <em>Denmark</em>: <br>
+Population landscape</a></li>
 </ul>
 </li>
 </ul>
@@ -426,13 +430,12 @@ https://github.com/alex-shpak/hugo-book
 </script>
 
 <!-- raw HTML omitted -->
-<p>Using the Movement Maps we can visualize the distribution of the working population, and where people work relative to where they live.</p>
-<p>The Movement Maps segment daily travel into three time windows. Specifically, for time window <em>t</em>, the travel count from region/tile <em>i</em> into <em>j</em> represents the number of active Facebook users that spend the majority of their time during time window <em>t</em> - 1 inside <em>i</em> and the majority of their time during time window <em>t</em> inside <em>j</em>.</p>
-<p>As discussed in &lsquo;<strong>Data</strong> &gt; Movement Maps&rsquo;, this choice of aggregation from the Facebook Data for Good team costs us the ability to accurately assess the amount of travel happening between and within regions.</p>
-<p>However, something we can reliably quantify is, on a given day, what share of the population <strong>spends the working hours away from home</strong>. Specifically, given the way travel is aggregated in the Movement Maps, travel counts into regions/tiles in the night hours (16–00 window) represents the number of people that spend the majority of their working hours (8—16) somewhere else. It is fair to believe that most of these travel counts represent people <strong>going to work</strong>.</p>
-<p><strong>The map below</strong> compares, how many people are going to work in each municipality before and after the lockdown. By default it displays <em>Change</em>, which is the percentage deviation between the size of the working population on the date selected with the slider, and the corresponding baseline (before lockdown). Clicking <em>On date</em> shows value for the date selected in the slider and <em>Baseline</em> for the corresponding baseline day. You can click any municipality to reveals where people who live there go to work.</p>
-<p>A general pattern you will find is that people living in urban municipalities also work there, whereas people living in municipalities next to more urbanized municipalities will work in these.</p>
-<p>When moving the slider through time you will see that the deviation—the <em>change</em>—between <em>Baseline</em> and <em>On date</em> decreases. This is the same pattern that we summarize in &lsquo;<strong>Visualizations</strong> &gt; Staying home&rsquo; and &lsquo;<strong>Visualizations</strong> &gt; Going out&rsquo;.</p>
+<p>Using the Movement Maps we can visualize the distribution where people spend their days relative to their nights. While not accurate in every single case, it&rsquo;s perhaps easier to say that we are able to see where people <em>live</em> (spend their nights) and <em>work</em> (spend their nights). Or even more compactly, that we can look at commuting patterns over time.</p>
+<p>Based on three daily time windows, the <em>Movement Maps</em> provide a &ldquo;travel count&rdquo; for some area <em>i</em> which is the number of active Facebook uses who spent the majority of the previous time window inside some other area <em>j</em>. As discussed in &lsquo;<strong>Data</strong> &gt; Movement Maps&rsquo;, this choice of aggregation by Facebook <strong>implies that we cannot accurately assess the full amount of travel happening between and within regions</strong>.</p>
+<p>As noted above, however, we can reliably quantify which share of the population <strong>spends the working hours away from home</strong>. Specifically, given the way travel is aggregated in the Movement Maps, travel counts into regions/tiles in the night hours (16–00 window) represents the number of people that spend the majority of their working hours (8—16) somewhere else. Thus, it&rsquo;s not unreasonable to think of these travel counts as representing people <strong>commuting</strong>.</p>
+<p><strong>The map below</strong> looks at day-to-day between-municipality commuting patterns before and after the lockdown. By default the map displays <em>Change</em>, which is the percentage deviation between the size of the working population on the date selected with the slider, and the corresponding baseline (before lockdown). Clicking <em>On date</em> shows value for the date selected in the slider and <em>Baseline</em> for the corresponding baseline day. You can click any municipality to reveal where people who live there go to work.</p>
+<p>A general pattern is that people who live in urban municipalities also work where they live, whereas people who live in municipalities next to more urbanized municipalities tend to work away from their home municipality.</p>
+<p>When moving the slider through time it is clear that that the deviation—the <em>change</em>—between <em>Baseline</em> and <em>On date</em> decreases. This is the same pattern that we summarize in &lsquo;<strong>Visualizations</strong> &gt; Staying home&rsquo; and &lsquo;<strong>Visualizations</strong> &gt; Going out&rsquo;.</p>
 
 
 <!DOCTYPE html>
