@@ -108,7 +108,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
     #import pdb; pdb.set_trace()
     for idx, fn_day in tqdm(enumerate(fn_days[start:]), total=len(fn_days[start:])):
-           
+        idx_date = idx + start   
         data_day = []
         for fn_time in ['0000', '0800', '1600']:
            
@@ -121,12 +121,12 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             data['n_baseline'] *= N_POP / data.n_baseline.astype(float).sum()
             data['n_crisis'] *= N_POP / data.n_crisis.astype(float).sum()
             data_day.append(data)
-            
+             
             # Add data to data_out
             #import pdb;pdb.set_trace()
             update_data_out1(fn_time[:2], 'country', data)
             for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
-                update_data_out2(fn_time[:2], adm2, data.loc[data[adm_kommune] == adm2],idx)
+                update_data_out2(fn_time[:2], adm2, data.loc[data[adm_kommune] == adm2],idx_date)
         
         # Concat
         data_allday = pd.concat(data_day, join="outer", axis=1)
@@ -140,7 +140,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         # Add data to data_out
         update_data_out1('allday', 'country', data)
         for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
-            update_data_out2('allday', adm2, data.loc[data[adm_kommune] == adm2],idx)
+            update_data_out2('allday', adm2, data.loc[data[adm_kommune] == adm2],idx_date)
 
 
     # Time
