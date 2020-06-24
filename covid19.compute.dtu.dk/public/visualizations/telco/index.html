@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2."><meta property="og:title" content="" />
+<meta property="og:description" content="Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/telco/" />
+<meta property="article:modified_time" content="2020-06-22T14:34:31+02:00" />
+<title>Telco | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.8b34b0846c7c6544613b2301559d146e1ddebf7ee7068ccc53d2fd0e9b3701b9.css" integrity="sha256-izSwhGx8ZURhOyMBVZ0Ubh3ev37nBozMU9L9Dps3Abk=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18 - <em>Denmark</em>:<br>
+Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14 - <em>Denmark</em>:<br>
+Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11 - <em>Denmark</em>: <br>
+What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7 - <em>Denmark</em>: <br>
+Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data/movement_maps/">Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Telco</strong>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="movements-between-municipalities"><strong>Movements between municipalities</strong></h1>
+<span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
+
+
+
+
+<style type="text/css">
+	.vis {
+		margin: 0 auto;
+		height: 370px;
+	}
+	.line-baseline { 
+		stroke: black;
+		stroke-width: 1.5;
+		fill: none;
+		stroke-dasharray: 10 5;
+		opacity: 0.2;
+	}
+	.line-horizontal { 
+		stroke: #bdc3c7;
+		stroke-width: 1;
+		fill: none;
+		stroke-dasharray: 10 5;
+	}
+	.line-crisis { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.line-changeall { 
+		fill: none;
+		stroke: black;
+		stroke-width: 1;
+		stroke-opacity: 0.7;
+	}
+	.line-tooltip {
+		stroke: 'black';
+		stroke-dasharray: 5 2.5;
+		stroke-width: 1.5;
+	}
+	.line { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.rect-tooltip {
+		fill: white;
+		fill-opacity: 0;
+		z-index: 1;
+	}
+	.trendline {
+		fill: none; 
+		stroke: red;
+		stroke-width: 2.5;
+	}
+	.histEvent {
+		stroke: grey;
+		stroke-width: 2;
+		stroke-opacity: 1;
+	}
+	.histEventDot {
+		fill: grey;
+	}
+	.map-polygon-movements {
+		stroke: white;
+		stroke-width: 0.3;
+	}
+	.map-polygon-movements-circumference {
+		stroke: black;
+		stroke-width: 1;
+	}
+	.dot-baseline {
+		fill: white;
+		stroke: #2c3e50;
+		stroke-width: 2;
+		opacity: 0;
+	}
+	.dot {
+		fill: black;
+		opacity: 0.5;
+	}
+	.legend-label {
+		text-anchor: start;
+		font-weight: 300;
+		cursor: pointer;
+	}
+	.right-legend {
+		font-size: 12px;
+	}
+	.tooltip {	
+		position: absolute;
+		top: 0;
+		line-height: 1;
+		font-weight: 500;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 2px;	
+	}
+	.toggle {
+		-webkit-user-select: none;          
+		-moz-user-select: none;  
+		-ms-user-select: none;  
+		user-select: none;  
+	}
+	.select-place {
+		position: absolute;
+		right: 0px;
+	}
+	.flex {
+		display: flex;
+	}
+	.flex-col {
+		flex-direction: column;
+	}
+	.radio-rect {
+		cursor: pointer;
+		fill: #636e72;
+	}
+
+	.radio-rect.selected {
+		fill: #0984e3;
+	}
+
+	.radio-text {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.radio-text.selected {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+	}
+
+@keyframes spinner-line-fade-quick {
+  0%, 39%, 100% {
+    opacity: 0.25;  
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+</style>
+
+
+
+
+
+
+<div style="max-height: 0px">
+	<svg>
+	  <defs>
+	    <pattern id="lines" height="10" width="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="4" x2="10" y2="4" stroke-width="2" stroke="black"/>
+	    </pattern>
+	    <pattern id="thinlines" height="5" width="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="2" x2="10" y2="2" stroke-width="0.5" stroke="black"/>
+	    </pattern>
+	  </defs>
+	</svg>
+</div>
+
+
+
+
+
+
+
+<script src="/dist/d3.v5.min.js"></script>
+<script src="/dist/d3-simple-slider.min.js"></script>
+<script src="/dist/chroma.min.js"></script>
+<script src="/dist/spin.min.js"></script>
+
+
+<script src="/scripts/eventDates.js"></script>
+<script src="/scripts/timeSeriesFigure.js"></script>
+<script src="/scripts/choroplethMap.js"></script>
+
+<script>
+
+	
+	
+
+	
+	let spinnerOpts = {
+		lines: 8, 
+		length: 0, 
+		width: 8, 
+		radius: 18, 
+		corners: 10, 
+		color: '#313131', 
+		fadeColor: 'transparent', 
+		speed: 1, 
+		rotate: 0, 
+		animation: 'spinner-line-fade-quick', 
+	};
+
+	
+	function adjustBaseline(datum) {
+		datumy = d3.range(7).map(() => []);
+		datum.forEach((d, i) => {
+		    datumy[i%7].push(d[1]);
+		});
+		datumy = datumy.map(d => d3.mean(d));
+		return datum.map((d, i) => [d[0], datumy[i%7]]);
+	}
+
+	
+	function zip(a, b) {
+		return a.map((e, i) => [e, b[i]]);
+	}
+
+	function round(val, order) {
+		return Math.round(val * order) / order;
+	}
+
+	Date.prototype.addDays = function(n) {
+	    let date = new Date(this.valueOf());
+	    date.setDate(date.getDate() + n);
+	    return date;
+	}
+
+	function weekavg(y) {
+		let y_avg = [];
+		y.forEach((v, i) => {
+			let i0 = Math.max(0, i-3);
+			let i1 = Math.min(y.length-1, i+4);
+			y_avg.push(d3.mean(y.slice(i0, i1)));
+		});
+		return y_avg;
+	}
+
+	function insertKSeperators(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+
+    
+    if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
+    function createWorld() {
+        var countries = []
+        d3.json("/data/countries.json").then(function(data){
+            countries = data.sort();
+            body = document.getElementsByClassName('container flex')[0];
+            toc = document.createElement('aside');
+            toc.className = "book-toc";
+            nav = document.createElement('nav');
+            nav.id = "countries";
+            ul = document.createElement('ul');
+            countries.forEach(function (item,index){
+                li = document.createElement('li');
+                a = document.createElement('a');
+                a.text = item;
+                a.style.cursor = "pointer";
+                if (item != sessionStorage.country) {
+                    a.onclick = function() {
+                        sessionStorage.country=item;
+                        window.location.reload();
+                    };
+                } else {
+                    a.style.color = "red";
+                }   
+                li.appendChild(a);
+                ul.appendChild(li);
+            });
+            nav.appendChild(ul);
+            toc.appendChild(nav);
+            body.appendChild(toc);
+        })}
+    createWorld();
+</script>
+
+<!-- raw HTML omitted -->
+<p>
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-changeFig'></div>
+	<div class="select-place" id='select-changeFig'></div>
+</div>
+<div class='vis' id='vis-change'></div>
+
+
+
+
+
+
+<script>
+
+	let spinnerchange = new Spinner(spinnerOpts).spin(document.getElementById('vis-change'));
+
+	let instance_change;
+	d3.json('/data/'+sessionStorage.country+'_telco_change.json').then(function(data) {
+		spinnerchange.stop();
+		instance_change = new DeviationPlot(data, 'vis-change', 'changeFig');
+		instance_change.setup();
+		instance_change.drawLayout();
+		instance_change.drawData();
+	})
+
+</script>
+
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-changeAllFig'></div>
+	<div class="select-place" id='select-changeAllFig'></div>
+</div>
+<div class='vis' id='vis-changeAll'></div>
+
+
+
+
+
+
+<script>
+
+	let spinnerchangeAll = new Spinner(spinnerOpts).spin(document.getElementById('vis-changeAll'));
+
+	let instance_changeAll;
+	d3.json('/data/'+sessionStorage.country+'_telco_change.json').then(function(data) {
+        for (var key in data){
+            if (key != "_meta"){
+                delete data[key].all;
+            }
+        }
+		spinnerchangeAll.stop();
+		instance_changeAll = new MultiLinePlot(data, 'vis-changeAll', 'changeAllFig');
+		instance_changeAll.setup();
+		instance_changeAll.drawLayout();
+		instance_changeAll.drawData();
+	})
+
+</script>
+
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div id="slider-movementsFig"></div>
+	<div class="radio-timeframe" id='radio-movementsFig'></div>
+</div>
+<div class="flex flex-col">
+	<div class='vis' id='vis-movementsFig'></div>
+</div>
+
+
+
+
+
+
+<script>
+
+	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsFig'));
+
+	let instance_movements;
+	d3.json("/data/"+sessionStorage.country+"_geojson.json").then(function(geoData) {
+		
+	    d3.json('/data/telco_map.json').then(function(data) {
+			spinnermovements.stop();
+			instance_movements = new MovementsMap(data, geoData, 'movementsFig');
+			instance_movements.setup();
+			instance_movements.drawLayout();
+			instance_movements.drawData();
+		})
+	})
+
+</script>
+</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
