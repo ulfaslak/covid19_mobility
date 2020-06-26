@@ -9,6 +9,8 @@ type: post
 
 {{< vspace 20 >}}
 
+![png](/MyCover.png)
+
 ## Gaming during COVID-19 is an intense affair
 
 It might seem logical that the amount of gaming is going to go up when you instruct the majority of the industrialized world to stay home 24/7 for several months. 
