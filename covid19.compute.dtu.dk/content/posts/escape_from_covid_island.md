@@ -17,7 +17,7 @@ The COVID-19 crisis has indeed come to define an extraordinary moment for online
 
 {{< tweet 1265358231326658560 >}}
 
-The assumption that games might cheer you up, on day 34 of sitting alone in your small apartment, has even been embraced by the World Health Organization (WHO). WHO endorsed gaming as an alternative to physical sociality with the hashtag [#PlayApartTogether](https://womenlovetech.com/gaming-industry-launches-playaparttogether-in-fight-against-covid-19/) in an effort to nudge people to stay at home. They worked with gaming companies to incorporate WHO information about COVID-19 into online games and platforms. This can be considered a strong statement from the WHO, given that [gaming disorder](https://www.who.int/news-room/q-a-detail/gaming-disorder) was only included in the 11th Revision of the International Classification of Diseases (ICD-11) in 2018.
+The assumption that games might cheer you up, on day 34 of sitting alone in your small apartment, has even been embraced by the World Health Organization (WHO). WHO endorsed gaming as an alternative to physical sociality with the hashtag [#PlayApartTogether](https://womenlovetech.com/gaming-industry-launches-playaparttogether-in-fight-against-covid-19/) in an effort to nudge people to stay at home. They worked with gaming companies to incorporate WHO information about COVID-19 into online games and platforms. This can be considered a strong statement from the WHO, given that [gaming disorder](https://www.who.int/news-room/q-a-detail/gaming-disorder) was just included in the 11th Revision of the International Classification of Diseases (ICD-11) in 2018.
 
 Gaming can indeed get pretty intense! 
 
@@ -25,7 +25,7 @@ When we saw that gaming was used as a **gateway to escape from the pandemic** by
 
 ## Basic stats and overview
 
-It comes as no surprise that the gaming industry has registered a staggering boost in online activity of players from all over the world. Let's start with taking some overall stats documenting this surge:
+It comes as no surprise that the gaming industry has registered a staggering boost in online activity of players from all over the world. Let's start with some overall stats documenting this surge:
 1.	In the United States, reports claimed a [75% increase in gaming usage](https://www.hollywoodreporter.com/news/gaming-usage-up-75-percent-coronavirus-outbreak-verizon-reports-1285140) during the coronavirus outbreak;
 2.	Italy registered a 70% increase in internet use, credited to online gaming and especially to [Fortnite and Call of Duty](https://www.forbes.com/sites/paultassi/2020/03/13/fortnite-and-call-of-duty-straining-italian-internet-as-coronavirus-keeps-kids-home/#155e144d357e);
 3.	Call of Duty: Warzone has surpassed [30 million players](https://www.forbes.com/sites/erikkain/2020/03/20/as-social-distancing-intensifies-call-of-duty-warzone-crosses-30-million-players/#57ece77d1a3d) after just ten days from its release, partially because of the measures put in place to fight the COVID-19 pandemic;
@@ -41,7 +41,7 @@ The Steam Database reported that Steam reached its all-time record of users conn
 
 {{< tweet 1239180882826715136 >}}
 
-Over that weekend, there were no special Steam releases. Thus, the spike in the number of concurrent users on the platform was most likely due to people staying at home, social-distancing and following quarantine guidelines.
+Over that weekend, there were no special Steam releases or sales. Thus, the spike in the number of concurrent users on the platform was most likely due to people staying at home, social-distancing and following quarantine guidelines.
 
 Let's take a closer look at what happened that weekend. The rise in concurrent users actually started earlier, as levels on Friday the 13th were already above the weekday average. That something new and different was happening became clear on March 14, when the number of users on Steam (i.e. online on the platform, browsing for news or games, etc.) and In-Game (i.e. playing a game) went beyond 19.7M and 6.2M respectively. This was not a one-time event! As we can see from the figure below, the number of concurrent users both on Steam and In-Game kept increasing in the whole month following March 14.
 
@@ -73,7 +73,7 @@ As a matter of fact, among the thousands of games that Steam has, only a handful
 
 ![png](/output_14_0.png)
 
-These gaming titans continue to dominate the field. Very well, but in order to dig into what has actually **changed** during the lockdown, we will look into the *relative* changes. Which games have experienced the most influx or user drops? 
+These gaming titans continue to dominate the field. Very well, but in order to dig into what has actually **changed** during the lockdown, we'll look into the *relative* changes. Which games have experienced the most influx or user drops? 
 
 At a general level, consider the top 50 popular games on Steam and the relative change (in percent) of their average number of In-Game users in the months before and after March 14 (figure below). Here, it becomes very clear that the effect of the lockdown was diverse. We see games that have drastically increased their number of concurrent players, such as *Stellaris* and *Football Manager 2020* with 207% and 103.9% more users than before, as well as games that faced a loss in the number of players. This is the case for PUBG. Despite being the third game in the ranking and accounting for 9.7% of all gamers on Steam, PUBG saw a 1.7% drop in concurrent users in the month following March 14. Other games, such as *Monster Hunter: World* and *Red Dead Redemption 2* faced an even bigger loss of more than 10% of users.
 
@@ -99,9 +99,9 @@ Below, you can find the updated list of games and the respective relative differ
 
 ![png](/output_20_0.png)
 
-Interestingly, the most popular games such as *CS:GO* and *Dota 2* did not experience the largest players' turnout in relative terms. At the top of the ranking (reaching more than 60% increase in players) are: *Age of Empires II*, the old favorite *Counter-Strike*, *Sid Meier's Civilization* (*V* and *VI*), and *Terraria*.
+Interestingly, the most popular games such as *CS:GO* and *Dota 2* did not experience the largest players' turnout in relative terms. *CS:GO* gained about 37.1% more users, while *Dota 2*, second in the ranking of the most popular games, only gained 13.5% more users. It is possible that the game genre also played a role in the differnt players' turnout that *CS:GO* and *Dota 2* recorded. The former is a multiplayer First-Person Shooter (FPS) game, while the latter is a Multiplayer Online Battle Arena (MOBA) game, whose rules and complexity makes it harder for newcomers to play. Moreover, transitioning to levels and ranks in *Dota 2* is usually found less smooth than similar games, such as *League of Legends*, whose terms and concepts are clearer and easier to learn.
 
-An interesting observation is that three of these are **strategy games focused on *creating* a civilization or an empire from scratch**.
+At the top of the ranking (reaching more than 60% increase in players) are: *Age of Empires II*, the old favorite *Counter-Strike*, *Sid Meier's Civilization* (*V* and *VI*), and *Terraria*. An interesting observation is that three of these are **strategy games focused on *creating* a civilization or an empire from scratch**.
 
 ## Is the lockdown effect lasting?
 
@@ -121,7 +121,7 @@ In the case of **Terraria**, whose number of players kept increasing during the 
 
 **PAYDAY 2** also saw a rise in players during the lockdown period. This rise was then followed by a new increase in the number of players following April 28-29. On these two dates the [update 199.3](https://steamcommunity.com/games/218620/announcements/detail/2197137123022851331) was released followed by a [Steam sale](https://steamcommunity.com/games/218620/announcements/detail/2198263655981661117) with discounts up to 80%.
 
-In summary, we see an overall uptick in gaming time, cleverly exploited by the gaming companies using classic marketing strategies, such as free play and expansions to popular games. We will discuss more about this topic at the end of the post.
+In summary, we see an overall uptick in gaming time, cleverly exploited by the gaming companies using classic marketing strategies, such as free play and expansions to popular games. We'll discuss more about this topic at the end of the post.
 
 ## Outliers to outline
 
