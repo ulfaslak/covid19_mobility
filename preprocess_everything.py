@@ -49,8 +49,8 @@ def run():
         adm_region = 'adm1'
         iso = pycountry.countries.get(name=country).alpha_2
         #tile_csv_to_geojson.run(country,iso,adm_region,adm_kommune)
-        absolute_deviation.run(country,iso,adm_region,adm_kommune)
-        continue
+        #absolute_deviation.run(country,iso,adm_region,adm_kommune)
+        #continue
         if country in ['Denmark','Sweden']:
             pscripts = [
                 absolute_deviation,
