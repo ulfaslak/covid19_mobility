@@ -9,6 +9,7 @@ type: post
 {{< vspace 20 >}}
 
 ![png](/MyCover.png)
+{{< fontsize 12>}}Cover inspired by *Escape From Monkey Island* by LucasArts{{< /fontsize >}}
 
 ## Gaming during COVID-19 is an intense affair
 
@@ -47,20 +48,24 @@ Over that weekend, there were no special Steam releases or sales. Thus, the spik
 Let's take a closer look at what happened that weekend. The rise in concurrent users actually started earlier, as levels on Friday the 13th were already above the weekday average. That something new and different was happening became clear on March 14, when the number of users on Steam (i.e. online on the platform, browsing for news or games, etc.) and In-Game (i.e. playing a game) went beyond 19.7M and 6.2M respectively. This was not a one-time event! As we can see from the figure below, the number of concurrent users both on Steam and In-Game kept increasing in the whole month following March 14.
 
 ![png](/output_4_0.png)
+{{< fontsize 12>}}Number of daily concurrent users on Steam (red line) and In-Game (orange line).{{< /fontsize >}}
 
 Not only did the number of concurrent users increase of about 30% in this period of time, but many other patterns changed. If we look at the number of people on Steam before mid-March, there was a clear weekly pattern with weekend activity dominating the picture. After the lockdown, that trend basically disappears. The number of concurrent users on Steam, before March 14, was consistently about 13.4% more during weekends than weekdays. This difference leveled out in just a month after March 14, reaching 0.7% more users during weekends, and especially till the end of May, when the difference essentially vanishes: just 0.04% more users during the weekends.
 
 ![png](/output_6_0.png)
+{{< fontsize 12>}}Left panel: Average number of concurrent users on Steam before (red bars) and after (orange bars) mid-March, divided by day of the week. Right panel: Relative change in the number of concurrent users (in percent) before (red line) and after (orange line) mid-March, with respect to the first day of the week.{{< /fontsize >}}
 
 When we consider In-Game users, we still see weekend/weekday patterns, where the difference between weekdays and weekend only decreased from 21.8% to 12%. This is likely another effect of lockdown policies and specifically of working from home. When you're working from home, it is easy to surf webpages and keep them open while working (corresponding to the huge number of Steam users). When it comes to actually playing a game, however, it is more difficult to work at the same time.
 
 ![png](/output_8_0.png)
+{{< fontsize 12>}}Left panel: Average number of concurrent users In-Game before (red bars) and after (orange bars) mid-March, divided by day of the week. Right panel: Relative change in the number of concurrent users (in percent) before (red line) and after (orange line) mid-March, with respect to the first day of the week.{{< /fontsize >}}
 
 ## Life is slowly going back to normal
 
 So how did behavior change before and after mid-April, when many countries set out to reopen? A neat way to analyze this is by computing the change (in percent) in the number of users on Steam and In-Game over time relative to a **baseline** of behavior before the lockdown (see the figure below). We took into account data about concurrent users in the month before March 14, to compute the average number of users per day of the week and used this as our baseline. Here, we can see that the platform continued to experience growth in the number of users both on Steam and In-Game until it settled in mid-April, peaking at a staggering 47.4% and 45.9% increase respectively. Then the trend started to slowly decrease, especially for In-Game users, who now returned to levels comparable to those of mid-March. (Note that since the baseline has weekends with more usage, we can see those as dips in the relative-change plots).
 
 ![png](/output_10_0.png)
+{{< fontsize 12>}}Change in the number of users (in percent) on Steam (red line) and In-Game (orange line) with respect to a baseline of behavior before the lockdown, based on each day of the week.{{< /fontsize >}}
 
 The relative change of In-Game users reached a peak on Monday, April 13, which was likely driven by Easter holidays in many Western and other countries. We also detect another peak on Saturday, April 4, with about 39.8% more In-Game users, compared to an average of 25% more up until that day. We are going to make a more detailed inspection at what is driving this surge in concurrent users below, so stay tuned!
 
@@ -69,22 +74,26 @@ The relative change of In-Game users reached a peak on Monday, April 13, which w
 At first glance, if we just look at the absolute numbers of users online, the most popular games are also the ones that have been attracting most players before the lockdown. Players mostly stuck to old favorites: Counter-Strike: Global Offensive (CS:GO) hit an all-time peak of 1,024,845 simultaneous players and became the most popular game over the weekend of March 14-15. Dota 2 and PLAYERUNKNOWN'S BATTLEGROUNDS (PUBG) followed with 701,632 and 515,050 players, respectively.
 
 ![png](/output_12_0.png)
+{{< fontsize 12>}}Number of daily concurrent users of the top 3 popular games: *CS:GO* (red line), *Dota 2* (orange line), and *PUBG* (blue line).{{< /fontsize >}}
 
 As a matter of fact, among the thousands of games that Steam has, only a handful of them attracts these very large numbers of concurrent players In-Game. The top 10 popular games on the platform account for more than 50% of all daily concurrent users, with CS:GO, Dota 2, and PUBG alone accounting for 37.5% of users!
 
 ![png](/output_14_0.png)
+{{< fontsize 12>}}Average percentage of daily In-Game users of the top 10 popular games, with respect to the total number of daily In-Game users on Steam.{{< /fontsize >}}
 
 These gaming titans continue to dominate the field. Very well, but in order to dig into what has actually **changed** during the lockdown, we'll look into the *relative* changes. Which games have experienced the most influx or user drops? 
 
 At a general level, consider the top 50 popular games on Steam and the relative change (in percent) of their average number of In-Game users in the months before and after March 14 (figure below). Here, it becomes very clear that the effect of the lockdown was diverse. We see games that have drastically increased their number of concurrent players, such as *Stellaris* and *Football Manager 2020* with 207% and 103.9% more users than before, as well as games that faced a loss in the number of players. This is the case for PUBG. Despite being the third game in the ranking and accounting for 9.7% of all gamers on Steam, PUBG saw a 1.7% drop in concurrent users in the month following March 14. Other games, such as *Monster Hunter: World* and *Red Dead Redemption 2* faced an even bigger loss of more than 10% of users.
 
 ![png](/output_16_0.png)
+{{< fontsize 12>}}Relative change (in percent) in concurrent users of the top 50 popular games on the Steam platform.{{< /fontsize >}}
 
 When we noticed the extreme popularity of *Football Manager 2020*, our immediate thought was that the canceling of all soccer matches as a consequence of the lockdown must have brought a deep and unstoppable hunger for soccer related games among fans.
 
 Yet upon closer inspection this turned out not to be the case. The lockdown did indeed impact *Football Manager 2020*, but hunger for soccer alone does not explain its remarkable success. When we look at other big movers in the ranking, it is clear that other factors are at play. Let's take a look as some examples of games with large increases in user numbers: *Stellaris*, *Football Manager 2020*, and *Cities: Skylines* (figure below).
 
 ![png](/output_18_0.png)
+{{< fontsize 12>}}Number of daily concurrent users of *Football Manager 2020* (red line), *Stellaris* (orange line), and *Cities: Skylines* (in blue).{{< /fontsize >}}
 
 **Stellaris** more than doubled its numbers of players on March 17, followed by another growth after May 12. These changes were actually driven by:
 1. the release of [Stellaris - Federations and the free 2.6.0 "Verne" update](https://steamcommunity.com/games/281990/announcements/detail/2701536662568287291) on March 17;
@@ -99,6 +108,7 @@ Such external factors - patch releases, events, etc. - make it difficult to isol
 Below, you can find the updated list of games and the respective relative difference.
 
 ![png](/output_20_0.png)
+{{< fontsize 12>}}Relative change (in percent) in concurrent users of the most popular games on Steam, with a growth that is mostly due to the COVID-19 lockdown.{{< /fontsize >}}
 
 Interestingly, the most popular games such as *CS:GO* and *Dota 2* did not experience the largest players' turnout in relative terms. *CS:GO* gained about 37.1% more users, while *Dota 2*, second in the ranking of the most popular games, only gained 13.5% more users. It is possible that the game genre also played a role in the differnt players' turnout that *CS:GO* and *Dota 2* recorded. The former is a multiplayer First-Person Shooter (FPS) game, while the latter is a Multiplayer Online Battle Arena (MOBA) game, whose rules and complexity makes it harder for newcomers to play. Moreover, transitioning to levels and ranks in *Dota 2* is usually found less smooth than similar games, such as *League of Legends*, whose terms and concepts are clearer and easier to learn.
 
@@ -109,12 +119,14 @@ At the top of the ranking (reaching more than 60% increase in players) are: *Age
 While some kind of lockdown policies continue to be in place in most countries, many governments took steps to ease measures throughout the course of May. The new post-corona reality, which may last for months or even years, sets the scene for a new range of questions: With life slowly returning to normal, and the overall numbers of concurrent players gently going down, will some of these games experience a persistent effect? Who is immune to the inevitable player-churn? We can explore this by computing the relative difference in number of players, comparing the month after Easter and the baseline from before COVID-19 lockdowns. The figure below shows both the relative difference up until mid-April (purple bars as in previous plot) and the relative difference of the month after mid-April (light blue bars).
 
 ![png](/output_22_0.png)
+{{< fontsize 12>}}Relative change (in percent) in concurrent users of the most popular games on Steam, with a growth that is mostly due to the COVID-19 lockdown. The purple bars refer to the relative change up until mid-April, while the blue bars refer to the month after mid-April.{{< /fontsize >}}
 
 The majority of games has indeed faced player-churn. Many are back to baseline levels. For example, *Stardew Valley* and our ill-fated friend, *Football Manager 2019*. A few games experienced increases in concurrent players that were even higher than in the month after March 14. In particular, *Terraria*, *PAYDAY2*, and *Total War: WARHAMMER II* saw high gains.
 
 Let's take a look at what happened to these three games. Once again, we found that non-COVID-19 related events recently impacted the activities around these games. We marked those moments in grey in the figure below.
 
 ![png](/output_24_0.png)
+{{< fontsize 12>}}Number of concurrent users over time of: *Terraria* (red line), *Total War: WARHAMMER II* (orange line), and *PAYDAY 2* (blue line).{{< /fontsize >}}
 
 In the case of **Terraria**, whose number of players kept increasing during the lockdown, we see a major burst on May 16, the day in which [The End of the Journey](https://steamcommunity.com/games/105600/announcements/detail/2205019689483623800) was released. Marking the beginning of the final chapter of Terraria, this key update caught the attention of so many players that their number on the release date **quintupled**!
 
@@ -131,10 +143,12 @@ In summary, we see an overall uptick in gaming time, cleverly exploited by the g
 Did you notice something weird in the top 50 popular games? Maybe a game you didn't even know existed? You are not alone! While examining the ranking of the top 50 games and their relative change in number of users, we discovered that *Spacewar*, a seemingly ancient game, had reached more than 40% increase in concurrent users.
 
 ![png](/output_26_0.png)
+{{< fontsize 12>}}Detail showing *Spacewar* in the relative change ranking of the top 50 popular games on Steam.{{< /fontsize >}}
 
 *Spacewar* is based on the 1962 space combat game developed by Steve Russell for the newly installed DEC PDP-1 minicomputer at the MIT. The game features two spaceships “the needle” and “the wedge” which fight each other while maneuvering in the gravity well of a star. It experienced a boost in concurrent users starting on March 14 and remains above baseline levels to this day (end of May). At a first glance, *Spacewar* is just like all the other games. And yet, for reasons that we could not immediately explain, this simple and outdated game achieved a bigger gain than a juggernaut such as *CS:GO*. How could this be possible?
 
 ![png](/output_28_0.png)
+{{< fontsize 12>}}Number of daily concurrent users of *Spacewar*.{{< /fontsize >}}
 
 This is what we found out:
 
@@ -149,10 +163,12 @@ As we previously noticed, Steam reached its all-time record of concurrent player
 *PUBG* in particular caught our attention here, because its players account for a staggering 9.7% of all In-Game users on Steam. As we show in the figure below, *PUBG* experienced a striking peak on April 4, reaching 925,699 concurrent users, an achievement that was published on the [official community page](https://forums.pubg.com/topic/401699-player-count-at-900k-release-ranking-now-or-never/).
 
 ![png](/output_30_0.png)
+{{< fontsize 12>}}Number of daily concurrent users of *PUBG*, which gained about 300K users on April the 4th.{{< /fontsize >}}
 
 Many players wondered what happened that day and whether they had missed something. 
 
 ![png](/output_32_0.png)
+{{< fontsize 12>}}{{< /fontsize >}}
 
 In order to answer this question, we went further and tried to identify large events that occurred that day to shed light on what happened. The first reason that partially explains this sudden burst in the activity of gamers, is related to the [Fantasy Battle Royale](https://www.pubg.com/2020/03/31/fantasy-battle-royale/) event that *PUBG* ran in the week from April 1 to April 7. However, this does not explain why April 4 was the only day in which the number of users skyrocketed.
 
