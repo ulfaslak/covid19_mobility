@@ -30,7 +30,7 @@ We use large-scale behavioral data provided by Facebook's [Data For Good](https:
 
 ← See **Data** in the panel on the left, for detailed descriptions of the datasets we use.
 
-Funding for this research comes from the [Carlsberg Foundation](https://www.carlsbergfondet.dk/en) as part of the [HOPE project](https://hope-project.au.dk/) and by [DTU Compute](https://www.compute.dtu.dk). Anna Sapienza is also fully funded by the University of Copenhagen ERC project [DISTRACT](https://anthropology.ku.dk/dep/news/2.5-million-eur-to-explore-the-fight-for-our-attention/).
+Funding for this research comes from the [Carlsberg Foundation](https://www.carlsbergfondet.dk/en) as part of the [HOPE project](https://hope-project.au.dk/) (Ulf, Peter and Jonas), [DTU Compute](https://www.compute.dtu.dk) (Laura and Sune) and by University of Copenhagen ERC project [DISTRACT](https://anthropology.ku.dk/dep/news/2.5-million-eur-to-explore-the-fight-for-our-attention/) (Anna).
 
 ## Team
 The research presented here is the work of the DTU Compute COVID-19 modeling group:

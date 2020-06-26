@@ -54,7 +54,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             if depth ==1:
                 return defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined")), {k: defaultify(v, depth + 1) for k, v in d.items()})
             if depth== 2:
-                return defaultdict(lambda: defaultlist(lambda: "undefined"), {k: v for k, v in d.items()})
+                return defaultdict(lambda: defaultlist(lambda: "undefined"), {k: defaultify(v) for k, v in d.items()})
         elif isinstance(d, list):
             tmp = defaultlist(lambda: "undefined")
             tmp.extend(d)
