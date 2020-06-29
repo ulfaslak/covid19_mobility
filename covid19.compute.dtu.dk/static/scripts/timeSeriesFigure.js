@@ -133,6 +133,16 @@ class TimeSeriesFigure {
 		d3.select('.select-place#select-' + this.uniqueId)
 			.append('select')
 			.attr('id', 'dropdown-' + this.uniqueId)
+			.attr('multiple',"")
+
+		var mySelect = new SlimSelect({
+            select: "#dropdown-" + this.uniqueId,
+            onChange: (info) => {
+				this.level = mySelect.selected()
+				this.clearData();
+				this.redrawData();
+            }
+        })
 
         d3.select("#dropdown-" + this.uniqueId)
 	        .selectAll("option")
@@ -144,13 +154,13 @@ class TimeSeriesFigure {
 	            if (d==this.level) { return 'selected' };
 	        });
 
-	    d3.select("#dropdown-" + this.uniqueId)
-			.on("change", () => {
-				let dropdown = document.getElementById("dropdown-" + this.uniqueId);
-				this.level = dropdown.options[dropdown.selectedIndex].value;
-				this.clearData();
-				this.redrawData();
-			})
+//	    d3.select("#dropdown-" + this.uniqueId)
+//			.on("change", () => {
+//				let dropdown = document.getElementById("dropdown-" + this.uniqueId);
+//				this.level = dropdown.options[dropdown.selectedIndex].value;
+//				this.clearData();
+//				this.redrawData();
+//			})
 	}
 
 
