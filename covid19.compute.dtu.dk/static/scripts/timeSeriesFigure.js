@@ -25,7 +25,7 @@ class TimeSeriesFigure {
 		this.y = d3.scaleLinear().range([this.height, 0]);
 
 		// Axes
-		this.xAxis = d3.axisBottom(this.x);
+		this.xAxis = d3.axisBottom(this.x).ticks(6);
 		this.yAxis = d3.axisLeft(this.y);
 
 		// Line
