@@ -949,7 +949,7 @@ class MultiLinePlot extends DeviationPlot {
 		let datum = zip(this.time, this.data[this.timeframe][level]['percent_change'])
 		this.svg.append("path")
 			.datum(datum)
-			.attr('class', 'line-changeall ' + level)
+			.attr('class', 'line-changeall ' + level.replace(" ", "-"))
 			.attr("id", 'data' + this.uniqueId)
 			.attr('d', this.valueline)
 			.on('mouseover', d => this.mouseover())
@@ -967,7 +967,7 @@ class MultiLinePlot extends DeviationPlot {
 		)
 		this.svg.append("path")
 			.datum(datum)
-			.attr('class', 'line-changeall ' + level)
+			.attr('class', 'line-changeall ' + level.replace(" ", "-"))
 			.attr("id", 'data' + this.uniqueId)
 			.attr('d', this.valueline)
 			.on('mouseover', d => this.mouseover())
@@ -1035,7 +1035,7 @@ class MultiLinePlot extends DeviationPlot {
 		// Recolor the lines
 		this.svg.selectAll('.line-changeall')
 			.style('opacity', 0.05);
-		this.svg.select('.line-changeall.' + minLevel)
+		this.svg.select('.line-changeall.' + minLevel.replace(" ", "-"))
 			.style('opacity', 1)
 	}
 
@@ -1049,7 +1049,7 @@ class MultiLinePlot extends DeviationPlot {
 		// Recolor the lines
 		this.svg.selectAll('.line-changeall')
 			.style('opacity', 0.01);
-		this.svg.select('.line-changeall.' + minLevel)
+		this.svg.select('.line-changeall.' + minLevel.replace(" ", "-"))
 			.style('opacity', 1);
 	}
 
