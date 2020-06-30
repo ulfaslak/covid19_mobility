@@ -62,7 +62,10 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         else:
             return d
 
-    N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+    if country == "Czechia":
+        N_POP = CountryInfo('Czech Republic').population()
+    else:
+        N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
     def update_data_out1(time, label, data):
         data_out1[time][label].append(

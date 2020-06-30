@@ -92,8 +92,12 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     PATH_OUT = 'covid19.compute.dtu.dk/static/data/'
 
 
-    # Danish population as of Thursday, April 16, 2020 (Worldometer)
-    N_POP = CountryInfo(country).population()
+    if country == "Czechia":
+        N_POP = CountryInfo('Czech Republic').population()
+    else:
+        N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
+
+
 
     def update_data_out(level, idx, data):
         # `data_out`: total distance traveled per capita
