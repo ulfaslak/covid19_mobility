@@ -630,34 +630,6 @@ class DeviationPlot extends TimeSeriesFigure {
 	// Setup
 	// -----
 
-//	setYDomain() {
-//		let yMin, yMax;
-//		if (this.mode == 'relative') {
-//			yMin = d3.min(this.data[this.timeframe][this.level]['percent_change'],Number);
-//			yMax = d3.max(this.data[this.timeframe][this.level]['percent_change'],Number);
-//
-//			if (yMax < 0) yMax = 0;
-//			if (yMin > 0) yMin = 0;
-//
-//			this.yrange = [
-//				yMin - (yMax - yMin) * .1,
-//				yMax + (yMax - yMin) * .1
-//			]
-//		} else
-//		if (this.mode == 'count') {
-//			yMin = 0;
-//			yMax = d3.max([
-//				...this.data[this.timeframe][this.level]['baseline'],
-//				...this.data[this.timeframe][this.level]['crisis']
-//			],Number)
-//
-//			this.yrange = [
-//				yMin,
-//				yMax + (yMax - yMin) * .1
-//			]
-//		}
-//		this.y.domain(this.yrange);
-//	}
 	setYDomain() {
 		let allYVals = [];
 		if (this.mode == 'relative') {
@@ -938,7 +910,7 @@ class DeviationPlot extends TimeSeriesFigure {
             let datum = zip(this.time, this.data[this.timeframe][level]['percent_change'])
             this.svg.append("path")
                 .datum(datum)
-                .attr('class', 'line')
+                .attr('class', 'line-crisis')
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.showDaily ? null : 0);
@@ -959,57 +931,7 @@ class DeviationPlot extends TimeSeriesFigure {
 	// Event handling
 	// --------------
 
-//	mousemoveTooltip(mouseX, mouseY) {
-//		// Find nearest datapoint
-//		let diffs = this.time.map(t => Math.abs(this.x(t)-mouseX));
-//		let minIdx = diffs.indexOf(Math.min(...diffs));
-//
-//		// Load its values into variables for easy reuse
-//		let date = this.time[minIdx];
-//		let yvals = [
-//			this.data[this.timeframe][this.level]['crisis'][minIdx],
-//			this.data[this.timeframe][this.level]['baseline'][minIdx],
-//			this.data[this.timeframe][this.level]['percent_change'][minIdx]
-//		];
-//
-//		// Move the tooltip line
-//		this.svg.select('.line-tooltip')
-//			.transition().duration(30)
-//			.attr('stroke-opacity', 1)
-//			.attr('x1', this.x(date))
-//			.attr('x2', this.x(date))
-//			.attr('y1', mouseY)
-//			.attr('y2', () => {
-//				if (this.mode == 'relative')
-//					return this.y(this.checkUndefined(yvals[2]))
-//				else if (this.mode == 'count')
-//					return this.y(this.checkUndefined(yvals[0]))
-//			})
-//
-//		// Display the tooltip
-//		this.tooltip
-//			.html(() => {
-//				let crisisVal, baselineVal;
-//				if (yvals[0] < 1) {
-//					crisisVal = round(yvals[0], 1e2);
-//					baselineVal = round(yvals[1], 1e2);
-//				} else
-//				if (yvals[0] < 1000) {
-//					crisisVal = round(yvals[0], 1e0);
-//					baselineVal = round(yvals[1], 1e0);
-//				} else {
-//					crisisVal = insertKSeperators(round(yvals[0], 1e0));
-//					baselineVal = insertKSeperators(round(yvals[1], 1e0));
-//				}
-//				return "<b>" + this.formatDate(date) + "</b><br><br>" +
-//				"On date: <b>" + crisisVal + "</b><br>" +
-//				"Baseline: <b>" + baselineVal + "</b><br>" +
-//				"Deviation: <b>" + Math.round(yvals[2]*100*1e1)/1e1 + "%</b>"
-//				})
-//			.style("left", (d3.event.pageX + 10) + "px")
-//			.style("top", (d3.event.pageY - 50) + "px");
-//	}
-mousemoveTooltip(mouseX, mouseY) {
+	mousemoveTooltip(mouseX, mouseY) {
 		// Find nearest X-point
 		let diffsX = this.time.map(t => Math.abs(this.x(t)-mouseX));
 		let minIdxX = diffsX.indexOf(Math.min(...diffsX));
@@ -1062,6 +984,7 @@ mousemoveTooltip(mouseX, mouseY) {
 			})
 
 		// Display the tooltip
+		let correctName = d => d != 'all' ? d : 'Whole country';
 		this.tooltip
 			.html(() => {
 				let crisisVal, baselineVal;
@@ -1076,7 +999,7 @@ mousemoveTooltip(mouseX, mouseY) {
 					crisisVal = insertKSeperators(round(yvals[0], 1e0));
 					baselineVal = insertKSeperators(round(yvals[1], 1e0));
 				}
-				return "<b>" + minLevel + "</b><br>"+"<b>" + this.formatDate(date) + "</b><br><br>" +
+				return "<b>" + correctName(minLevel) + "</b>, " + this.formatDate(date) + "<br><br>" +
 				"On date: <b>" + crisisVal + "</b><br>" +
 				"Baseline: <b>" + baselineVal + "</b><br>" +
 				"Deviation: <b>" + Math.round(yvals[2]*100*1e1)/1e1 + "%</b>"
