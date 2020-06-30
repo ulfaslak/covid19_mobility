@@ -256,7 +256,7 @@ class TimeSeriesFigure {
 		let datum = zip([this.parseDate(this.data._meta.variables.startDate), ...this.time], d3.range(this.time.length+1).map(() => value))
 		this.svg.append("path")
 			.datum(datum)
-			.attr('class', 'line-horizontal')
+			.attr('class', 'line-baseline')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
 	}
@@ -428,8 +428,12 @@ class SingleLinePlot extends TimeSeriesFigure {
 	}
 
 	drawLegend() {
+		let showDaily = true;
+		let show7DAvg = true;
+
+		// daily
 		this.svg.append('line')
-			.attr('class', 'line')
+			.attr('class', 'line-crisis')
 			.attr('x1', this.width+10)
 			.attr('x2', this.width+30)
 			.attr('y1', 10)
@@ -444,6 +448,29 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 10+4)
 			.text('daily')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 0)
+			.attr('width', 55)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				showDaily = !showDaily;
+				if (showDaily) {
+					this.svg.selectAll('.dot')
+						.style('opacity', null)
+					this.svg.selectAll('.line-crisis')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.dot')
+						.style('opacity', 0)
+					this.svg.selectAll('.line-crisis')
+						.style('stroke-opacity', 0)
+				}
+			})
+
+		// 7 day avg
 		this.svg.append('line')
 			.attr('class', 'trendline')
 			.attr('x1', this.width+10)
@@ -455,6 +482,23 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 30+4)
 			.text('7 day avg')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 20)
+			.attr('width', 80)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				show7DAvg = !show7DAvg;
+				if (show7DAvg) {
+					this.svg.selectAll('.trendline')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.trendline')
+						.style('stroke-opacity', 0)
+				}
+			})
 	}
 
 
@@ -676,8 +720,13 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawLegend() {
+		this.showDaily = true;
+		this.showBaseline = true;
+		this.show7DAvg = true;
+
+		// daily
 		this.svg.append('line')
-			.attr('class', 'line')
+			.attr('class', 'line-crisis')
 			.attr('x1', this.width+10)
 			.attr('x2', this.width+30)
 			.attr('y1', 10)
@@ -692,6 +741,29 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 10+4)
 			.text('daily')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 0)
+			.attr('width', 55)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				this.showDaily = !this.showDaily;
+				if (this.showDaily) {
+					this.svg.selectAll('.dot')
+						.style('opacity', null)
+					this.svg.selectAll('.line-crisis')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.dot')
+						.style('opacity', 0)
+					this.svg.selectAll('.line-crisis')
+						.style('stroke-opacity', 0)
+				}
+			})
+
+		// baseline
 		this.svg.append('line')
 			.attr('class', 'line-baseline')
 			.attr('x1', this.width+10)
@@ -703,6 +775,25 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 30+4)
 			.text('baseline')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 20)
+			.attr('width', 75)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				this.showBaseline = !this.showBaseline;
+				if (this.showBaseline) {
+					this.svg.selectAll('.line-baseline')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.line-baseline')
+						.style('stroke-opacity', 0)
+				}
+			})
+
+		// 7 day avg
 		this.svg.append('line')
 			.attr('class', 'trendline')
 			.attr('x1', this.width+10)
@@ -714,6 +805,23 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 50+4)
 			.text('7 day avg')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 40)
+			.attr('width', 80)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				this.show7DAvg = !this.show7DAvg;
+				if (this.show7DAvg) {
+					this.svg.selectAll('.trendline')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.trendline')
+						.style('stroke-opacity', 0)
+				}
+			})
 	}
 
 
@@ -727,6 +835,7 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('class', 'line-baseline')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
+			.style('stroke-opacity', this.showBaseline ? null : 0)
 	}
 
 	drawCrisisTrendline() {
@@ -736,6 +845,7 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('class', 'trendline')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
+			.style('stroke-opacity', this.show7DAvg ? null : 0)
 	}
 
 	drawCrisis() {
@@ -745,6 +855,7 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('class', 'line-crisis')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
+			.style('stroke-opacity', this.showDaily ? null : 0)
 		this.svg.selectAll("dot")
 			.data(datum)
 			.enter().append("circle")
@@ -753,7 +864,8 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr("cx", d => this.x(d[0]))
 			.attr("cy", d => this.y(this.checkUndefined(d[1])))
 			.attr("r", 2.5)
-            .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
+            .style("fill", d => d[1] == 'undefined' ? 'red' : null)
+            .style('opacity', this.showDaily ? null : 0);
 	}
 
 	drawPercentChangeTrendline() {
@@ -763,15 +875,17 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('class', 'trendline')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
+			.style('stroke-opacity', this.show7DAvg ? null : 0)
 	}
 
 	drawPercentChange() {
 		let datum = zip(this.time, this.data[this.timeframe][this.level]['percent_change'])
 		this.svg.append("path")
 			.datum(datum)
-			.attr('class', 'line')
+			.attr('class', 'line-crisis')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
+			.style('stroke-opacity', this.showDaily ? null : 0);
 		this.svg.selectAll("dot")
 			.data(datum)
 			.enter().append("circle")
@@ -780,7 +894,8 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr("cx", d => this.x(d[0]))
 			.attr("cy", d => this.y(this.checkUndefined(d[1])))
 			.attr("r", 2.5)
-            .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
+            .style("fill", d => d[1] == 'undefined' ? 'red' : null)
+            .style('opacity', this.showDaily ? null : 0);
 	}
 
 
