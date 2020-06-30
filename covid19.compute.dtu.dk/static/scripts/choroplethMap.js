@@ -98,6 +98,20 @@ class MovementsMap {
 		})
 	}
 
+	meanAngle(alpha) {
+		return Math.atan2(
+			1/alpha.length * d3.sum(alpha.map(a => Math.sin(a / 180 * Math.PI))),
+			1/alpha.length * d3.sum(alpha.map(a => Math.cos(a / 180 * Math.PI)))
+		) * 180 / Math.PI;
+	}
+
+	diffAngle(a, b) {
+		return Math.atan2(
+			Math.sin(b/180*Math.PI-a/180*Math.PI),
+			Math.cos(b/180*Math.PI-a/180*Math.PI),
+		) * 180 / Math.PI;
+	}
+
 	getBoundingBox() {
 		let lats = [],
 			lons = [];
@@ -111,10 +125,20 @@ class MovementsMap {
 			})
 		})
 
-		let lats_max_min = this.minMaxArray(lats);
-		let lons_max_min = this.minMaxArray(lons);
+		let midLat = d3.mean(lats);
+		let midLon = this.meanAngle(lons);
 
-		return [lats_max_min.min, lats_max_min.max, lons_max_min.min, lons_max_min.max];
+		let lats_max_min = this.minMaxArray(lats);
+		let lons_max_min = this.minMaxArray(lons.map(l => this.diffAngle(midLon, l)));
+
+		return [
+			lats_max_min.min,
+			lats_max_min.max,
+			lons[lons_max_min.minIdx],
+			lons[lons_max_min.maxIdx],
+			midLat,
+			midLon
+		];
 	}
 
 	// projection([lon, lat]) {
@@ -153,8 +177,8 @@ class MovementsMap {
 			latMax = bbCoords[1],
 			lonMin = bbCoords[2],
 			lonMax = bbCoords[3],
-			latMid = (latMin + latMax) / 2,
-			lonMid = (lonMin + lonMax) / 2;
+			latMid = bbCoords[4],
+			lonMid = bbCoords[5];
 
 		// Center point of projection
 		this.lam = lonMid / 180 * Math.PI;
@@ -648,11 +672,18 @@ class MovementsMap {
 	minMaxArray(arr) {
 	    let max = -Number.MAX_VALUE,
 	        min = Number.MAX_VALUE;
+	    let maxIdx, minIdx;
 
-	    arr.forEach(function(e) {
-	        if (max < e) max = e;
-	        if (min > e) min = e;
+	    arr.forEach(function(e, i) {
+	        if (max < e) {
+	        	max = e;
+	        	maxIdx = i;
+	        }
+	        if (min > e) {
+	        	min = e;
+	        	minIdx = i;
+	        }
 	    });
-	    return {max: max, min: min};
+	    return {max: max, min: min, maxIdx: maxIdx, minIdx: minIdx};
     }
 }
