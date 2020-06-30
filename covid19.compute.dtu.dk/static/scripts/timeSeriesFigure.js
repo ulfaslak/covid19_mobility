@@ -938,7 +938,7 @@ class DeviationPlot extends TimeSeriesFigure {
             let datum = zip(this.time, this.data[this.timeframe][level]['percent_change'])
             this.svg.append("path")
                 .datum(datum)
-                .attr('class', 'line')
+                .attr('class', 'line-crisis')
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.showDaily ? null : 0);

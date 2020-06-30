@@ -6,7 +6,7 @@ class TimeSeriesFigure {
 		this.mainDivId = mainDivId;
 		this.uniqueId = uniqueId;
 		this.timeframe = data._meta.defaults.timeframe;  // may be undefined
-		this.level = data._meta.defaults.level;          // may be undefined
+		this.level = [data._meta.defaults.level];          // may be undefined
 		this.mode = data._meta.defaults.mode;            // may be undefined
 	
 		// Dimensions and margins
@@ -56,7 +56,8 @@ class TimeSeriesFigure {
 		d3.selectAll("#data" + this.uniqueId).remove();
 	}
 
-	redrawData() {}
+	redrawData() {
+	}
 
 
 	// Setup
@@ -133,6 +134,9 @@ class TimeSeriesFigure {
 		d3.select('.select-place#select-' + this.uniqueId)
 			.append('select')
 			.attr('id', 'dropdown-' + this.uniqueId)
+			.attr('multiple',"")
+
+
 
         d3.select("#dropdown-" + this.uniqueId)
 	        .selectAll("option")
@@ -144,13 +148,20 @@ class TimeSeriesFigure {
 	            if (d==this.level) { return 'selected' };
 	        });
 
-	    d3.select("#dropdown-" + this.uniqueId)
-			.on("change", () => {
-				let dropdown = document.getElementById("dropdown-" + this.uniqueId);
-				this.level = dropdown.options[dropdown.selectedIndex].value;
+        var mySelect = new SlimSelect({
+            select: "#dropdown-" + this.uniqueId,
+            placeholder: 'Select location(s)',
+            allowDeselectOption: true,
+            closeOnSelect: false,
+            showContent: 'up',
+            onChange: () => {
+				if (mySelect.selected().length != 0) {
+				    this.level = mySelect.selected()
+				}
 				this.clearData();
 				this.redrawData();
-			})
+            }
+        })
 	}
 
 
@@ -255,13 +266,13 @@ class TimeSeriesFigure {
 		let datum = zip([this.parseDate(this.data._meta.variables.startDate), ...this.time], d3.range(this.time.length+1).map(() => value))
 		this.svg.append("path")
 			.datum(datum)
-			.attr('class', 'line-horizontal')
+			.attr('class', 'line-baseline')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
 	}
 
 	addTooltip() {
-		// Trick here: draw an line that gets moved around with tooltip
+		// Draw a line that gets moved around with tooltip
 		this.svg.append('line')
 			.attr('class', 'line-tooltip')
 			.style('stroke', 'black')
@@ -282,7 +293,8 @@ class TimeSeriesFigure {
 			.on('mouseout', () => {
 				this.mouseout();
 				this.svg.select('.line-tooltip')
-					.attr('stroke-opacity', 0)
+					.transition().duration(100)  // hack. transition necessary otherwise tooltip line doesn't always go away, i think due to JS async event handling!
+					.attr('stroke-opacity', 0);
 			});
 	}
 
@@ -327,7 +339,6 @@ class TimeSeriesFigure {
             return d
          }
     }
-
 }
 
 
@@ -360,6 +371,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 	drawData() {
 		this.drawValue();           // Removed by `clearData()`
 		this.drawValueTrendline();  // Removed by `clearData()`
+		d3.select('.rect-tooltip').raise();  // Put invisible tooltip rect on top
 	}
 
 	redrawData() {
@@ -367,6 +379,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 		this.drawYAxis();
 		this.drawYLabel();
 		this.drawData();
+		d3.select('.rect-tooltip').raise();  // Put invisible tooltip rect on top
 	}
 
 
@@ -425,8 +438,12 @@ class SingleLinePlot extends TimeSeriesFigure {
 	}
 
 	drawLegend() {
+		let showDaily = true;
+		let show7DAvg = true;
+
+		// daily
 		this.svg.append('line')
-			.attr('class', 'line')
+			.attr('class', 'line-crisis')
 			.attr('x1', this.width+10)
 			.attr('x2', this.width+30)
 			.attr('y1', 10)
@@ -441,6 +458,29 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 10+4)
 			.text('daily')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 0)
+			.attr('width', 55)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				showDaily = !showDaily;
+				if (showDaily) {
+					this.svg.selectAll('.dot')
+						.style('opacity', null)
+					this.svg.selectAll('.line-crisis')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.dot')
+						.style('opacity', 0)
+					this.svg.selectAll('.line-crisis')
+						.style('stroke-opacity', 0)
+				}
+			})
+
+		// 7 day avg
 		this.svg.append('line')
 			.attr('class', 'trendline')
 			.attr('x1', this.width+10)
@@ -452,6 +492,23 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 30+4)
 			.text('7 day avg')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 20)
+			.attr('width', 80)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				show7DAvg = !show7DAvg;
+				if (show7DAvg) {
+					this.svg.selectAll('.trendline')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.trendline')
+						.style('stroke-opacity', 0)
+				}
+			})
 	}
 
 
@@ -550,10 +607,11 @@ class DeviationPlot extends TimeSeriesFigure {
 			this.drawCrisisTrendline();         // Removed by `clearData()`
 		} else
 		if (this.mode == 'relative') {
-			this.drawHorizontalLineAt(0);    // Removed by `clearData()`
+			this.drawHorizontalLineAt(0);       // Removed by `clearData()`
 			this.drawPercentChange();           // Removed by `clearData()`
 			this.drawPercentChangeTrendline();  // Removed by `clearData()`
 		}
+		d3.select('.rect-tooltip').raise();     // Put invisible tooltip rect on top
 	}
 
 	redrawData() {
@@ -561,6 +619,7 @@ class DeviationPlot extends TimeSeriesFigure {
 		this.drawYAxis();
 		this.drawYLabel();
 		this.drawData();
+		d3.select('.rect-tooltip').raise();     // Put invisible tooltip rect on top
 	}
 
 
@@ -571,35 +630,72 @@ class DeviationPlot extends TimeSeriesFigure {
 	// Setup
 	// -----
 
+//	setYDomain() {
+//		let yMin, yMax;
+//		if (this.mode == 'relative') {
+//			yMin = d3.min(this.data[this.timeframe][this.level]['percent_change'],Number);
+//			yMax = d3.max(this.data[this.timeframe][this.level]['percent_change'],Number);
+//
+//			if (yMax < 0) yMax = 0;
+//			if (yMin > 0) yMin = 0;
+//
+//			this.yrange = [
+//				yMin - (yMax - yMin) * .1,
+//				yMax + (yMax - yMin) * .1
+//			]
+//		} else
+//		if (this.mode == 'count') {
+//			yMin = 0;
+//			yMax = d3.max([
+//				...this.data[this.timeframe][this.level]['baseline'],
+//				...this.data[this.timeframe][this.level]['crisis']
+//			],Number)
+//
+//			this.yrange = [
+//				yMin,
+//				yMax + (yMax - yMin) * .1
+//			]
+//		}
+//		this.y.domain(this.yrange);
+//	}
 	setYDomain() {
-		let yMin, yMax;
+		let allYVals = [];
 		if (this.mode == 'relative') {
-			yMin = d3.min(this.data[this.timeframe][this.level]['percent_change'],Number);
-			yMax = d3.max(this.data[this.timeframe][this.level]['percent_change'],Number);
-		
-			if (yMax < 0) yMax = 0;
+			this.data._meta.timeframes.forEach(timeframe => {
+				(this.level).forEach(level => {
+					allYVals.push(...this.data[timeframe][level]['percent_change'])
+				})
+			})
+
+			let yMin = d3.min(allYVals,Number);
+		    let yMax = d3.max(allYVals,Number);
+
+		    if (yMax < 0) yMax = 0;
 			if (yMin > 0) yMin = 0;
 
 			this.yrange = [
 				yMin - (yMax - yMin) * .1,
 				yMax + (yMax - yMin) * .1
 			]
-		} else
-		if (this.mode == 'count') {
-			yMin = 0;
-			yMax = d3.max([
-				...this.data[this.timeframe][this.level]['baseline'],
-				...this.data[this.timeframe][this.level]['crisis']
-			],Number)
 
-			this.yrange = [
+		} else if (this.mode == 'count') {
+			this.data._meta.timeframes.forEach(timeframe => {
+				(this.level).forEach(level => {
+					allYVals.push(...this.data[timeframe][level]['crisis'])
+					allYVals.push(...this.data[timeframe][level]['baseline'])
+				})
+			})
+			let yMin = 0
+		    let yMax = d3.max(allYVals,Number);
+
+		    this.yrange = [
 				yMin,
 				yMax + (yMax - yMin) * .1
 			]
-		} 
+		}
+
 		this.y.domain(this.yrange);
 	}
-
 
 	// Layout elements
 	// ---------------
@@ -671,8 +767,13 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawLegend() {
+		this.showDaily = true;
+		this.showBaseline = true;
+		this.show7DAvg = true;
+
+		// daily
 		this.svg.append('line')
-			.attr('class', 'line')
+			.attr('class', 'line-crisis')
 			.attr('x1', this.width+10)
 			.attr('x2', this.width+30)
 			.attr('y1', 10)
@@ -687,6 +788,29 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 10+4)
 			.text('daily')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 0)
+			.attr('width', 55)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				this.showDaily = !this.showDaily;
+				if (this.showDaily) {
+					this.svg.selectAll('.dot')
+						.style('opacity', null)
+					this.svg.selectAll('.line-crisis')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.dot')
+						.style('opacity', 0)
+					this.svg.selectAll('.line-crisis')
+						.style('stroke-opacity', 0)
+				}
+			})
+
+		// baseline
 		this.svg.append('line')
 			.attr('class', 'line-baseline')
 			.attr('x1', this.width+10)
@@ -698,6 +822,25 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 30+4)
 			.text('baseline')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 20)
+			.attr('width', 75)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				this.showBaseline = !this.showBaseline;
+				if (this.showBaseline) {
+					this.svg.selectAll('.line-baseline')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.line-baseline')
+						.style('stroke-opacity', 0)
+				}
+			})
+
+		// 7 day avg
 		this.svg.append('line')
 			.attr('class', 'trendline')
 			.attr('x1', this.width+10)
@@ -709,6 +852,23 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 50+4)
 			.text('7 day avg')
+		this.svg.append('rect')
+			.attr('x', this.width+10)
+			.attr('y', 40)
+			.attr('width', 80)
+			.attr('height', 20)
+			.style('opacity', 0)
+			.style('cursor', 'pointer')
+			.on('click', () => {
+				this.show7DAvg = !this.show7DAvg;
+				if (this.show7DAvg) {
+					this.svg.selectAll('.trendline')
+						.style('stroke-opacity', null)
+				} else {
+					this.svg.selectAll('.trendline')
+						.style('stroke-opacity', 0)
+				}
+			})
 	}
 
 
@@ -716,83 +876,175 @@ class DeviationPlot extends TimeSeriesFigure {
 	// ----------
 
 	drawBaseline() {
-		let datum = zip(this.time, this.data[this.timeframe][this.level]['baseline']);
-		this.svg.append("path")
-			.datum(adjustBaseline(datum))
-			.attr('class', 'line-baseline')
-			.attr("id", "data" + this.uniqueId)
-			.attr('d', this.valueline)
+	    this.level.forEach(level => {
+            let datum = zip(this.time, this.data[this.timeframe][level]['baseline']);
+            this.svg.append("path")
+                .datum(adjustBaseline(datum))
+                .attr('class', 'line-baseline')
+                .attr("id", "data" + this.uniqueId)
+                .attr('d', this.valueline)
+			    .style('stroke-opacity', this.showBaseline ? null : 0)
+        })
 	}
 
 	drawCrisisTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['crisis'])).slice(3,-3)
-		this.svg.append("path")
-			.datum(datum)
-			.attr('class', 'trendline')
-			.attr("id", "data" + this.uniqueId)
-			.attr('d', this.valueline)
+	    this.level.forEach(level => {
+            let datum = zip(this.time, weekavg(this.data[this.timeframe][level]['crisis'])).slice(3,-3)
+            this.svg.append("path")
+                .datum(datum)
+                .attr('class', 'trendline')
+                .attr("id", "data" + this.uniqueId)
+                .attr('d', this.valueline)
+			    .style('stroke-opacity', this.show7DAvg ? null : 0)
+         })
 	}
 
 	drawCrisis() {
-		let datum = zip(this.time, this.data[this.timeframe][this.level]['crisis'])
-		this.svg.append("path")
-			.datum(datum)
-			.attr('class', 'line-crisis')
-			.attr("id", "data" + this.uniqueId)
-			.attr('d', this.valueline)
-		this.svg.selectAll("dot")
-			.data(datum)
-			.enter().append("circle")
-			.attr("class", "dot")
-			.attr("id", "data" + this.uniqueId)
-			.attr("cx", d => this.x(d[0]))
-			.attr("cy", d => this.y(this.checkUndefined(d[1])))
-			.attr("r", 2.5)
-            .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
+	    this.level.forEach(level => {
+            let datum = zip(this.time, this.data[this.timeframe][level]['crisis'])
+            this.svg.append("path")
+                .datum(datum)
+                .attr('class', 'line-crisis')
+                .attr("id", "data" + this.uniqueId)
+                .attr('d', this.valueline)
+			    .style('stroke-opacity', this.showDaily ? null : 0)
+            this.svg.selectAll("dot")
+                .data(datum)
+                .enter().append("circle")
+                .attr("class", "dot")
+                .attr("id", "data" + this.uniqueId)
+                .attr("cx", d => this.x(d[0]))
+                .attr("cy", d => this.y(this.checkUndefined(d[1])))
+                .attr("r", 2.5)
+                .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
+                .style('opacity', this.showDaily ? null : 0);
+        })
 	}
 
 	drawPercentChangeTrendline() {
-		let datum = zip(this.time, weekavg(this.data[this.timeframe][this.level]['percent_change'])).slice(3,-3)
-		this.svg.append("path")
-			.datum(datum)
-			.attr('class', 'trendline')
-			.attr("id", "data" + this.uniqueId)
-			.attr('d', this.valueline)
+	    this.level.forEach(level => {
+            let datum = zip(this.time, weekavg(this.data[this.timeframe][level]['percent_change'])).slice(3,-3)
+            this.svg.append("path")
+                .datum(datum)
+                .attr('class', 'trendline')
+                .attr("id", "data" + this.uniqueId)
+                .attr('d', this.valueline)
+			    .style('stroke-opacity', this.show7DAvg ? null : 0)
+        })
 	}
 
 	drawPercentChange() {
-		let datum = zip(this.time, this.data[this.timeframe][this.level]['percent_change'])
-		this.svg.append("path")
-			.datum(datum)
-			.attr('class', 'line')
-			.attr("id", "data" + this.uniqueId)
-			.attr('d', this.valueline)
-		this.svg.selectAll("dot")
-			.data(datum)
-			.enter().append("circle")
-			.attr("class", "dot")
-			.attr("id", "data" + this.uniqueId)
-			.attr("cx", d => this.x(d[0]))
-			.attr("cy", d => this.y(this.checkUndefined(d[1])))
-			.attr("r", 2.5)
-            .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
+	    this.level.forEach(level => {
+            let datum = zip(this.time, this.data[this.timeframe][level]['percent_change'])
+            this.svg.append("path")
+                .datum(datum)
+                .attr('class', 'line')
+                .attr("id", "data" + this.uniqueId)
+                .attr('d', this.valueline)
+			    .style('stroke-opacity', this.showDaily ? null : 0);
+            this.svg.selectAll("dot")
+                .data(datum)
+                .enter().append("circle")
+                .attr("class", "dot")
+                .attr("id", "data" + this.uniqueId)
+                .attr("cx", d => this.x(d[0]))
+                .attr("cy", d => this.y(this.checkUndefined(d[1])))
+                .attr("r", 2.5)
+                .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
+                .style('opacity', this.showDaily ? null : 0);
+        })
 	}
 
 
 	// Event handling
 	// --------------
 
-	mousemoveTooltip(mouseX, mouseY) {
-		// Find nearest datapoint
-		let diffs = this.time.map(t => Math.abs(this.x(t)-mouseX));
-		let minIdx = diffs.indexOf(Math.min(...diffs));
+//	mousemoveTooltip(mouseX, mouseY) {
+//		// Find nearest datapoint
+//		let diffs = this.time.map(t => Math.abs(this.x(t)-mouseX));
+//		let minIdx = diffs.indexOf(Math.min(...diffs));
+//
+//		// Load its values into variables for easy reuse
+//		let date = this.time[minIdx];
+//		let yvals = [
+//			this.data[this.timeframe][this.level]['crisis'][minIdx],
+//			this.data[this.timeframe][this.level]['baseline'][minIdx],
+//			this.data[this.timeframe][this.level]['percent_change'][minIdx]
+//		];
+//
+//		// Move the tooltip line
+//		this.svg.select('.line-tooltip')
+//			.transition().duration(30)
+//			.attr('stroke-opacity', 1)
+//			.attr('x1', this.x(date))
+//			.attr('x2', this.x(date))
+//			.attr('y1', mouseY)
+//			.attr('y2', () => {
+//				if (this.mode == 'relative')
+//					return this.y(this.checkUndefined(yvals[2]))
+//				else if (this.mode == 'count')
+//					return this.y(this.checkUndefined(yvals[0]))
+//			})
+//
+//		// Display the tooltip
+//		this.tooltip
+//			.html(() => {
+//				let crisisVal, baselineVal;
+//				if (yvals[0] < 1) {
+//					crisisVal = round(yvals[0], 1e2);
+//					baselineVal = round(yvals[1], 1e2);
+//				} else
+//				if (yvals[0] < 1000) {
+//					crisisVal = round(yvals[0], 1e0);
+//					baselineVal = round(yvals[1], 1e0);
+//				} else {
+//					crisisVal = insertKSeperators(round(yvals[0], 1e0));
+//					baselineVal = insertKSeperators(round(yvals[1], 1e0));
+//				}
+//				return "<b>" + this.formatDate(date) + "</b><br><br>" +
+//				"On date: <b>" + crisisVal + "</b><br>" +
+//				"Baseline: <b>" + baselineVal + "</b><br>" +
+//				"Deviation: <b>" + Math.round(yvals[2]*100*1e1)/1e1 + "%</b>"
+//				})
+//			.style("left", (d3.event.pageX + 10) + "px")
+//			.style("top", (d3.event.pageY - 50) + "px");
+//	}
+mousemoveTooltip(mouseX, mouseY) {
+		// Find nearest X-point
+		let diffsX = this.time.map(t => Math.abs(this.x(t)-mouseX));
+		let minIdxX = diffsX.indexOf(Math.min(...diffsX));
+
+		// Find nearest Y-point
+		// let locations = this.data._meta.locations;
+		let locations = this.level
+		let diffsY;
+		if (this.mode == 'relative') {
+			diffsY = locations.map(level => {
+				let curveY = this.y(
+					this.data[this.timeframe][level]['percent_change'][minIdxX]
+				);
+				return Math.abs(curveY - mouseY);
+			})
+		} else
+		if (this.mode == 'count') {
+			diffsY = locations.map(level => {
+				let curveY = this.y(
+					this.data[this.timeframe][level]['crisis'][minIdxX]
+				);
+				return Math.abs(curveY - mouseY);
+			})
+		}
+		// let minLevelIdx = diffsY.indexOf(Math.min(...diffsY));
+        let minLevelIdx = diffsY.indexOf(d3.min(diffsY),Number);
+		let minLevel = locations[minLevelIdx];
 
 		// Load its values into variables for easy reuse
-		let date = this.time[minIdx];
+		let date = this.time[minIdxX];
+
 		let yvals = [
-			this.data[this.timeframe][this.level]['crisis'][minIdx],
-			this.data[this.timeframe][this.level]['baseline'][minIdx],
-			this.data[this.timeframe][this.level]['percent_change'][minIdx]
+			this.data[this.timeframe][minLevel]['crisis'][minIdxX],
+			this.data[this.timeframe][minLevel]['baseline'][minIdxX],
+			this.data[this.timeframe][minLevel]['percent_change'][minIdxX]
 		];
 
 		// Move the tooltip line
@@ -824,13 +1076,19 @@ class DeviationPlot extends TimeSeriesFigure {
 					crisisVal = insertKSeperators(round(yvals[0], 1e0));
 					baselineVal = insertKSeperators(round(yvals[1], 1e0));
 				}
-				return "<b>" + this.formatDate(date) + "</b><br><br>" +
-				"On date: <b>" + crisisVal + "</b><br>" + 
-				"Baseline: <b>" + baselineVal + "</b><br>" + 
+				return "<b>" + minLevel + "</b><br>"+"<b>" + this.formatDate(date) + "</b><br><br>" +
+				"On date: <b>" + crisisVal + "</b><br>" +
+				"Baseline: <b>" + baselineVal + "</b><br>" +
 				"Deviation: <b>" + Math.round(yvals[2]*100*1e1)/1e1 + "%</b>"
 				})
 			.style("left", (d3.event.pageX + 10) + "px")
-			.style("top", (d3.event.pageY - 50) + "px");
+			.style("top", (d3.event.pageY - 15) + "px");
+
+		// Recolor the lines
+		this.svg.selectAll('.line-changeall')
+			.style('opacity', 0.05);
+		this.svg.select('.line-changeall.' + minLevel)
+			.style('opacity', 1)
 	}
 
 	relAbsLabelClick(mode) {
@@ -884,6 +1142,7 @@ class MultiLinePlot extends DeviationPlot {
 			    this.drawCrisisRelative(level);			  // Removed by `clearData()`
 			});
 		}
+		d3.select('.rect-tooltip').raise();
 	}
 
 
@@ -949,12 +1208,9 @@ class MultiLinePlot extends DeviationPlot {
 		let datum = zip(this.time, this.data[this.timeframe][level]['percent_change'])
 		this.svg.append("path")
 			.datum(datum)
-			.attr('class', 'line-changeall ' + level)
+			.attr('class', 'line-changeall ' + level.replace(" ", "-"))
 			.attr("id", 'data' + this.uniqueId)
 			.attr('d', this.valueline)
-			.on('mouseover', d => this.mouseover())
-			.on('mousemove', () => this.mousemove(level))
-			.on('mouseout', () => this.mouseout())
 	}
 
 	drawCrisisCount(level) {
@@ -967,12 +1223,9 @@ class MultiLinePlot extends DeviationPlot {
 		)
 		this.svg.append("path")
 			.datum(datum)
-			.attr('class', 'line-changeall ' + level)
+			.attr('class', 'line-changeall ' + level.replace(" ", "-"))
 			.attr("id", 'data' + this.uniqueId)
 			.attr('d', this.valueline)
-			.on('mouseover', d => this.mouseover())
-			.on('mousemove', () => this.mousemove(level))
-			.on('mouseout', () => this.mouseout())
 	}
 
 
@@ -1028,29 +1281,18 @@ class MultiLinePlot extends DeviationPlot {
 
 		// Display the tooltip
 		this.tooltip
-			.html("<b>" + minLevel + "</b>")
+			.html(
+				"<b>" + minLevel + "</b>, " + this.formatDate(date)
+				
+			)
 			.style("left", (d3.event.pageX + 10) + "px")
 			.style("top", (d3.event.pageY - 15) + "px");
 
 		// Recolor the lines
 		this.svg.selectAll('.line-changeall')
 			.style('opacity', 0.05);
-		this.svg.select('.line-changeall.' + minLevel)
+		this.svg.select('.line-changeall.' + minLevel.replace(" ", "-"))
 			.style('opacity', 1)
-	}
-
-	mousemove(minLevel) {
-		// Display the tooltip
-		this.tooltip
-			.html("<b>" + minLevel + "</b>")
-			.style("left", (d3.event.pageX + 10) + "px")
-			.style("top", (d3.event.pageY - 15) + "px");
-
-		// Recolor the lines
-		this.svg.selectAll('.line-changeall')
-			.style('opacity', 0.01);
-		this.svg.select('.line-changeall.' + minLevel)
-			.style('opacity', 1);
 	}
 
 	mouseout() {

@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 8:10:17
-.vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0."><meta property="og:title" content="Travel and mobility" />
-<meta property="og:description" content="Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 8:10:17
-.vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-horizontal { stroke: #bdc3c7; stroke-width: 1; fill: none; stroke-dasharray: 10 5; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0." />
+<meta name="description" content="Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 10:50:19
+.vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } ."><meta property="og:title" content="Travel and mobility" />
+<meta property="og:description" content="Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 10:50:19
+.vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/mobility/mobility/" />
-<meta property="article:modified_time" content="2020-06-02T08:10:17+02:00" />
+<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
 <title>Travel and mobility | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -99,6 +99,7 @@ Population landscape</a></li>
 </li>
 <li><em>How people move</em>
 <ul>
+<li><a href="/visualizations/how_people_move_movements_between_municipalities/"><strong>New</strong> Movements between regions</a></li>
 <li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
 <li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
 </ul>
@@ -159,7 +160,7 @@ Population landscape</a></li>
       
       
   <article class="markdown"><h1 id="traveling-patterns-and-mobility"><strong>Traveling patterns and mobility</strong></h1>
-<p><span style="font-size:14px"><em>Report by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:sljo@dtu.dk">Sune Lehmann</a>.</em></span> <span style="font-size:14px"><em>Updated: June, 2, 2020 8:10:17</em></span></p>
+<p><span style="font-size:14px"><em>Report by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:sljo@dtu.dk">Sune Lehmann</a>.</em></span> <span style="font-size:14px"><em>Updated: June, 2, 2020 10:50:19</em></span></p>
 
 
 
@@ -176,12 +177,7 @@ Population landscape</a></li>
 		stroke-dasharray: 10 5;
 		opacity: 0.2;
 	}
-	.line-horizontal { 
-		stroke: #bdc3c7;
-		stroke-width: 1;
-		fill: none;
-		stroke-dasharray: 10 5;
-	}
+ 
 	.line-crisis { 
 		fill: none;
 		stroke: black;
@@ -241,13 +237,12 @@ Population landscape</a></li>
 		fill: black;
 		opacity: 0.5;
 	}
-	.legend-label {
-		text-anchor: start;
-		font-weight: 300;
-		cursor: pointer;
-	}
 	.right-legend {
 		font-size: 12px;
+		-webkit-user-select: none;          
+		-moz-user-select: none;  
+		-ms-user-select: none;  
+		user-select: none;  
 	}
 	.tooltip {	
 		position: absolute;
@@ -267,6 +262,8 @@ Population landscape</a></li>
 	}
 	.select-place {
 		position: absolute;
+  		width: 300px;
+  		height: 10px;
 		right: 0px;
 	}
 	.flex {
@@ -338,6 +335,8 @@ Population landscape</a></li>
 <script src="/dist/d3-simple-slider.min.js"></script>
 <script src="/dist/chroma.min.js"></script>
 <script src="/dist/spin.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet"></link>
 
 
 <script src="/scripts/eventDates.js"></script>
@@ -400,6 +399,19 @@ Population landscape</a></li>
 
 	function insertKSeperators(x) {
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	}
+
+	function idify(str) {
+		
+		if (str.includes(" "))
+			str = str.replace(/ /g, "-");
+		if (isInt(str[0]))
+			str = "d" + str;
+		return str;
+	}
+
+	function isInt(str) {
+		return !isNaN(str)
 	}
 
     

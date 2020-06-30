@@ -24,6 +24,7 @@ headless: true
 		- [Change in population size]({{< relref "/visualizations/where_people_are_change_in_population_size.md" >}})
 		- [Population distribution]({{< relref "/visualizations/where_people_are_population_concentration.md" >}})
 	- *How people move*
+        - [**New** Movements between regions]({{< relref "/visualizations/how_people_move_movements_between_municipalities.md" >}})
 		- [Distance traveled]({{< relref "/visualizations/how_people_move_distance_traveled.md" >}})
 		- [Staying home]({{< relref "/visualizations/how_people_move_staying_home.md" >}})
 		<!-- - [Movements between municipalities]({{< relref "/visualizations/how_people_move_movements_between_municipalities.md" >}}) -->
