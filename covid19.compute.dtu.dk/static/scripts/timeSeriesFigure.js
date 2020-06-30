@@ -56,7 +56,8 @@ class TimeSeriesFigure {
 		d3.selectAll("#data" + this.uniqueId).remove();
 	}
 
-	redrawData() {}
+	redrawData() {
+	}
 
 
 	// Setup
@@ -282,7 +283,8 @@ class TimeSeriesFigure {
 			.on('mouseout', () => {
 				this.mouseout();
 				this.svg.select('.line-tooltip')
-					.attr('stroke-opacity', 0)
+					.transition().duration(100)  // hack. transition necessary otherwise tooltip line doesn't always go away, i think due to JS async event handling!
+					.attr('stroke-opacity', 0);
 			});
 	}
 
@@ -359,6 +361,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 	drawData() {
 		this.drawValue();           // Removed by `clearData()`
 		this.drawValueTrendline();  // Removed by `clearData()`
+		d3.select('.rect-tooltip').raise();  // Put invisible tooltip rect on top
 	}
 
 	redrawData() {
@@ -366,6 +369,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 		this.drawYAxis();
 		this.drawYLabel();
 		this.drawData();
+		d3.select('.rect-tooltip').raise();  // Put invisible tooltip rect on top
 	}
 
 
@@ -549,10 +553,11 @@ class DeviationPlot extends TimeSeriesFigure {
 			this.drawCrisisTrendline();         // Removed by `clearData()`
 		} else
 		if (this.mode == 'relative') {
-			this.drawHorizontalLineAt(0);    // Removed by `clearData()`
+			this.drawHorizontalLineAt(0);       // Removed by `clearData()`
 			this.drawPercentChange();           // Removed by `clearData()`
 			this.drawPercentChangeTrendline();  // Removed by `clearData()`
 		}
+		d3.select('.rect-tooltip').raise();     // Put invisible tooltip rect on top
 	}
 
 	redrawData() {
@@ -560,6 +565,7 @@ class DeviationPlot extends TimeSeriesFigure {
 		this.drawYAxis();
 		this.drawYLabel();
 		this.drawData();
+		d3.select('.rect-tooltip').raise();     // Put invisible tooltip rect on top
 	}
 
 
@@ -883,6 +889,7 @@ class MultiLinePlot extends DeviationPlot {
 			    this.drawCrisisRelative(level);			  // Removed by `clearData()`
 			});
 		}
+		d3.select('.rect-tooltip').raise();
 	}
 
 
@@ -951,9 +958,6 @@ class MultiLinePlot extends DeviationPlot {
 			.attr('class', 'line-changeall ' + level.replace(" ", "-"))
 			.attr("id", 'data' + this.uniqueId)
 			.attr('d', this.valueline)
-			.on('mouseover', d => this.mouseover())
-			.on('mousemove', () => this.mousemove(level))
-			.on('mouseout', () => this.mouseout())
 	}
 
 	drawCrisisCount(level) {
@@ -969,9 +973,6 @@ class MultiLinePlot extends DeviationPlot {
 			.attr('class', 'line-changeall ' + level.replace(" ", "-"))
 			.attr("id", 'data' + this.uniqueId)
 			.attr('d', this.valueline)
-			.on('mouseover', d => this.mouseover())
-			.on('mousemove', () => this.mousemove(level))
-			.on('mouseout', () => this.mouseout())
 	}
 
 
@@ -1039,20 +1040,6 @@ class MultiLinePlot extends DeviationPlot {
 			.style('opacity', 0.05);
 		this.svg.select('.line-changeall.' + minLevel.replace(" ", "-"))
 			.style('opacity', 1)
-	}
-
-	mousemove(minLevel) {
-		// Display the tooltip
-		this.tooltip
-			.html("<b>" + minLevel + "</b>")
-			.style("left", (d3.event.pageX + 10) + "px")
-			.style("top", (d3.event.pageY - 15) + "px");
-
-		// Recolor the lines
-		this.svg.selectAll('.line-changeall')
-			.style('opacity', 0.01);
-		this.svg.select('.line-changeall.' + minLevel.replace(" ", "-"))
-			.style('opacity', 1);
 	}
 
 	mouseout() {
