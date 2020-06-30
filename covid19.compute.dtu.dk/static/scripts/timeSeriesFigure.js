@@ -261,7 +261,7 @@ class TimeSeriesFigure {
 	}
 
 	addTooltip() {
-		// Trick here: draw an line that gets moved around with tooltip
+		// Draw a line that gets moved around with tooltip
 		this.svg.append('line')
 			.attr('class', 'line-tooltip')
 			.style('stroke', 'black')
@@ -327,7 +327,6 @@ class TimeSeriesFigure {
             return d
          }
     }
-
 }
 
 
@@ -1028,7 +1027,10 @@ class MultiLinePlot extends DeviationPlot {
 
 		// Display the tooltip
 		this.tooltip
-			.html("<b>" + minLevel + "</b>")
+			.html(
+				"<b>" + minLevel + "</b>, " + this.formatDate(date)
+				
+			)
 			.style("left", (d3.event.pageX + 10) + "px")
 			.style("top", (d3.event.pageY - 15) + "px");
 
