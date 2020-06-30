@@ -150,6 +150,9 @@ class TimeSeriesFigure {
         var mySelect = new SlimSelect({
             select: "#dropdown-" + this.uniqueId,
             placeholder: 'Select location(s)',
+            allowDeselectOption: true,
+            closeOnSelect: false,
+            showContent: 'up',
             onChange: () => {
 				if (mySelect.selected().length != 0) {
 				    this.level = mySelect.selected()
@@ -953,7 +956,7 @@ mousemoveTooltip(mouseX, mouseY) {
 					crisisVal = insertKSeperators(round(yvals[0], 1e0));
 					baselineVal = insertKSeperators(round(yvals[1], 1e0));
 				}
-				return "<b>" + this.formatDate(date) + "</b><br><br>" +
+				return "<b>" + minLevel + "</b><br>"+"<b>" + this.formatDate(date) + "</b><br><br>" +
 				"On date: <b>" + crisisVal + "</b><br>" +
 				"Baseline: <b>" + baselineVal + "</b><br>" +
 				"Deviation: <b>" + Math.round(yvals[2]*100*1e1)/1e1 + "%</b>"
