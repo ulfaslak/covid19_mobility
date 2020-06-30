@@ -239,6 +239,19 @@
 	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 	}
 
+	function idify(str) {
+		// replace spaces with dashes
+		if (str.includes(" "))
+			str = str.replace(/ /g, "-");
+		if (isInt(str[0]))
+			str = "d" + str;
+		return str;
+	}
+
+	function isInt(str) {
+		return !isNaN(str)
+	}
+
     // Session variable
     if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
     function createWorld() {

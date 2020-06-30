@@ -94,7 +94,7 @@ class MovementsMap {
 	mapNamesToPolygons() {
 		this.namePolygonMap = {};
 		this.geoData.forEach(d => {
-			this.namePolygonMap[d.kommune.replace(" ", "-")] = d.polygons;
+			this.namePolygonMap[d.kommune] = d.polygons;
 		})
 	}
 
@@ -366,7 +366,7 @@ class MovementsMap {
 	drawMap() {
 		for (let datum of this.geoData) {
 			let dataExists = this.exists(datum.kommune);
-			this.g.selectAll(datum.kommune)
+			this.g.selectAll(idify(datum.kommune))
 				.data(datum.polygons)
 				.enter().append("polygon")
 			    .attr("points", polygon => polygon.map(p => {
@@ -375,7 +375,7 @@ class MovementsMap {
 					}).join(" ")
 			    )
 			    .attr("class", 'map-polygon-movements')
-			    .attr("id", datum.kommune)
+			    .attr("id", idify(datum.kommune))
 			    .style('fill', () => {
 			    	if (typeof this.selected == 'undefined')
 			    		return this.defaultFill(datum.kommune, this.t)
@@ -559,7 +559,7 @@ class MovementsMap {
 		Object.keys(this.data[d]).forEach(neighbor => {
 			if (this.t in this.data[d][neighbor][this.radioOption]) {
 				let count = this.data[d][neighbor][this.radioOption][this.t][this.idx0or1]
-				this.svg.selectAll('#' + neighbor)
+				this.svg.selectAll('#' + idify(neighbor))
 					.style('fill', this.colorScale(count).hex());
 			}
 		})
@@ -567,7 +567,7 @@ class MovementsMap {
 
 	restoreDefault(t) {
 		this.geoData.forEach(datum_ => {
-			this.svg.selectAll('#' + datum_.kommune)
+			this.svg.selectAll('#' + idify(datum_.kommune))
 				.style('fill', this.defaultFill(datum_.kommune, this.t))
 		})
 	}
