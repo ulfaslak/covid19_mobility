@@ -5,6 +5,9 @@ headless: true
 - **[Main Page]({{< relref "/_index.md" >}})**
 - **Posts**
 
+    - *June*
+        - [29 - *Gaming*:  
+        Escape from Covid island]({{< relref "/posts/escape_from_covid_island.md" >}})
     - *May*
     	- [18 - *Denmark*:   
         Back to work]({{< relref "/posts/going_to_work.md" >}})

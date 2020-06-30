@@ -4,7 +4,7 @@ type: post
 ---
 
 # **Escape from Covid island**
-{{< fontsize 14 >}}*Post by [Anna Sapienza](mailto:ansa@sodas.ku.dk), [Malene H. Jespersen](mailto:malenehj@sodas.du.dk), [Kristoffer Albris](mailto:kristoffer.albris@sodas.ku.dk), [Morten Axel Pedersen](mailto:map@sodas.ku.dk) and [Sune Lehmann](mailto:sljo@dtu.dk) . Published: Month Date, 2020.*{{< /fontsize >}}
+{{< fontsize 14 >}}*Post by [Anna Sapienza](mailto:ansa@sodas.ku.dk), [Malene H. Jespersen](mailto:malenehj@sodas.du.dk), [Kristoffer Albris](mailto:kristoffer.albris@sodas.ku.dk), [Morten Axel Pedersen](mailto:map@sodas.ku.dk) and [Sune Lehmann](mailto:sljo@dtu.dk) . Published: June 29, 2020.*{{< /fontsize >}}
 
 {{< vspace 20 >}}
 

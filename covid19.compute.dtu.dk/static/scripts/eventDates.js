@@ -18,30 +18,15 @@ let eventDates = {
 		["2020-05-18 00:00:00", 'Restaurants, cafes, churches and elementary schools reopen', 'event10'],
 		["2020-05-27 00:00:00", 'Everything except nightclubs, festivals, etc. reopen', 'event11']
 	],
-	'germany': [
-	],
-	'brazil': [
-	],
-    'france': [
-    ],
-    'spain' :[
-    ],
-    'norway':[
-    ],
-    'italy':[
-    ],
-    'iceland':[
-    ],
-    'new zealand':[
-    ],
-    'united kingdom':[
-    ],
-    'netherlands':[
-    ],
-    'ukraine':[
-    ],
-    'finland':[
-    ],
-    'poland':[
-    ]
 }
+d3.json('/data/countries.json').then(function(data){
+    data.forEach(function(country){
+        if (!(country.toLowerCase() in eventDates)) {
+           eventDates[country.toLowerCase()] = []
+        }
+    })
+})
+
+
+
+
