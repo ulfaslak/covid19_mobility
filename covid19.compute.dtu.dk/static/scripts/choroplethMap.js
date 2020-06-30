@@ -362,7 +362,7 @@ class MovementsMap {
 			.min(0)
 			.max(N-1)
 			.width(this.width - this.rwidth - 60)
-			.tickValues(d3.range(2, N, 7))
+			.tickValues(d3.range(2, N, 14))
 			.tickFormat(i => this.idxToDate(i))
 			.step(1)
 			.default(this.t)
