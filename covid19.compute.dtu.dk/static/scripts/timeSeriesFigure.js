@@ -148,18 +148,75 @@ class TimeSeriesFigure {
 	            if (d==this.level) { return 'selected' };
 	        });
 
+        this.colors = [
+            '#5897fb', //blue
+            '#008000', //green
+            '#FFA500', // orange
+            '#FF0000', //red
+            '#800080', //purple
+            '#808000', //olive
+            '#00FF00', //lime
+            '#800000', //maroon
+            '#00FFFF', //aqua
+            '#008080', //team
+            '#000080', //navy
+            '#FF00FF', //fushua
+            '#808080' //gray
+        ];
+
+        this.levelColors = {}
+        var colorSet = new Set()
+
+        this.levelColors[this.level[0]] = 0
+        colorSet.add(0)
+
         var mySelect = new SlimSelect({
             select: "#dropdown-" + this.uniqueId,
+            limit: 10,
             placeholder: 'Select location(s)',
             allowDeselectOption: true,
             closeOnSelect: false,
             showContent: 'up',
-            onChange: () => {
-				if (mySelect.selected().length != 0) {
+            onChange: (info) => {
+
+            	// If a locations was removed update the colorSet and delete that locations from locColors
+                if (this.level.length > mySelect.selected().length) {
+            	            var diff = this.level.filter(x => !mySelect.selected().includes(x))
+            	            colorSet.delete(this.levelColors[diff])
+            	            delete this.levelColors[diff]
+            	        }
+
+            	if (mySelect.selected().length != 0) {
+
+                    // Update selected levels
 				    this.level = mySelect.selected()
+
+				    // Checking of new locations has been added and assigning lowest (id) available color
+				    this.level.forEach( (level) => {
+				        if (!(level in this.levelColors)) {
+				            for (var i = 0; i < this.colors.length; i++) {
+				                if (!(colorSet.has(i))){
+				                    colorSet.add(i);
+				                    this.levelColors[level]=i;
+				                    break;
+				                }
+				            }
+				        }
+				    })
+				    this.clearData();
+				    this.redrawData();
 				}
-				this.clearData();
-				this.redrawData();
+
+				// Coloring the locations
+                //var levels = document.querySelector(".ss-values")
+                info.forEach((level, i) => {
+                    var level_el = document.querySelector('[data-id="'+level.id+'"]')
+                    level_el.style["background-color"] = this.colors[this.levelColors[level.value]]
+                });
+
+
+//				this.clearData();
+//				this.redrawData();
             }
         })
 	}
@@ -771,6 +828,8 @@ class DeviationPlot extends TimeSeriesFigure {
 		this.showBaseline = true;
 		this.show7DAvg = true;
 
+		console.log('hi')
+
 		// daily
 		this.svg.append('line')
 			.attr('class', 'line-crisis')
@@ -888,7 +947,7 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawCrisisTrendline() {
-	    this.level.forEach(level => {
+	    this.level.forEach((level, i) => {
             let datum = zip(this.time, weekavg(this.data[this.timeframe][level]['crisis'])).slice(3,-3)
             this.svg.append("path")
                 .datum(datum)
@@ -896,6 +955,7 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.show7DAvg ? null : 0)
+			    .style('stroke',this.colors[this.levelColors[level]])
          })
 	}
 
@@ -922,7 +982,7 @@ class DeviationPlot extends TimeSeriesFigure {
 	}
 
 	drawPercentChangeTrendline() {
-	    this.level.forEach(level => {
+	    this.level.forEach((level, i) => {
             let datum = zip(this.time, weekavg(this.data[this.timeframe][level]['percent_change'])).slice(3,-3)
             this.svg.append("path")
                 .datum(datum)
@@ -930,6 +990,7 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.show7DAvg ? null : 0)
+			    .style('stroke',this.colors[this.levelColors[level]])
         })
 	}
 
