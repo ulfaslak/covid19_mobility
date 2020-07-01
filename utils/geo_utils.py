@@ -52,10 +52,11 @@ def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo
                 geodf = gpd.GeoDataFrame.from_features(collection, crs="epsg:4326")
                 columns_replace = geodf.columns[geodf.columns.str.startswith('NAME_')]
                 for column in columns_replace:
-                    geodf = geodf[~geodf[column].str.startswith('n.a.')]
+                    geodf = geodf[~geodf[column].str.startswith('n.a.',na=True)]
                     geodf[column] = geodf[column].str.replace('\W+',' ').str.strip()
                 geodf = geodf.dropna(subset=columns_replace)
-
+                geodf = geodf.dissolve(by="NAME_"+str(adm)).reset_index()
+                #import pdb; pdb.set_trace()
                 if return_geo_pd:
                     return geodf
                 geodf.geometry = geodf.geometry.simplify(0.001)
