@@ -8,7 +8,7 @@
 <meta property="og:description" content="Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/telco/" />
-<meta property="article:modified_time" content="2020-06-26T12:36:27+02:00" />
+<meta property="article:modified_time" content="2020-07-01T11:27:25+02:00" />
 <title>Telco | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -206,7 +206,7 @@ Population landscape</a></li>
 	}
 	.trendline {
 		fill: none; 
-		stroke: red;
+		stroke: #5897fb;
 		stroke-width: 2.5;
 	}
 	.histEvent {
@@ -455,38 +455,6 @@ Population landscape</a></li>
 
 
 <div class="flex">
-	<div class="radio-timeframe" id='radio-changeFig'></div>
-	<div class="select-place" id='select-changeFig'></div>
-</div>
-<div class='vis' id='vis-change'></div>
-
-
-
-
-
-
-<script>
-
-	let spinnerchange = new Spinner(spinnerOpts).spin(document.getElementById('vis-change'));
-
-	let instance_change;
-	d3.json('/data/'+sessionStorage.country+'_telco_change.json').then(function(data) {
-		spinnerchange.stop();
-		instance_change = new DeviationPlot(data, 'vis-change', 'changeFig');
-		instance_change.setup();
-		instance_change.drawLayout();
-		instance_change.drawData();
-	})
-
-</script>
-
-
-
-<!DOCTYPE html>
-<meta charset="utf-8">
-
-
-<div class="flex">
 	<div class="radio-timeframe" id='radio-changeAllFig'></div>
 	<div class="select-place" id='select-changeAllFig'></div>
 </div>
@@ -513,6 +481,38 @@ Population landscape</a></li>
 		instance_changeAll.setup();
 		instance_changeAll.drawLayout();
 		instance_changeAll.drawData();
+	})
+
+</script>
+
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-changeFig'></div>
+	<div class="select-place" id='select-changeFig'></div>
+</div>
+<div class='vis' id='vis-change'></div>
+
+
+
+
+
+
+<script>
+
+	let spinnerchange = new Spinner(spinnerOpts).spin(document.getElementById('vis-change'));
+
+	let instance_change;
+	d3.json('/data/'+sessionStorage.country+'_telco_change.json').then(function(data) {
+		spinnerchange.stop();
+		instance_change = new DeviationPlot(data, 'vis-change', 'changeFig');
+		instance_change.setup();
+		instance_change.drawLayout();
+		instance_change.drawData();
 	})
 
 </script>
