@@ -136,8 +136,6 @@ class TimeSeriesFigure {
 			.attr('id', 'dropdown-' + this.uniqueId)
 			.attr('multiple',"")
 
-
-
         d3.select("#dropdown-" + this.uniqueId)
 	        .selectAll("option")
 	        .data(this.data._meta.locations).enter()
@@ -161,7 +159,7 @@ class TimeSeriesFigure {
             '#008080', //team
             '#000080', //navy
             '#FF00FF', //fushua
-            '#808080' //gray
+            '#808080'  //gray
         ];
 
         this.levelColors = {}
@@ -214,9 +212,8 @@ class TimeSeriesFigure {
                     level_el.style["background-color"] = this.colors[this.levelColors[level.value]]
                 });
 
-
-//				this.clearData();
-//				this.redrawData();
+				// this.clearData();
+				// this.redrawData();
             }
         })
 	}
@@ -799,8 +796,6 @@ class DeviationPlot extends TimeSeriesFigure {
 		this.showDaily = true;
 		this.showBaseline = true;
 		this.show7DAvg = true;
-
-		console.log('hi')
 
 		// daily
 		this.svg.append('line')
