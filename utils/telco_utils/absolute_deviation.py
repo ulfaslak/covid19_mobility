@@ -16,6 +16,8 @@ def run(country):
 
         zips = pd.read_csv(f'{path_zips}zipcodes.csv')
         zips = zips.drop_duplicates(subset=['city_code', 'city']).set_index('city_code')
+        zips['city'] = zips['city'].replace({"Aarhus":"Århus","Vesthimmerlands":"Vesthimmerland"})
+
 
         data = pd.merge(data, zips[['city']], how='left', left_on='origin_area_code', right_on='city_code').rename(
             columns={'city': 'source_kommune'})

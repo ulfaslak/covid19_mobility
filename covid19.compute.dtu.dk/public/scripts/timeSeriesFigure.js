@@ -800,7 +800,6 @@ class DeviationPlot extends TimeSeriesFigure {
 		this.showBaseline = true;
 		this.show7DAvg = true;
 
-		console.log('hi')
 
 		// daily
 		this.svg.append('line')
@@ -927,7 +926,7 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.show7DAvg ? null : 0)
-			    .style('stroke',this.colors[this.levelColors[level]])
+			    .style('stroke',() => {if ( this.levelColors !== undefined) {return this.colors[this.levelColors[level]]}})
          })
 	}
 
@@ -962,7 +961,7 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.show7DAvg ? null : 0)
-			    .style('stroke',this.colors[this.levelColors[level]])
+			    .style('stroke',() => {if (this.levelColors !== undefined) { return this.colors[this.levelColors[level]]}})
         })
 	}
 

@@ -333,8 +333,8 @@ Population landscape</a></li>
 <script src="/dist/d3-simple-slider.min.js"></script>
 <script src="/dist/chroma.min.js"></script>
 <script src="/dist/spin.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet"></link>
+<script src="/dist/slimselect.min.js"></script>
+<link href="/dist/slimselect.min.css" rel="stylesheet"></link>
 
 
 <script src="/scripts/eventDates.js"></script>
@@ -524,11 +524,11 @@ Population landscape</a></li>
 
 
 <div class="flex">
-	<div id="slider-movementsFig"></div>
-	<div class="radio-timeframe" id='radio-movementsFig'></div>
+	<div id="slider-movementsTelcoFig"></div>
+	<div class="radio-timeframe" id='radio-movementsTelcoFig'></div>
 </div>
 <div class="flex flex-col">
-	<div class='vis' id='vis-movementsFig'></div>
+	<div class='vis' id='vis-movementsTelcoFig'></div>
 </div>
 
 
@@ -538,14 +538,14 @@ Population landscape</a></li>
 
 <script>
 
-	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsFig'));
+	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsTelcoFig'));
 
 	let instance_movements;
 	d3.json("/data/"+sessionStorage.country+"_geojson.json").then(function(geoData) {
 		
 	    d3.json('/data/telco_map.json').then(function(data) {
 			spinnermovements.stop();
-			instance_movements = new MovementsMap(data, geoData, 'movementsFig');
+			instance_movements = new MovementsMap(data, geoData, 'movementsTelcoFig');
 			instance_movements.setup();
 			instance_movements.drawLayout();
 			instance_movements.drawData();
