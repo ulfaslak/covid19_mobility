@@ -5,7 +5,7 @@
 
 <!-- {{< vspace 20 >}} -->
 
-Using the Movement Maps we can visualize the distribution of where people spend their days relative to their nights. While not accurate in every single case, it's perhaps easier to say that we are able to see where people *live* (spend their nights) and *work* (spend their nights). Or even more compactly, that we can look at **commuting patterns** over time.
+Using the Movement Maps we can visualize the distribution of where people spend their days relative to their nights. While not accurate in every single case, it's perhaps easier to say that we are able to see where people *live* (spend their nights) and *work* (spend their days). Or even more compactly, that we can look at **commuting patterns** over time.
 
 {{< figures/movements_between_admin_regions >}}
 

@@ -5,13 +5,13 @@ class MovementsMap {
 		this.data = data;
 		this.geoData = geoData;
 		this.uniqueId = uniqueId;
-		this.betweenMax = data._meta.variables.betweenMax;
-		this.inMax = data._meta.variables.inMax;
+		this.inMax = round(data._meta.variables.inMax, 1e2);
 		this.outMax = data._meta.variables.outMax;
 		this.datetime = data._meta.datetime;
 		this.t = data._meta.defaults.t;
 		this.radioOption = data._meta.defaults.radioOption;
 		this.idx0or1 = data._meta.defaults.idx0or1;
+		this.mode = 'linear';
 
 		// Dimensions
 		let figureWidth = 770,
@@ -301,8 +301,18 @@ class MovementsMap {
 				.text(() => {
 					if (idx == 0)
 						return "No data";
-					else
-						return round(i / (this.n_steps-1) * this.domain[1] * 100, 1e0) + "%";
+					else {
+						if (this.radioOption == "percent_change" || this.domain[1] <= 1)
+							return round(i / (this.n_steps-1) * this.domain[1] * 100, 1e0) + "%";
+						else if (this.domain[1] <= 100)
+							return round(i / (this.n_steps-1) * this.domain[1], 1e0);
+						else if (this.domain[1] <= 10_000)
+							return round(i / (this.n_steps-1) * this.domain[1], 1e2);
+						else if (this.domain[1] <= 1_000_000)
+							return round(i / (this.n_steps-1) * this.domain[1] / 1e3, 1e0) + "K";
+						else
+							return round(i / (this.n_steps-1) * this.domain[1] / 1e6, 1e0) + "M";
+					}
 				})
 		})
 	}
@@ -481,9 +491,17 @@ class MovementsMap {
 		let baseline = this.data[d]["_" + d]['baseline'][this.t][this.idx0or1];
 		let percent_change = this.data[d]["_" + d]['percent_change'][this.t][this.idx0or1];
 
-		let tooltiptext = "Share of <b>" + d + "</b> population<br>going to work anywhere<br><br>";
-		tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
-		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
+		let tooltiptext = "";
+		if (this.inMax <= 1) {
+			tooltiptext += "Share of <b>" + d + "</b> population<br>going to work anywhere<br><br>";
+			tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
+			tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
+		}
+		else {
+			tooltiptext += "Trips starting in <b>" + d + "</b>:<br><br>";
+			tooltiptext += "On date: <b>" + insertKSeperators(round(crisis, 1e0)) + "</b><br>";
+			tooltiptext += "Baseline: <b>" + insertKSeperators(round(baseline, 1e0)) + "</b><br>";
+		}
 		if (baseline > 0)
 			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";
 
@@ -497,7 +515,8 @@ class MovementsMap {
 
 		let crisis = 0,
 			baseline = 0, 
-			percent_change = 'N/A';
+			percent_change = 'NaN';
+
 		if (d in this.data[this.selected]) {
 			if (this.t in this.data[this.selected][d]['crisis'])
 				crisis = this.data[this.selected][d]['crisis'][this.t][this.idx0or1];
@@ -507,15 +526,25 @@ class MovementsMap {
 				percent_change = this.data[this.selected][d]['percent_change'][this.t][this.idx0or1];			
 		}
 
-		let tooltiptext;
-		if (this.idx0or1 == 0) 
-			tooltiptext = "Share of <b>" + this.selected + "</b> population<br>going to work in <b>" + this.hovering + "</b><br><br>";
-		else if (this.idx0or1 == 1) 
-			tooltiptext = "Share of <b>" + this.hovering + "</b> population<br>going to work in <b>" + this.selected + "</b><br><br>";
-		tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
-		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
+		let tooltiptext = "";
+		if (this.inMax <= 1) {
+			if (this.idx0or1 == 0) 
+				tooltiptext += "Share of <b>" + this.selected + "</b> population<br>going to work in <b>" + this.hovering + "</b><br><br>";
+			else if (this.idx0or1 == 1) 
+				tooltiptext += "Share of <b>" + this.hovering + "</b> population<br>going to work in <b>" + this.selected + "</b><br><br>";
+			tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
+			tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
+		} else {
+			if (this.idx0or1 == 0) 
+				tooltiptext += "Trips starting in <b>" + this.selected + "</b> that end in <b>" + this.hovering + "</b><br><br>";
+			else if (this.idx0or1 == 1) 
+				tooltiptext += "Trips starting in <b>" + this.hovering + "</b> that end in <b>" + this.selected + "</b><br><br>";
+			tooltiptext += "On date: <b>" + insertKSeperators(round(crisis, 1e0)) + "</b><br>";
+			tooltiptext += "Baseline: <b>" + insertKSeperators(round(baseline, 1e0)) + "</b><br>";
+
 		if (baseline > 0)
-			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";
+			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";	
+		}
 
 		if (d3.event != null) {
 			this.tooltip
