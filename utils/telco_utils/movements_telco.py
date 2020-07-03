@@ -5,6 +5,7 @@ import json
 from countryinfo import CountryInfo
 from collections import defaultdict
 from tqdm import tqdm
+import os
 
 def run(country):
     class defaultlist(list):
@@ -131,13 +132,15 @@ def run(country):
 
     zips = pd.read_csv(PATH_IN_ZIP + 'zipcodes.csv')
     zips = zips.drop_duplicates(subset=['city_code', 'city']).set_index('city_code')
-    zips['city'] = zips['city'].replace({"Aarhus":"Århus","Vesthimmerlands":"Vesthimmerland"})
+    zips['city'] = zips['city'].replace({"Aarhus":"Århus","Vesthimmerlands":"Vesthimmerland"}).str.replace('-',' ')
 
     data = pd.merge(data, zips[['city']], how='left', left_on='origin_area_code', right_on='city_code').rename(
         columns={'city': 'source_kommune'})
     data = pd.merge(data, zips[['city']], how='left', left_on='destination_area_code', right_on='city_code').rename(
         columns={'city': 'target_kommune'}).set_index('date')
     data = data.rename(columns={'all_ref': 'n_baseline', 'all': 'n_crisis', 'rel_change': 'percent_change'})
+    # TODO: THIS IS A TEMPORARY FIX. ZIPCODE 411 IS MISSING FROM THE ZIPS FILE
+    data.dropna(axis=0,inplace=True)
 
     data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: [0, 0]))))
     start = 0
