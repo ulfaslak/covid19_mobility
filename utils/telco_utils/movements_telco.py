@@ -26,6 +26,35 @@ def run(country):
             return 0
         return (crisis - baseline) / baseline
 
+    def defaultify(d, depth = 0):
+        if isinstance(d, dict):
+            if depth == 0:
+                return defaultdict(
+                    lambda: defaultdict(
+                        lambda: defaultdict(
+                            lambda: defaultlist(lambda: [0, 0]))
+                    ),
+                    {k: defaultify(v, depth + 1) for k, v in d.items()}
+                )
+            if depth == 1:
+                return defaultdict(
+                    lambda: defaultdict(
+                        lambda: defaultlist(lambda: [0,0])
+                    ),
+                    {k: defaultify(v, depth + 1) for k, v in d.items()}
+                )
+            if depth ==2:
+                return defaultdict(
+                    lambda: defaultlist(lambda: [0,0]),
+                    {k: defaultify(v) for k, v in d.items()}
+                )
+        elif isinstance(d, list):
+            tmp = defaultlist(lambda: [0,0])
+            tmp.extend(d)
+            return tmp
+        else:
+            return d
+
 
     def compute_relative_change(df,
                                 ref_date=datetime.datetime(2020, 3, 1)):
@@ -116,7 +145,7 @@ def run(country):
                 data_out[kommune]["_" + kommune]['baseline'][idx][1]
             )
 
-    PATH_OUT = r"/home/petem/HOPE/WorldCovid19/covid19.compute.dtu.dk/static/data/"
+    PATH_OUT = r"/home/petem/HOPE/WorldCovid19/covid19.compute.dtu.dk/static/data/telco_map.json"
     PATH_IN_ZIP = r"/data/ctdk/notebooks/"
     PATH_IN_DAT = r"/data/ctdk/raw/"
 
@@ -129,6 +158,8 @@ def run(country):
     df1 = compute_relative_change(df1)  # .set_index('date')
     df2 = compute_relative_change(df2)  # .set_index('date')
     data = pd.concat([df1, df2])
+    date_min = max(df1.date.min(),df2.date.min())
+    date_max = min(df1.date.max(),df2.date.max())
 
     zips = pd.read_csv(PATH_IN_ZIP + 'zipcodes.csv')
     zips = zips.drop_duplicates(subset=['city_code', 'city']).set_index('city_code')
@@ -141,13 +172,22 @@ def run(country):
     data = data.rename(columns={'all_ref': 'n_baseline', 'all': 'n_crisis', 'rel_change': 'percent_change'})
     # TODO: THIS IS A TEMPORARY FIX. ZIPCODE 411 IS MISSING FROM THE ZIPS FILE
     data.dropna(axis=0,inplace=True)
+    data = data[data.index <= date_max]
 
-    data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: [0, 0]))))
-    start = 0
+    path_boo = os.path.exists(PATH_OUT)
+    if path_boo:
+        with open(PATH_OUT, 'r') as fp:
+            data_out = json.load(fp)
+            data_out = defaultify(data_out, 0)
+        start = len(data_out['_meta']['datetime'])
+    else:
+        data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: [0,0]))))
+        start = 0
+        
     N_POP = CountryInfo(country).population()
     fn_days = data.index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
 
-    for idx, fn_day in tqdm(enumerate(fn_days), total=len(fn_days)):
+    for idx, fn_day in tqdm(enumerate(fn_days[start:], start), total=len(fn_days[start:])):
         data_ = data.loc[fn_day]
 
         # Get list of municipalities
@@ -210,7 +250,7 @@ def run(country):
     data_out['_meta']['defaults']['lonMin'] = cbb[0]
     data_out['_meta']['defaults']['lonMax'] = cbb[2]
 
-    with open(PATH_OUT + 'telco_map.json','w') as f:
+    with open(PATH_OUT,'w') as f:
         json.dump(data_out,f)
 
 if __name__ == "__main__":

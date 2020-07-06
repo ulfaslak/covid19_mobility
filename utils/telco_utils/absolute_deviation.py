@@ -5,6 +5,20 @@ from collections import defaultdict
 from tqdm import tqdm
 
 def run(country):
+    class defaultlist(list):
+        def __init__(self, fx):
+            self._fx = fx
+        def _fill(self, index):
+            while len(self) <= index:
+                self.append(self._fx())
+        def __setitem__(self, index, value):
+            self._fill(index)
+            list.__setitem__(self, index, value)
+        def __getitem__(self, index):
+            self._fill(index)
+            return list.__getitem__(self, index)
+
+
     def load_prepare(path,path_zips,ref_date):
         df1 = pd.read_csv(f'{path}df_safe.csv.gz', parse_dates=['date'],
                           dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
@@ -55,11 +69,17 @@ def run(country):
     def defaultify(d, depth = 0):
         if isinstance(d, dict):
             if depth == 0:
-                return defaultdict(lambda: defaultdict(lambda: defaultdict(list)), {k: defaultify(v,depth+1) for k, v in d.items()})
+                return defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined"))), {k: defaultify(v,depth+1) for k, v in d.items()})
             if depth ==1:
-                return defaultdict(lambda: defaultdict(list), {k: defaultify(v, depth + 1) for k, v in d.items()})
+                return defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined")), {k: defaultify(v, depth + 1) for k, v in d.items()})
             if depth== 2:
-                return defaultdict(list, {k: v for k, v in d.items()})
+                return defaultdict(lambda: defaultlist(lambda: "undefined"), {k: defaultify(v) for k, v in d.items()})
+        if isinstance(d, list):
+            tmp = defaultlist(lambda: "undefined")
+            tmp.extend(d)
+            return tmp
+        else: 
+            return d
 
     def percent_change(crisis, baseline):
         if baseline == 0:
@@ -68,11 +88,11 @@ def run(country):
 
 
 
-    def update_data_out(time, label, data):
-        data_out[time][label]['baseline'].append(int(sum(data.n_baseline)))
-        data_out[time][label]['crisis'].append(int(sum(data.n_crisis)))
+    def update_data_out(time, label, data, idx):
+        data_out[time][label]['baseline'][idx] = int(sum(data.n_baseline))
+        data_out[time][label]['crisis'][idx] = int(sum(data.n_crisis))
         #data_out[time][label]['percent_change'].append(float(data.percent_change.mean()))
-        data_out[time][label]['percent_change'].append(percent_change(int(sum(data.n_crisis)),int(sum(data.n_baseline))))
+        data_out[time][label]['percent_change'][idx] = percent_change(int(sum(data.n_crisis)),int(sum(data.n_baseline)))
 
 
     PATH_IN = f'/data/ctdk/raw/'
@@ -86,9 +106,9 @@ def run(country):
         with open(f'{PATH_OUT}{country}_telco_change.json', 'r') as fp:
             data_out = json.load(fp)
             data_out = defaultify(data_out,0)
-        start = len(data_out['within']['country'])
+        start = len(data_out['_meta']['datetime'])
     else:
-        data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+        data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined"))))
         start = 0
 
     data_out['_meta']['defaults'] = {}
@@ -101,7 +121,7 @@ def run(country):
     fn_days = data[data.index>start_date].index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
 
     #import pdb; pdb.set_trace()
-    for fn_day in tqdm(fn_days[start:]):
+    for idx, fn_day in tqdm(enumerate(fn_days[start:],start),total=len(fn_days[start:])):
         data_day = data.loc[fn_day]
 
         for fn_time in ['between','within']:
@@ -113,9 +133,9 @@ def run(country):
                 data_day_type = data_day[data_day['origin_area_code'] == data_day['destination_area_code']]
             
             # Add data to data_out
-            update_data_out(fn_time, 'all', data_day_type)
+            update_data_out(fn_time, 'all', data_day_type,idx)
             for adm2 in set(data_day_type['source_kommune']):
-                update_data_out(fn_time, adm2, data_day_type[data_day_type['source_kommune'] == adm2])
+                update_data_out(fn_time, adm2, data_day_type[data_day_type['source_kommune'] == adm2],idx)
 
 
 
