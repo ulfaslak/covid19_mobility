@@ -541,8 +541,7 @@ Population landscape</a></li>
 	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsTelcoFig'));
 
 	let instance_movements;
-	d3.json("/data/"+sessionStorage.country+"_geojson.json").then(function(geoData) {
-		
+	d3.json("/data/Denmark_geojson.json").then(function(geoData) {
 	    d3.json('/data/telco_map.json').then(function(data) {
 			spinnermovements.stop();
 			instance_movements = new MovementsMap(data, geoData, 'movementsTelcoFig');
