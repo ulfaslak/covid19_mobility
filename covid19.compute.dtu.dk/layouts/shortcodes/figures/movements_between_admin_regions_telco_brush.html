@@ -5,11 +5,10 @@
 
 <!-- Div that SVG objects are appended to -->
 <div class="flex">
-	<div id="slider-movementsTelcoFig"></div>
-	<div class="radio-timeframe" id='radio-movementsTelcoFig'></div>
+	<div class='vis' id='vis-movementsTelcoBrushFig'></div>
 </div>
-<div class="flex flex-col">
-	<div class='vis' id='vis-movementsTelcoFig'></div>
+<div class="flex">
+	<div id="brush-movementsTelcoBrushFig"></div>
 </div>
 
 
@@ -19,16 +18,16 @@
 <!-- Code -->
 <script>
 
-	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsTelcoFig'));
+	let spinnermovements = new Spinner(spinnerOpts).spin(document.getElementById('vis-movementsTelcoBrushFig'));
 
 	let instance_movements;
 	d3.json("/data/Denmark_geojson.json").then(function(geoData) {
 	    d3.json('/data/telco_map.json').then(function(data) {
 			spinnermovements.stop();
-			instance_movements = new MovementsMap(data, geoData, 'movementsTelcoFig');
+			instance_movements = new MovementsMapBrush(data, geoData, 'movementsTelcoBrushFig');
 			instance_movements.setup();
-			instance_movements.drawLayout();
 			instance_movements.drawData();
+			instance_movements.drawLayout();
 		})
 	})
 

@@ -54,9 +54,10 @@ class MovementsMap {
 	}	
 
 
-	// Clear and recreate
+	// Start, clear and recreate
 	// ------------------
 
+	// Start 1 (called on instance)
 	setup() {
 		this.mapNamesToPolygons();
 		this.setScaling();
@@ -65,26 +66,32 @@ class MovementsMap {
 		this.resetState();
 	}
 
+	// Start 2 (called on instance)
 	drawLayout() {
 		this.setRadio();
 		this.setSlider();
+		this.drawLogLin();
 	}
 
+	// Start 3 (called on instance)
 	drawData() {
 		this.drawMap();
 		this.setLegend();
 	}
 
+	// Restart 1
 	clearData() {
 		this.svg.selectAll('polygon').remove()
 		this.svg.selectAll('rect').remove()
 		this.svg.selectAll('text').remove()
 	}
 
+	// Restart
 	redrawData() {
 		this.setColorDomain();
 		this.drawMap();
 		this.setLegend();
+		this.drawLogLin();
 	}
 
 
@@ -212,11 +219,19 @@ class MovementsMap {
 
 	setColorDomain() {
 		this.domain = undefined;
-		if (this.radioOption == "percent_change")
-			this.domain = [-1, 1];  // reverse scale so blue (good) is less travel
-		else
-			this.domain = [-this.inMax, this.inMax];
-
+		if (this.radioOption == "percent_change") {
+			if (this.mode == 'linear')
+				this.domain = [-100, 100];
+			else if (this.mode == 'log')
+				this.domain = [-Math.log(101), Math.log(101)];
+		}
+		else {
+			let c = this.inMax > 1 ? 1 : 100;
+			if (this.mode == 'linear')
+				this.domain = [-this.inMax, this.inMax];
+			else if (this.mode == 'log')
+				this.domain = [-Math.log(this.inMax * c + 1), Math.log(this.inMax * c + 1)];
+		}
 		this.colorScale.domain(this.domain)
 	}
 
@@ -262,13 +277,26 @@ class MovementsMap {
 		let legendRange,
 			legendTitle;
 		if (this.radioOption == "percent_change") {
-			legendRange = d3.range(-this.n_steps, this.n_steps)
+			// legendRange = d3.range(-this.n_steps, this.n_steps).map(v => v * this.domain[1])
+			if (this.mode == 'linear') 
+				legendRange = this.linspace(this.domain[0] / 100, this.domain[1] / 100, this.n_steps * 2 - 1);
+			else if (this.mode == 'log') {
+				legendRange = [
+					...this.logspace(Math.log(1), this.domain[1], 4).reverse().map(v => -v/100),
+					0, ...this.logspace(Math.log(1), this.domain[1], 4).map(v => v/100)
+				];
+			}
 			legendTitle = this.data._meta.variables.legend_label_relative;
 		}
 		else {
-			legendRange = d3.range(-1, this.n_steps)
+			if (this.mode == 'linear')
+				legendRange = this.linspace(0, this.domain[1], this.n_steps);
+			else if (this.mode == 'log')
+				legendRange = this.logspace(Math.log(1), this.domain[1], this.n_steps);
 			legendTitle = this.data._meta.variables.legend_label_count;
 		}
+
+		console.log(legendRange)
 
 		// Title text
 		this.svg.append('text')
@@ -278,40 +306,51 @@ class MovementsMap {
 			.text(legendTitle)
 
 		// Rects and labels
+		legendRange = ["No data", ...legendRange];
 		legendRange.forEach((i, idx) => {
 
 			// Rects
 			this.svg.append('rect')
 				.attr('x', this.width-120)
-				.attr('y', idx * 23 + 40)
+				.attr('y', idx * 23 + 60)
 				.attr('width', 15)
 				.attr('height', 15)
 				.attr('fill', () => {
 					if (idx == 0)
 						return 'url(#thinlines)';
-					else
-						return this.colorScale(i / (this.n_steps-1) * this.domain[1]);
+					else {
+						if (this.mode == 'linear') {
+							return this.getColor(i);
+						}
+						else if (this.mode == 'log') {
+							return this.getColor(i);
+						}
+					}
 				})
 
 			// labels
 			this.svg.append('text')
 				.attr('x', this.width-95)
-				.attr('y', idx * 23 + 52.5)
+				.attr('y', idx * 23 + 72.5)
 				.attr('font-size', 13)
 				.text(() => {
 					if (idx == 0)
-						return "No data";
+						return i;
 					else {
-						if (this.radioOption == "percent_change" || this.domain[1] <= 1)
-							return round(i / (this.n_steps-1) * this.domain[1] * 100, 1e0) + "%";
-						else if (this.domain[1] <= 100)
-							return round(i / (this.n_steps-1) * this.domain[1], 1e0);
-						else if (this.domain[1] <= 10_000)
-							return round(i / (this.n_steps-1) * this.domain[1], 1e2);
-						else if (this.domain[1] <= 1_000_000)
-							return round(i / (this.n_steps-1) * this.domain[1] / 1e3, 1e0) + "K";
+						if (this.inMax <= 1) {
+							if (this.radioOption == "percent_change" || this.mode == 'linear')
+								return round(i * 100, 1e0) + "%";
+							else 
+								return round(i, 1e0) + "%";
+						}
+						else if (i <= 100)
+							return round(i, 1e0);
+						else if (i <= 10_000)
+							return round(i, 1e-2);
+						else if (i <= 1_000_000)
+							return round(i / 1e3, 1e0) + "K";
 						else
-							return round(i / (this.n_steps-1) * this.domain[1] / 1e6, 1e0) + "M";
+							return round(i / 1e6, 1e1) + "M";
 					}
 				})
 		})
@@ -391,6 +430,41 @@ class MovementsMap {
 			.attr('transform', 'translate(15,10)');
 
 		gStep.call(sliderStep);
+	}
+
+	drawLogLin() {
+		if (typeof this.mode != "undefined") {  // in the figure this.mode should be read from the input data
+			// (        /    )
+			this.svg.append("text")
+				.attr('x', this.width-120)
+				.attr('y', 40)
+				.style("text-anchor", "left")
+				.html("(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)")
+
+			// rel
+			this.svg.append("text")
+				.attr('x', this.width-114)
+				.attr('y', 40)
+				.attr('class', 'toggle')
+				.attr("id", 'toggleLinear' + this.uniqueId)
+				.style("text-anchor", "left")
+				.style("font-weight", this.mode == 'linear' ? 700 : 300)
+				.style('cursor', 'pointer')
+				.text("linear")
+				.on('click', () => this.linLogLabelClick('linear'));
+
+			// log
+			this.svg.append("text")
+				.attr('x', this.width-63)
+				.attr('y', 40)
+				.attr('class', 'toggle')
+				.attr("id", "toggleLog" + this.uniqueId)
+				.style("text-anchor", "left")
+				.style("font-weight", this.mode == 'log' ? 700 : 300)
+				.style('cursor', 'pointer')
+				.text("log")
+				.on('click', () => this.linLogLabelClick('log'));
+		}
 	}
 
 
@@ -564,8 +638,8 @@ class MovementsMap {
 	// Coloring
 	defaultFill(d, t) {
 		if (this.exists(d)) {
-    		let count = this.data[d]["_" + d][this.radioOption][this.t][0];
-    		return this.colorScale(count).hex();
+    		let value = this.data[d]["_" + d][this.radioOption][this.t][0];
+    		return this.getColor(value);
     	} else {
     		return 'url(#thinlines)';
     	}
@@ -612,8 +686,10 @@ class MovementsMap {
 		Object.keys(this.data[d]).forEach(neighbor => {
 			if (this.t in this.data[d][neighbor][this.radioOption]) {
 				let count = this.data[d][neighbor][this.radioOption][this.t][this.idx0or1]
-				this.svg.selectAll('#' + idify(neighbor))
-					.style('fill', this.colorScale(count).hex());
+				if (count != 0) {
+					this.svg.selectAll('#' + idify(neighbor))
+						.style('fill', this.getColor(count));
+				}
 			}
 		})
 	}
@@ -661,10 +737,47 @@ class MovementsMap {
 		this.redrawData();
 	}
 
+	linLogLabelClick(mode) {
+		if (mode != this.mode) {
+			if (mode == 'linear') {
+				this.svg.select('#toggleLinear' + this.uniqueId)
+					.style('font-weight', 700);
+				this.svg.select('#toggleLog' + this.uniqueId)
+					.style('font-weight', 300);
+				this.mode = 'linear';
+			} else
+			if (mode == 'log') {
+				this.svg.select('#toggleLinear' + this.uniqueId)
+					.style('font-weight', 300);
+				this.svg.select('#toggleLog' + this.uniqueId)
+					.style('font-weight', 700);
+				this.mode = 'log';
+			}
+		}
+		this.clearData();
+		this.redrawData();
+	}
+
 
 
 	// Utilities
 	// ---------
+
+	getColor(value) {
+		if (this.radioOption == 'percent_change')
+			value *= 100;
+
+		if (this.mode == 'linear') {
+			return this.colorScale(value).hex()
+		}
+		else if (this.mode == 'log') {
+			if (value < 1)
+				return this.colorScale(-Math.log(-value + 1)).hex()
+			else
+				return this.colorScale(Math.log(value + 1)).hex()
+		}
+
+	}
 
 	idxToDate(i) {
 		let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -715,4 +828,17 @@ class MovementsMap {
 	    });
 	    return {max: max, min: min, maxIdx: maxIdx, minIdx: minIdx};
     }
+
+	linspace(a, b, n) {
+		let every = (b - a) / (n - 1),
+			range = [];
+		for (let i = a; i < b; i += every)
+			range.push(i);
+		return range.length == n ? range : range.concat(b);
+	}
+	
+	logspace(a, b, n, exponent) {
+		exponent = exponent == undefined ? Math.exp(1) : exponent;
+		return this.linspace(a, b, n).map(x => Math.pow(exponent, x));
+	}
 }

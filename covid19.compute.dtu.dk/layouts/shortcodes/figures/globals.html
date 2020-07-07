@@ -53,6 +53,11 @@
 		stroke: #5897fb;
 		stroke-width: 2.5;
 	}
+	.brushline {
+		fill: none; 
+		stroke: #000000;
+		stroke-width: 1.5;
+	}
 	.histEvent {
 		stroke: grey;
 		stroke-width: 2;
@@ -138,14 +143,14 @@
 		font-weight: 600;
 	}
 
-@keyframes spinner-line-fade-quick {
-  0%, 39%, 100% {
-    opacity: 0.25; /* minimum opacity */
-  }
-  40% {
-    opacity: 1;
-  }
-}
+	@keyframes spinner-line-fade-quick {
+	  0%, 39%, 100% {
+	    opacity: 0.25; /* minimum opacity */
+	  }
+	  40% {
+	    opacity: 1;
+	  }
+	}
 
 </style>
 
@@ -184,9 +189,16 @@
 <script src="/scripts/eventDates.js"></script>
 <script src="/scripts/timeSeriesFigure.js"></script>
 <script src="/scripts/choroplethMap.js"></script>
+<script src="/scripts/choroplethMapBrush.js"></script>
 
 <script>
 
+	// Greetings //
+	// --------- //
+
+	console.log("Greetings! Thanks for visiting. Looking at the code? Tweet at @ulfaslak with questions, bugs, comments, etc.!")
+
+	
 	// Utilities //
 	// --------- //
 
@@ -280,6 +292,7 @@
                     };
                 } else {
                     a.style.color = "red";
+                    a.style["font-weight"] = "bold";
                 }   
                 li.appendChild(a);
                 ul.appendChild(li);
