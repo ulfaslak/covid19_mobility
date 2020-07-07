@@ -230,8 +230,6 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
         data_tile['target_kommune'] = data_tile['end_'+adm_kommune]
         data_admin['source_kommune'] = data_admin['start_'+adm_kommune]
         data_admin['target_kommune'] = data_admin['end_'+adm_kommune]
-        if country == "Sweden":
-            #import pdb;pdb.set_trace()
         
         # Keep only within-municipality flow in tile data
         data_tile = data_tile.loc[data_tile['source_kommune'] == data_tile['target_kommune']]
