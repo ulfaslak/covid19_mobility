@@ -65,18 +65,11 @@ def run(country):
 
             # Compute how many people that live in `kommune` and work in `neighbor`
             flow_from_neighbor = data_kommune_is_target.loc[data_kommune_is_target.source_kommune == neighbor].sum()
-            data_out[kommune][neighbor]['baseline'][idx][
-                0] = flow_from_neighbor.n_baseline  # / data_pop.loc[kommune, 'n_baseline']
-            data_out[kommune][neighbor]['crisis'][idx][
-                0] = flow_from_neighbor.n_crisis  # / data_pop.loc[kommune, 'n_crisis']
-            data_out[kommune][neighbor]['percent_change'][idx][0] = percent_change(
-                data_out[kommune][neighbor]['crisis'][idx][0], data_out[kommune][neighbor]['baseline'][idx][0]
-            )
+            data_out[kommune][neighbor][idx] = flow_from_neighbor.n_crisis
 
             # Add this flow to the total flow inside the kommune. This way, its count will
             # represent the number of people in that kommune that go to work *anywhere*
-            data_out[kommune]["_" + kommune]['baseline'][idx][0] += data_out[kommune][neighbor]['baseline'][idx][0]
-            data_out[kommune]["_" + kommune]['crisis'][idx][0] += data_out[kommune][neighbor]['crisis'][idx][0]
+            data_out[kommune]["_" + kommune][idx] += flow_from_neighbor.n_crisis
 
         # Compute flow out of kommune. This counts how many people that live outside
         # of the kommune and go to work the kommune
@@ -88,31 +81,13 @@ def run(country):
         for neighbor in neighbors:
             # Compute how many people that live elsewhere and work in `kommune`
             flow_to_neighbor = data_kommune_is_source.loc[data_kommune_is_source.target_kommune == neighbor].sum()
-            data_out[kommune][neighbor]['baseline'][idx][
-                1] = flow_to_neighbor.n_baseline  # / data_pop.loc[neighbor, 'n_baseline']
-            data_out[kommune][neighbor]['crisis'][idx][
-                1] = flow_to_neighbor.n_crisis  # / data_pop.loc[neighbor, 'n_crisis']
-            data_out[kommune][neighbor]['percent_change'][idx][1] = percent_change(
-                data_out[kommune][neighbor]['crisis'][idx][1], data_out[kommune][neighbor]['baseline'][idx][1]
-            )
+            data_out[kommune][neighbor][idx] += flow_to_neighbor.n_crisis
 
             # Add this flow to total outflow from kommune so it represents how many people
             # *from anywhere* that commute here during working hours
-            data_out[kommune]["_" + kommune]['baseline'][idx][1] += data_out[kommune][neighbor]['baseline'][idx][1]
-            data_out[kommune]["_" + kommune]['crisis'][idx][1] += data_out[kommune][neighbor]['crisis'][idx][1]
+            data_out[kommune]["_" + kommune][idx] += flow_to_neighbor.n_crisis
 
-        # Recompute percent change for 'how many people go to work' for the kommune
-        if data_kommune_is_target.shape[0] > 0:
-            data_out[kommune]["_" + kommune]['percent_change'][idx][0] = percent_change(
-                data_out[kommune]["_" + kommune]['crisis'][idx][0],
-                data_out[kommune]["_" + kommune]['baseline'][idx][0]
-            )
-        # Recompute percent change for 'how many people work here' for the kommune
-        if data_kommune_is_source.shape[0] > 0:
-            data_out[kommune]["_" + kommune]['percent_change'][idx][1] = percent_change(
-                data_out[kommune]["_" + kommune]['crisis'][idx][1],
-                data_out[kommune]["_" + kommune]['baseline'][idx][1]
-            )
+
 
     PATH_OUT = r"/home/petem/HOPE/WorldCovid19/covid19.compute.dtu.dk/static/data/"
     PATH_IN_ZIP = r"/data/ctdk/notebooks/"
@@ -138,7 +113,7 @@ def run(country):
         columns={'city': 'target_kommune'}).set_index('date')
     data = data.rename(columns={'all_ref': 'n_baseline', 'all': 'n_crisis', 'rel_change': 'percent_change'})
 
-    data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: [0, 0]))))
+    data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: 0))))
 
 
     fn_days = data.index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()

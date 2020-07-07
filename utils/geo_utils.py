@@ -5,7 +5,6 @@ import requests
 import json
 import numpy as np
 import pycountry
-from num2words import num2words as n2w
 
 
 def poly_convert(polygon):

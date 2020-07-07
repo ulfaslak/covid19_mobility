@@ -113,6 +113,7 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
 
     def update_data_out(kommune, idx, data_, data_pop):
         # Remove 0 length trips
+
         data = data_.loc[data_.length_km > 0]
 
         # Compute flow into kommune. This counts how many from the kommune are going
@@ -195,23 +196,23 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
     # Filenames
     fn_days_tile = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_TILE) if fn.endswith('.csv')]))
     fn_days_admin = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_ADMIN) if fn.endswith('.csv')]))
+    fn_days = sorted(set(fn_days_tile).intersection(fn_days_admin))
 
 
-    # Check to make sure the it is the same dates for each data set.
-    if fn_days_admin[0]!=fn_days_tile[0]:
-        if fn_days_admin[0] in fn_days_tile:
-            start_idx = fn_days_tile.index(fn_days_admin[0])
-            fn_days_tile = fn_days_tile[start_idx:]
-        elif fn_days_tile[0] in fn_days_admin:
-            start_idx = fn_days_admin.index(fn_days_tile[0])
-            fn_days_admin= fn_days_admin[start_idx:]
 
-    end_idx = min(len(fn_days_tile),len(fn_days_admin))
-
+    # # Check to make sure the it is the same dates for each data set.
+    # if fn_days_admin[0] != fn_days_tile[0]:
+    #     if fn_days_admin[0] in fn_days_tile:
+    #         start_idx = fn_days_tile.index(fn_days_admin[0])
+    #         fn_days_tile = fn_days_tile[start_idx:]
+    #     elif fn_days_tile[0] in fn_days_admin:
+    #         start_idx = fn_days_admin.index(fn_days_tile[0])
+    #         fn_days_admin = fn_days_admin[start_idx:]
+    #
+    # end_idx = min(len(fn_days_tile),len(fn_days_admin))
 
     # Loop
-    for idx, fn_day in tqdm(enumerate(fn_days_tile[start:end_idx], start), total=len(fn_days_tile[start:end_idx])):
-        
+    for idx, fn_day in tqdm(enumerate(fn_days[start:], start), total=len(fn_days[start:])):
         # Get weekday
         dt_obj = dt.datetime(year=int(fn_day[-10:-6]), month=int(fn_day[-5:-3]), day=int(fn_day[-2:]))
         weekday = dt_obj.weekday()
@@ -221,7 +222,7 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
         # Load data
         filename = fn_day + "_" + window + ".csv"
         data_tile = load_prepare_tile(PATH_IN_TILE + filename, iso)
-        filename = fn_days_admin[idx] + "_" + window + ".csv"
+        filename = fn_day + "_" + window + ".csv"
         data_admin = load_prepare_admin(PATH_IN_ADMIN + filename, iso)
 
         # Relabel
@@ -229,6 +230,8 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
         data_tile['target_kommune'] = data_tile['end_'+adm_kommune]
         data_admin['source_kommune'] = data_admin['start_'+adm_kommune]
         data_admin['target_kommune'] = data_admin['end_'+adm_kommune]
+        if country == "Sweden":
+            #import pdb;pdb.set_trace()
         
         # Keep only within-municipality flow in tile data
         data_tile = data_tile.loc[data_tile['source_kommune'] == data_tile['target_kommune']]
@@ -252,7 +255,8 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
 
         # Filter list of names to remove inconsistencies
         kommunes = [k if k not in to_actual else to_actual[k] for k in kommunes]
-        
+
+        #import pdb; pdb.set_trace()
         data_pop = data[['target_kommune', 'n_crisis', 'n_baseline']].groupby('target_kommune').sum()
 
         # Update data_out
@@ -262,7 +266,7 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
     # Time
     data_out['_meta']['datetime'] = [
         str(dt.datetime(int(d[-10:-6]), int(d[-5:-3]), int(d[-2:])))
-        for d in fn_days_tile[:end_idx]
+        for d in fn_days
     ]
 
     # Get max values
@@ -294,7 +298,7 @@ def run(country, iso, adm_region='adm1', adm_kommune='adm2'):
     # Add to _meta
     data_out['_meta']['radioOptions'] = ['percent_change', 'crisis', 'baseline']
     data_out['_meta']['defaults']['radioOption'] = 'percent_change'
-    data_out['_meta']['defaults']['t'] = len(fn_days_tile[:end_idx])-1
+    data_out['_meta']['defaults']['t'] = len(fn_days)-1
     data_out['_meta']['defaults']['idx0or1'] = 0
     data_out['_meta']['variables']['legend_label_count'] = "Going to work"
     data_out['_meta']['variables']['legend_label_relative'] = "Percent change"
