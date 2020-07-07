@@ -140,6 +140,7 @@ def run(country):
     # TODO: THIS IS A TEMPORARY FIX. ZIPCODE 411 IS MISSING FROM THE ZIPS FILE
     data.dropna(axis=0,inplace=True)
     data = data[data.index <= date_max]
+    data = data.astype({'n_crisis':'int'})
 
     path_boo = os.path.exists(PATH_OUT)
     if path_boo:
@@ -176,29 +177,15 @@ def run(country):
     data_out['_meta']['datetime'] = data.index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
 
     # Get max values
-    data_out['_meta']['variables']['inMax'] = 0
-    data_out['_meta']['variables']['outMax'] = 0
-    data_out['_meta']['variables']['betweenMax'] = 0
+    data_out['_meta']['variables']['Max'] = 0
     for source in data_out:
         if source == '_meta':
             continue
         for target, data in data_out[source].items():
-            baseline_in, baseline_out = zip(*data['baseline'])
-            crisis_in, crisis_out = zip(*data['crisis'])
             if "_" + source == target:
-                data_out['_meta']['variables']['inMax'] = max(
-                    data_out['_meta']['variables']['inMax'],
-                    max(crisis_in), max(baseline_in)
-                )
-                data_out['_meta']['variables']['outMax'] = max(
-                    data_out['_meta']['variables']['outMax'],
-                    max(crisis_out), max(baseline_out)
-                )
-            else:
-                data_out['_meta']['variables']['betweenMax'] = max(
-                    data_out['_meta']['variables']['betweenMax'],
-                    max(baseline_in), max(baseline_out),
-                    max(crisis_in), max(crisis_out)
+                data_out['_meta']['variables']['Max'] = max(
+                    data_out['_meta']['variables']['Max'],
+                    max(data) 
                 )
 
     # Add to _meta
