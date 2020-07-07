@@ -689,7 +689,9 @@ class DeviationPlot extends TimeSeriesFigure {
 		if (this.mode == 'relative') {
 			this.data._meta.timeframes.forEach(timeframe => {
 				(this.level).forEach(level => {
-					allYVals.push(...this.data[timeframe][level]['percent_change'])
+                    if (level in this.data[timeframe]) {
+					    allYVals.push(...this.data[timeframe][level]['percent_change'])
+                    }
 				})
 			})
 
@@ -707,8 +709,10 @@ class DeviationPlot extends TimeSeriesFigure {
 		} else if (this.mode == 'count') {
 			this.data._meta.timeframes.forEach(timeframe => {
 				(this.level).forEach(level => {
-					allYVals.push(...this.data[timeframe][level]['crisis'])
-					allYVals.push(...this.data[timeframe][level]['baseline'])
+                    if (level in this.data[timeframe]){
+					    allYVals.push(...this.data[timeframe][level]['crisis'])
+					    allYVals.push(...this.data[timeframe][level]['baseline'])
+                    }
 				})
 			})
 			let yMin = 0
