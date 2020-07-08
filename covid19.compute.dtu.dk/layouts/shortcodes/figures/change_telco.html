@@ -20,7 +20,7 @@
 	let spinnerchange = new Spinner(spinnerOpts).spin(document.getElementById('vis-change'));
 
 	let instance_change;
-	d3.json('/data/'+sessionStorage.country+'_telco_change.json').then(function(data) {
+	d3.json('/data/Denmark_telco_change.json').then(function(data) {
 		spinnerchange.stop();
 		instance_change = new DeviationPlot(data, 'vis-change', 'changeFig');
 		instance_change.setup();

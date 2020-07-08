@@ -2,6 +2,7 @@
 {{< fontsize 14 >}}*Visualization and data analysis by [Ulf Aslak](mailto:ulfaslak@gmail.com) and [Peter Møllgaard](mailto:peter-em@hotmail.com).*{{< /fontsize >}}
 
 {{< figures/globals >}}
+{{< figures/countryMenu >}}
 
 By looking at how the number of people spending most of their time in a given area changes between working hours (10–18) and non-working hours (18–02) we can assess how many individuals leave their home during the day (for example to go to work). We use the following reasoning: if 80 people spent most of their time in a given tile during working hours and the number is 100 during non-working hours (allowing us to assume that 100 people live there), we can say that 20 people were not at home during the working hours of the day. This is not a perfect measure, as work and home areas are not fully seperated, so the numbers we report are a lower bound, as some people will work very near home, or work where others live. *The important to look for here is how the daily measurements deviate from the baseline.*
 

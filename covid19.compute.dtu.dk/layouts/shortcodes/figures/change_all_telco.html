@@ -20,7 +20,7 @@
 	let spinnerchangeAll = new Spinner(spinnerOpts).spin(document.getElementById('vis-changeAll'));
 
 	let instance_changeAll;
-	d3.json('/data/'+sessionStorage.country+'_telco_change.json').then(function(data) {
+	d3.json('/data/Denmark_telco_change.json').then(function(data) {
         for (var key in data){
             if (key != "_meta"){
                 delete data[key].all;

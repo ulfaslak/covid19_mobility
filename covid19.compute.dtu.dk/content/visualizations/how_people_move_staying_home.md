@@ -2,6 +2,7 @@
 {{< fontsize 14 >}}*Visualization and data analysis by [Ulf Aslak](mailto:ulfaslak@gmail.com) and [Peter Møllgaard](mailto:peter-em@hotmail.com).*{{< /fontsize >}}
 
 {{< figures/globals >}}
+{{< figures/countryMenu >}}
 
 In the Movement maps dataset, one movement is recorded for each active user. A movement is registered when in time window *t* - 1 a user spends most of their time in location *A*, then in time window *t* spends most of their time in location *B*, and *A* ≠ *B*. If this condition is not met, either because the time of the stay was too short of the user simply didn't move, the length of the movement is set to 0 km.
 
