@@ -248,8 +248,8 @@ class MovementsMapBrush {
 				this.setScaling('sqrt');
 
 				this.refreshDrawing();
-				this.updateInfoBox();
 				this.redrawBrushLine();
+				this.updateInfoBox();
 				this.setLegend();
 
 				if (this.hovering != undefined) {
@@ -588,14 +588,16 @@ class MovementsMapBrush {
 
 	drawInfoBox() {
 		this.selectedTimeText = this.svgMap.append('text')
-			.attr('x', 10)
-			.attr('y', this.mapHeight-25)
+			.attr('x', this.width-5)
+			.attr('y', this.mapHeight-15)
+			.attr('text-anchor', 'end')
 			.style('font-weight', 700)
-			.text(`${this.formatDate(this.parseDate(this.datetime[this.t0]))} to ${this.formatDate(this.parseDate(this.datetime[this.t1]))}`);
+			.text(`${this.formatDate(this.parseDate(this.datetime[this.t0]))} — ${this.formatDate(this.parseDate(this.datetime[this.t1]))}`);
 
 		this.selectedLocationText = this.svgMap.append('text')
 			.attr('x', 10)
-			.attr('y', this.mapHeight-5)
+			.attr('y', this.mapHeight-15)
+			.style('font-weight', 700)
 			.text(() => {
 				let crisis = d3.mean(this.values.slice(this.t0, this.t1+1))
 				return 'Denmark: ' + insertKSeperators(parseInt(crisis)) + " movements per day";
@@ -604,7 +606,7 @@ class MovementsMapBrush {
 
 	updateInfoBox() {
 		this.selectedTimeText
-			.text(`${this.formatDate(this.parseDate(this.datetime[this.t0]))} to ${this.formatDate(this.parseDate(this.datetime[this.t1]))}`);
+			.text(`${this.formatDate(this.parseDate(this.datetime[this.t0]))} — ${this.formatDate(this.parseDate(this.datetime[this.t1]))}`);
 
 		this.selectedLocationText
 			.text(() => {
