@@ -13,7 +13,7 @@ class MovementsMapBrush {
 
 		// define div dimensions
 		this.width = 770;
-		this.mapHeight = 770;
+		this.mapHeight = 630;
 		this.brushHeight = 100;
 		
 		// set div dimensions
@@ -205,9 +205,23 @@ class MovementsMapBrush {
 			minY = upperLeft[1],
 			maxY = lowerLeft[1];
 
+		console.log(
+			"maxX", maxX, "\n",
+			"minX", minX, "\n",
+			"minY", minY, "\n",
+			"maxY", maxY, "\n",
+		)
+
 		// Width and height
 		let mapWidth = maxX - minX,
 			mapHeight = maxY - minY;
+
+		console.log(
+			"mapWidth", mapWidth, "\n",
+			"mapHeight", mapHeight, "\n",
+		)
+
+		let diff = this.mapHeight - this.width
 
 		// Set scaling according to aspect
 		if (mapWidth < mapHeight) {
@@ -215,7 +229,7 @@ class MovementsMapBrush {
 			this.yScaler = d3.scaleLinear().domain([maxY, minY]).range([this.mapHeight, 0]);
 		} else {
 			this.xScaler = d3.scaleLinear().domain([minX, maxX]).range([this.width, 0]);
-			this.yScaler = d3.scaleLinear().domain([minX, maxX]).range([0, this.width]);
+			this.yScaler = d3.scaleLinear().domain([minX, maxX]).range([diff, this.width+diff]);
 		}
 	}
 
@@ -575,16 +589,16 @@ class MovementsMapBrush {
 	drawInfoBox() {
 		this.selectedTimeText = this.svgMap.append('text')
 			.attr('x', 10)
-			.attr('y', 20)
+			.attr('y', this.mapHeight-25)
 			.style('font-weight', 700)
 			.text(`${this.formatDate(this.parseDate(this.datetime[this.t0]))} to ${this.formatDate(this.parseDate(this.datetime[this.t1]))}`);
 
 		this.selectedLocationText = this.svgMap.append('text')
 			.attr('x', 10)
-			.attr('y', 45)
+			.attr('y', this.mapHeight-5)
 			.text(() => {
 				let crisis = d3.mean(this.values.slice(this.t0, this.t1+1))
-				return 'Denmark: ' + insertKSeperators(parseInt(crisis)) + " movements per day on average";
+				return 'Denmark: ' + insertKSeperators(parseInt(crisis)) + " movements per day";
 			});
 	}
 
@@ -596,12 +610,12 @@ class MovementsMapBrush {
 			.text(() => {
 				if (typeof this.selected == 'undefined') {
 					let crisis = d3.mean(this.values.slice(this.t0, this.t1+1));
-					return 'Denmark: ' + insertKSeperators(parseInt(crisis)) + " movements per day on average";
+					return 'Denmark: ' + insertKSeperators(parseInt(crisis)) + " movements per day";
 				}
 				else {
 					let d = this.selected;
 					let crisis = d3.mean(this.data[d]["_" + d].slice(this.t0, this.t1+1));
-					return this.selected + ": " + insertKSeperators(parseInt(crisis)) + " movements per day on average";
+					return this.selected + ": " + insertKSeperators(parseInt(crisis)) + " movements per day";
 				}
 			})
 	}
@@ -718,7 +732,7 @@ class MovementsMapBrush {
 
 		let tooltiptext = "";
 		tooltiptext += "<b>" + d + "</b><br><br>";
-		tooltiptext += "<b>" + insertKSeperators(round(crisis, 1e0)) + "</b> per day on average";
+		tooltiptext += "<b>" + insertKSeperators(round(crisis, 1e0)) + "</b> per day";
 
 		if (d3.event != null) {
 			this.tooltip
@@ -746,7 +760,7 @@ class MovementsMapBrush {
 			tooltiptext += "Within <b>" + this.selected + "</b><br><br>";
 		else
 			tooltiptext += "Between <b>" + this.selected + "</b> and <b>" + this.hovering + "</b><br><br>";
-		tooltiptext += "<b>" + insertKSeperators(round(crisis, 1e0)) + "</b> per day on average";
+		tooltiptext += "<b>" + insertKSeperators(round(crisis, 1e0)) + "</b> per day";
 
 		if (d3.event != null) {
 			this.tooltip
