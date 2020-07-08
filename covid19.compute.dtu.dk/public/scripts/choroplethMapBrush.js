@@ -7,8 +7,8 @@ class MovementsMapBrush {
 		this.uniqueId = uniqueId;
 		this.maxFlow = data._meta.variables.Max // we sum in and out
 		this.datetime = data._meta.datetime;
-		this.t0 = this.data._meta.defaults.t - 1;
-		this.t1 = this.data._meta.defaults.t - 1;
+		this.t0 = this.data._meta.defaults.t - 7;
+		this.t1 = this.data._meta.defaults.t;
 		this.scaling = 'sqrt';  // DEBUG: implement this when everything else works
 
 		// define div dimensions
@@ -31,7 +31,7 @@ class MovementsMapBrush {
 
 		// Color scale
 		this.n_steps = 5;
-		this.colorScale = chroma.scale(['#ffffff', '#487eb0', '#000000'])
+		this.colorScale = chroma.scale(['#ffffff', '#74b9ff', '#000000'])
 		this.colorDomain = [0, Math.sqrt(this.maxFlow)];
 		this.colorScale.domain(this.colorDomain);
 		this.colorScale.nodata(this.colorScale.colors()[0]);
@@ -522,17 +522,22 @@ class MovementsMapBrush {
 
 		// Add brush
 		let brush = d3.brushX()
-			.extent([[this.margin.left, this.margin.top], [figwidth, figheight]])
-			.on("start brush", () => {
-				let d = d3.event.selection.map(xi.invert);
-				this.t0 = parseInt(d[0]);
-				this.t1 = parseInt(d[1]);
-				this.refreshDrawing();
-				this.updateInfoBox();
-			})
+			.extent([[this.margin.left, this.margin.top], [figwidth, figheight]]);
 
-		this.svgBrush.append("g")
+		// Set brush initial position
+		let gBrush = this.svgBrush.append("g")
 			.call(brush)
+			.call(brush.move, [xi(this.t0), xi(this.t1)]);
+
+		// Define on move function (done after setting position, otherwise things mess up
+		// because stuff called by function is not defined yet)
+		brush.on("start brush", () => {
+			let d = d3.event.selection.map(xi.invert);
+			this.t0 = parseInt(d[0]);
+			this.t1 = parseInt(d[1]);
+			this.refreshDrawing();
+			this.updateInfoBox();
+		})
 	}
 
 	redrawBrushLine() {
