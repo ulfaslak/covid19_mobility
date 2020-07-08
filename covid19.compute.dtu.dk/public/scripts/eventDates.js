@@ -18,6 +18,13 @@ let eventDates = {
 		["2020-05-18 00:00:00", 'Restaurants, cafes, churches and elementary schools reopen', 'event10'],
 		["2020-05-27 00:00:00", 'Everything except nightclubs, festivals, etc. reopen', 'event11']
 	],
+    'italy': [
+        ["2020-02-19 00:00:00", 'First local case', 'event12'],
+		["2020-03-04 00:00:00", 'Schools close', 'event13'],
+		["2020-03-09 00:00:00", 'Phase 1: Lockdown', 'event14'],
+		["2020-05-04 00:00:00", 'Phase 2: Reopenings', 'event15'],
+		["2020-06-15 00:00:00", 'Phase 3: "Living with covid"', 'event16'],
+    ]   
 }
 d3.json('/data/countries.json').then(function(data){
     data.forEach(function(country){
