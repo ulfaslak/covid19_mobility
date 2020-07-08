@@ -223,7 +223,7 @@ Population landscape</a></li>
 		fill: grey;
 	}
 	.map-polygon-movements {
-		stroke: white;
+		stroke: grey;
 		stroke-width: 0.3;
 	}
 	.map-polygon-movements-circumference {
@@ -485,7 +485,7 @@ Population landscape</a></li>
 
 	let instance_movements;
 	d3.json("/data/Denmark_geojson.json").then(function(geoData) {
-	    d3.json('/data/telco_map.json').then(function(data) {
+	    d3.json('/data/telco_map_new.json').then(function(data) {
 			spinnermovements.stop();
 			instance_movements = new MovementsMapBrush(data, geoData, 'movementsTelcoBrushFig');
 			instance_movements.setup();

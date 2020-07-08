@@ -5,11 +5,11 @@ class MovementsMapBrush {
 		this.data = data;
 		this.geoData = geoData;
 		this.uniqueId = uniqueId;
-		this.maxFlow = data._meta.variables.inMax + data._meta.variables.outMax // we sum in and out
+		this.maxFlow = data._meta.variables.Max // we sum in and out
 		this.datetime = data._meta.datetime;
 		this.t0 = this.data._meta.defaults.t - 1;
 		this.t1 = this.data._meta.defaults.t - 1;
-		this.scaling = "linear";  // DEBUG: implement this when everything else works
+		this.scaling = 'sqrt';  // DEBUG: implement this when everything else works
 
 		// define div dimensions
 		this.width = 770;
@@ -31,8 +31,8 @@ class MovementsMapBrush {
 
 		// Color scale
 		this.n_steps = 5;
-		this.colorScale = chroma.scale(['#ffffff', '#000000'])
-		this.colorDomain = [0, this.maxFlow];
+		this.colorScale = chroma.scale(['#ffffff', '#487eb0', '#000000'])
+		this.colorDomain = [0, Math.sqrt(this.maxFlow)];
 		this.colorScale.domain(this.colorDomain);
 		this.colorScale.nodata(this.colorScale.colors()[0]);
 
@@ -195,23 +195,23 @@ class MovementsMapBrush {
 
 		// Projection bounding box
 		let lowerLeft = this.projection([lonMin, latMin]),
-    		upperLeft = this.projection([lonMin, latMax]),
-    		upperRight = this.projection([lonMax, latMax]),
-    		lowerRight = this.projection([lonMax, latMin]);
+			upperLeft = this.projection([lonMin, latMax]),
+			upperRight = this.projection([lonMax, latMax]),
+			lowerRight = this.projection([lonMax, latMin]);
 
-    	// Extremes
-    	let maxX = Math.min(lowerLeft[0], upperLeft[0]),
-    		minX = Math.max(lowerRight[0], upperRight[0]),
-    		minY = upperLeft[1],
-    		maxY = lowerLeft[1];
+		// Extremes
+		let maxX = Math.min(lowerLeft[0], upperLeft[0]),
+			minX = Math.max(lowerRight[0], upperRight[0]),
+			minY = upperLeft[1],
+			maxY = lowerLeft[1];
 
-    	// Width and height
+		// Width and height
 		let mapWidth = maxX - minX,
 			mapHeight = maxY - minY;
 
 		// Set scaling according to aspect
 		if (mapWidth < mapHeight) {
-	    	this.xScaler = d3.scaleLinear().domain([maxY, minY]).range([0, this.mapHeight]);
+			this.xScaler = d3.scaleLinear().domain([maxY, minY]).range([0, this.mapHeight]);
 			this.yScaler = d3.scaleLinear().domain([maxY, minY]).range([this.mapHeight, 0]);
 		} else {
 			this.xScaler = d3.scaleLinear().domain([minX, maxX]).range([this.width, 0]);
@@ -221,42 +221,37 @@ class MovementsMapBrush {
 
 	setKeyEvents() {
 		document.onkeydown = evt => {
-		    evt = evt || window.event;
-		    if (evt.key === "Escape" || evt.key === "Esc") {
-		    	this.resetState();
-		    	this.clearData();
-		    	this.redrawData();
-		    	this.redrawBrushLine();
-		    } else
-		    if (evt.key === "Shift" && this.selected != undefined) {
-		    	if (this.scaling == 'linear') {
-		    		this.scaling = "log";
-					this.colorDomain = [0, Math.log(this.maxFlow)];
-		    	} else {
-		    		this.scaling = "linear";
-					this.colorDomain = [0, this.maxFlow];
-		    	}
-				this.colorScale.domain(this.colorDomain)
-				if (typeof this.selected == 'undefined')
-					this.restoreDefault();
-				else
-					this.recolorRegions(this.selected);
-				this.setLegend()
-		    }
-		};
+			evt = evt || window.event;
+			if (evt.key === "Escape" || evt.key === "Esc") {
+				// this.resetState();
+				// this.clearData();
+				// this.redrawData();
+				// this.redrawBrushLine();
+				this.selected = undefined;
+				this.unhighlightAllRegions();
 
-		// document.onkeyup = evt => {
-		//     evt = evt || window.event;
-		//     if (evt.key === "Shift" && this.selected != undefined) {
-		//     	this.scaling = "linear";
-		//     	this.colorDomain = [0, this.maxFlow];
-		// 		this.colorScale.domain(this.colorDomain)
-		// 		if (typeof this.selected == 'undefined')
-		// 			this.restoreDefault();
-		// 		else
-		// 			this.recolorRegions(this.selected);
-		//     }
-		// };
+				this.maxFlow = this.data._meta.variables.Max;
+				this.setScaling('sqrt');
+
+				this.refreshDrawing();
+				this.updateInfoBox();
+				this.redrawBrushLine();
+				this.setLegend();
+
+				if (this.hovering != undefined) {
+					this.tooltipDefault(this.hovering)
+					this.highlightRegion(this.namePolygonMap[this.hovering], 'black')
+				}
+			}
+			else if (evt.key === "Shift" && this.selected != undefined) {
+				if (this.scaling == "log")
+					this.setScaling('sqrt');
+				else
+					this.setScaling("log");
+				this.refreshDrawing();
+				this.setLegend();
+			}
+		};
 	}
 
 	resetState() {
@@ -275,9 +270,9 @@ class MovementsMapBrush {
 		// 	legendTitle = this.data._meta.variables.legend_label_count;
 		let legendTitle = this.data._meta.variables.legend_label_count;
 		let legendRange;
-		if (this.scaling == 'linear')
-			legendRange = this.linspace(0, this.maxFlow, this.n_steps);
-		else if (this.scaling == 'log')
+		if (this.scaling == 'sqrt')
+			legendRange = this.sqrtspace(0, Math.sqrt(this.maxFlow), this.n_steps);
+		else if (this.scaling == "log")
 			legendRange = this.logspace(Math.log(1), Math.log(this.maxFlow), this.n_steps);
 
 		// Title text
@@ -288,6 +283,99 @@ class MovementsMapBrush {
 			.attr('font-weight', 700)
 			.text(legendTitle)
 
+		// Scaling buttons
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-120)
+			.attr('y', 45)
+			.attr('font-style', 'italic')
+			.attr('font-weight', 200)
+			.text('scale:')
+
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-70)
+			.attr('y', 45)
+			.attr('font-style', 'italic')
+			.attr('font-weight', 300)
+			.text('sqrt')
+
+		this.svgMap.append('rect')
+			.attr('class', 'legend-component')
+			.attr('id', 'sqrt-text-box')
+			.attr('x', this.width-73)
+			.attr('y', 30)
+			.attr('width', 35)
+			.attr('height', 20)
+			.attr('stroke', this.scaling == 'sqrt' ? 'black' : 'grey')
+			.attr('fill', 'white')
+			.attr('fill-opacity', this.scaling == 'sqrt' ? 0 : 0.5)
+			.on('mouseover', () => {
+				if (this.scaling == 'log') {
+					this.svgMap.select('#sqrt-text-box')
+						.attr('stroke', 'black')
+						.attr('fill-opacity', 0);
+				}
+
+			})
+			.on('mouseout', () => {
+				if (this.scaling == 'log') {
+					this.svgMap.select('#sqrt-text-box')
+						.attr('stroke', 'grey')
+						.attr('fill-opacity', 0.5);
+				}
+			})
+			.on('click', () => {
+				if (this.scaling == 'log') {
+					this.setScaling('sqrt');
+					this.refreshDrawing();
+					this.setLegend();
+				}
+			})
+
+		if (this.selected != undefined) {
+			this.svgMap.append('text')
+				.attr('class', 'legend-component')
+				.attr('x', this.width-25)
+				.attr('y', 45)
+				.attr('font-style', 'italic')
+				.attr('font-weight', 300)
+				.text('log')
+
+			this.svgMap.append('rect')
+				.attr('class', 'legend-component')
+				.attr('id', 'log-text-box')
+				.attr('x', this.width-28)
+				.attr('y', 30)
+				.attr('width', 28)
+				.attr('height', 20)
+				.attr('stroke', this.scaling == 'log' ? 'black' : 'grey')
+				.attr('fill', 'white')
+				.attr('fill-opacity', this.scaling == 'log' ? 0 : 0.5)
+				.on('mouseover', () => {
+					if (this.scaling == 'sqrt') {
+						this.svgMap.select('#log-text-box')
+							.attr('stroke', 'black')
+							.attr('fill-opacity', 0);
+					}
+				})
+				.on('mouseout', () => {
+					if (this.scaling == 'sqrt') {
+						this.svgMap.select('#log-text-box')
+							.attr('stroke', 'grey')
+							.attr('fill-opacity', 0.5);
+					}
+				})
+				.on('click', () => {
+					if (this.scaling == 'sqrt' && this.selected != undefined) {
+						this.setScaling('log');
+						this.refreshDrawing();
+						this.setLegend();
+					}
+				})
+			}
+
+
 		// Rects and labels
 		legendRange = ["No data", ...legendRange];
 		legendRange.forEach((i, idx) => {
@@ -296,7 +384,7 @@ class MovementsMapBrush {
 			this.svgMap.append('rect')
 				.attr('class', 'legend-component')
 				.attr('x', this.width-120)
-				.attr('y', idx * 23 + 40)
+				.attr('y', idx * 23 + 70)
 				.attr('width', 15)
 				.attr('height', 15)
 				.attr('fill', () => {
@@ -310,7 +398,7 @@ class MovementsMapBrush {
 			this.svgMap.append('text')
 				.attr('class', 'legend-component')
 				.attr('x', this.width-95)
-				.attr('y', idx * 23 + 52.5)
+				.attr('y', idx * 23 + 82.5)
 				.attr('font-size', 13)
 				.text(() => {
 					if (idx == 0)
@@ -396,20 +484,20 @@ class MovementsMapBrush {
 			.style('stroke', '#999999')
 			.html('Daycare reopens')
 
-		// this.svgBrush.append("line")
-		// 	.attr('x1', xi(107))
-		// 	.attr('x2', xi(107))
-		// 	.attr('y1', this.margin.top)
-		// 	.attr('y2', figheight)
-		// 	.attr('class', 'line-baseline')
+		this.svgBrush.append("line")
+			.attr('x1', xi(107))
+			.attr('x2', xi(107))
+			.attr('y1', this.margin.top)
+			.attr('y2', figheight)
+			.attr('class', 'line-baseline')
 
-		// this.svgBrush.append('text')
-		// 	.attr('x', xi(107) - 4)
-		// 	.attr('y', 15)
-		// 	.attr('text-anchor', 'end')
-		// 	.attr('font-size', 11)
-		// 	.style('stroke', '#999999')
-		// 	.html('Cafes, schools reopen')
+		this.svgBrush.append('text')
+			.attr('x', xi(107) - 4)
+			.attr('y', 20)
+			.attr('text-anchor', 'end')
+			.attr('font-size', 11)
+			.style('stroke', '#999999')
+			.html('Cafes, schools reopen')
 
 		this.svgBrush.append("line")
 			.attr('x1', xi(116))
@@ -419,9 +507,9 @@ class MovementsMapBrush {
 			.attr('class', 'line-baseline')
 
 		this.svgBrush.append('text')
-			.attr('x', xi(116) - 4)
-			.attr('y', 20)
-			.attr('text-anchor', 'end')
+			.attr('x', xi(116) + 4)
+			.attr('y', 10)
+			.attr('text-anchor', 'start')
 			.attr('font-size', 11)
 			.style('stroke', '#999999')
 			.html('Almost everything reopens')
@@ -439,10 +527,7 @@ class MovementsMapBrush {
 				let d = d3.event.selection.map(xi.invert);
 				this.t0 = parseInt(d[0]);
 				this.t1 = parseInt(d[1]);
-				if (typeof this.selected == 'undefined')
-					this.restoreDefault();
-				else
-					this.recolorRegions(this.selected);
+				this.refreshDrawing();
 				this.updateInfoBox();
 			})
 
@@ -510,7 +595,7 @@ class MovementsMapBrush {
 				}
 				else {
 					let d = this.selected;
-					let crisis = d3.mean(this.data[d]["_" + d]['crisis'].slice(this.t0, this.t1+1).map(v => v[0]+v[1]));
+					let crisis = d3.mean(this.data[d]["_" + d].slice(this.t0, this.t1+1));
 					return this.selected + ": " + insertKSeperators(parseInt(crisis)) + " movements per day on average";
 				}
 			})
@@ -526,18 +611,18 @@ class MovementsMapBrush {
 			this.g.selectAll(idify(datum.kommune))
 				.data(datum.polygons)
 				.enter().append("polygon")
-			    .attr("points", polygon => polygon.map(p => {
-			    		let pp = this.proj(p);
-			    		return [pp[0], pp[1]].join(",")
+				.attr("points", polygon => polygon.map(p => {
+						let pp = this.proj(p);
+						return [pp[0], pp[1]].join(",")
 					}).join(" ")
-			    )
-			    .attr("class", 'map-polygon-movements')
-			    .attr("id", idify(datum.kommune))
-			    .style("stroke", "#000000")
-			    .style('fill', () => {
-			    	if (typeof this.selected == 'undefined')
-			    		return this.defaultFill(datum.kommune)
-			    })
+				)
+				.attr("class", 'map-polygon-movements')
+				.attr("id", idify(datum.kommune))
+				.style("stroke", "#000000")
+				.style('fill', () => {
+					if (typeof this.selected == 'undefined')
+						return this.defaultFill(datum.kommune)
+				})
 				.on('mouseover', polygon => {
 					if (dataExists) {
 						this.mouseover();
@@ -569,31 +654,42 @@ class MovementsMapBrush {
 					}
 				})
 				.on('click', polygon => {
+
+					if (this.selected != datum.kommune) {
+						this.maxFlow = this.placeMax(datum.kommune);
+						this.setScaling(this.scaling);
+					}
+					else {
+						this.maxFlow = this.data._meta.variables.Max;
+						this.setScaling('sqrt');
+					}
+
 					if (dataExists) {
 						this.unhighlightAllRegions();
 						this.highlightRegion(datum.polygons, 'black');
-						if (typeof this.selected == 'undefined') {
-							this.recolorRegions(datum.kommune)
+
+						if (this.selected === undefined) {
 							this.selected = datum.kommune;
-							this.tooltipSelected(datum.kommune);
+							this.tooltipSelected(this.selected);
 						} else {
 							if (datum.kommune == this.selected) {
-								this.restoreDefault();
 								this.selected = undefined;
 								this.tooltipDefault(datum.kommune);
 							} else {
-								this.recolorRegions(datum.kommune);
 								this.selected = datum.kommune;
 								this.tooltipSelected(datum.kommune);
 							}
 						}
 					}
+
+					this.refreshDrawing();
 					this.updateInfoBox();
 					this.redrawBrushLine();
+					this.setLegend();
 				});
 		}
 
-		if (typeof this.selected != 'undefined') {
+		if (this.selected != undefined) {
 			this.recolorRegions(this.selected);
 			this.highlightRegion(this.namePolygonMap[this.selected], 'black');
 		}
@@ -613,22 +709,31 @@ class MovementsMapBrush {
 	}
 
 	tooltipDefault(d) {
-		let crisis = d3.mean(this.data[d]["_" + d]['crisis'].slice(this.t0, this.t1+1).map(v => v[0]+v[1]));
+		let crisis = d3.mean(this.data[d]["_" + d].slice(this.t0, this.t1+1));
 
 		let tooltiptext = "";
 		tooltiptext += "<b>" + d + "</b><br><br>";
 		tooltiptext += "<b>" + insertKSeperators(round(crisis, 1e0)) + "</b> per day on average";
 
-		this.tooltip
-			.html(tooltiptext)
-			.style("left", (d3.event.pageX + 10) + "px")
-			.style("top", (d3.event.pageY - 10) + "px");
+		if (d3.event != null) {
+			this.tooltip
+				.html(tooltiptext)
+				.style("left", (d3.event.pageX + 10) + "px")
+				.style("top", (d3.event.pageY - 10) + "px");
+			this.eventX = d3.event.pageX;
+			this.eventY = d3.event.pageY;
+		} else {
+			this.tooltip
+				.html(tooltiptext)
+				.style("left", (this.eventX + 10) + "px")
+				.style("top", (this.eventY - 10) + "px");
+		}
 	}
 
 	tooltipSelected(d) {
 		let crisis = 0
-		if (d in this.data[this.selected]) {
-			crisis = d3.mean(this.data[this.selected][d]['crisis'].slice(this.t0, this.t1+1).map(v => v[0]+v[1]));
+		if (d in this.data[this.selected] && this.t0 < this.data[this.selected][d].length) {
+			crisis = d3.mean(this.data[this.selected][d].slice(this.t0, this.t1+1));
 		}
 
 		let tooltiptext = "";
@@ -656,25 +761,25 @@ class MovementsMapBrush {
 	// Coloring
 	defaultFill(d) {
 		if (this.exists(d)) {
-    		let crisis = d3.mean(this.data[d]["_" + d]['crisis'].slice(this.t0, this.t1+1).map(v => v[0]+v[1]));
-    		return this.getColor(crisis);
-    	} else {
-    		return 'url(#thinlines)';
-    	}
+			let crisis = d3.mean(this.data[d]["_" + d].slice(this.t0, this.t1+1));
+			return this.getColor(crisis);
+		} else {
+			return 'url(#thinlines)';
+		}
 	}
 
 	highlightRegion(d, color) {
 		this.selected_polygons.push(
 			d.map(polygon => {
 				return this.g.append("polygon")
-				    .attr("points", polygon.map(p => {
-					    	let pp = this.proj(p);
-				    		return [pp[0], pp[1]].join(",")
-				    	}).join(" ")
-				    )
-				    .style('fill', 'none')
-				    .style('stroke', color)
-				    .style('stroke-width', 1)
+					.attr("points", polygon.map(p => {
+							let pp = this.proj(p);
+							return [pp[0], pp[1]].join(",")
+						}).join(" ")
+					)
+					.style('fill', 'none')
+					.style('stroke', color)
+					.style('stroke-width', 1)
 			})
 		)
 	}
@@ -698,13 +803,15 @@ class MovementsMapBrush {
 	recolorRegions(d) {
 		// Make everything gray
 		this.svgMap.selectAll('.map-polygon-movements')
-			.style('fill', '#ffffff')
+			.style('fill', this.colorScale(0))
 
 		// Color each kommune by their flow into `d`
 		Object.keys(this.data[d]).forEach(neighbor => {
-			let crisis = d3.mean(this.data[d][neighbor]['crisis'].slice(this.t0, this.t1+1).map(v => v[0]+v[1]));
-			this.svgMap.selectAll('#' + idify(neighbor))
-				.style('fill', this.getColor(crisis));
+			let crisis = d3.mean(this.data[d][neighbor].slice(this.t0, this.t1+1));
+			if (crisis > 0) {
+				this.svgMap.selectAll('#' + idify(neighbor))
+					.style('fill', this.getColor(crisis));
+			}
 		})
 	}
 
@@ -720,15 +827,31 @@ class MovementsMapBrush {
 		this.g.attr("transform", d3.event.transform);
 	}
 
+	setScaling(scaling) {
+		this.scaling = scaling;
+		if (scaling == "log")
+			this.colorDomain = [0, Math.log(this.maxFlow)];
+		else
+			this.colorDomain = [0, Math.sqrt(this.maxFlow)];
+		this.colorScale.domain(this.colorDomain);
+	}
+
+	refreshDrawing() {
+		if (this.selected === undefined)
+			this.restoreDefault();
+		else
+			this.recolorRegions(this.selected);
+	}
+
 
 
 	// Utilities
 	// ---------
 
 	getColor(value) {
-		if (this.scaling == 'linear')
-			return this.colorScale(value).hex()
-		else if (this.scaling == 'log')
+		if (this.scaling == 'sqrt')
+			return this.colorScale(Math.sqrt(value)).hex()
+		else if (this.scaling == "log")
 			return this.colorScale(Math.log(value)).hex()
 	}
 
@@ -759,44 +882,54 @@ class MovementsMapBrush {
 		let a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
 			Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
 			Math.sin(dLon / 2) * Math.sin(dLon / 2);
-		let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		let c = 2 * Math.atan2(Math.log(a), Math.log(1 - a));
 
 		return R * c;
 	}
 
 	minMaxArray(arr) {
-	    let max = -Number.MAX_VALUE,
-	        min = Number.MAX_VALUE;
-	    let maxIdx, minIdx;
+		let max = -Number.MAX_VALUE,
+			min = Number.MAX_VALUE;
+		let maxIdx, minIdx;
 
-	    arr.forEach(function(e, i) {
-	        if (max < e) {
-	        	max = e;
-	        	maxIdx = i;
-	        }
-	        if (min > e) {
-	        	min = e;
-	        	minIdx = i;
-	        }
-	    });
-	    return {max: max, min: min, maxIdx: maxIdx, minIdx: minIdx};
-    }
+		arr.forEach(function(e, i) {
+			if (max < e) {
+				max = e;
+				maxIdx = i;
+			}
+			if (min > e) {
+				min = e;
+				minIdx = i;
+			}
+		});
+		return {max: max, min: min, maxIdx: maxIdx, minIdx: minIdx};
+	}
 
 	aggregatePlaces(d) {
 		if (d != undefined)
-			return this.data[d]["_"+d]['crisis'].map(v => v[0] + v[1]);
+			return this.data[d]["_"+d];
 		else {
 			let arr = this.datetime.map(() => 0);
 			let places = Object.keys(this.data).sort().filter(d => d[0] != "_");
 			Object.keys(this.data).forEach(d => {
 				if (d != "_meta") {
-					this.data[d]["_"+d]['crisis'].forEach((v, i) => {
-						arr[i] += v[0] + v[1];
+					this.data[d]["_"+d].forEach((v, i) => {
+						arr[i] += v;
 					});
 				}
 			})
 			return arr;
 		}
+	}
+
+	placeMax(d) {
+		// return d3.max(this.data[d]["_"+d])
+		let max = 0
+		Object.keys(this.data[d]).forEach(n => {
+			if (n != "_" + d && n != d)
+				max = Math.max(max, d3.max(this.data[d][n]))
+		})
+		return max;
 	}
 
 	linspace(a, b, n) {
@@ -808,7 +941,10 @@ class MovementsMapBrush {
 	}
 	
 	logspace(a, b, n, exponent) {
-		exponent = exponent == undefined ? Math.exp(1) : exponent;
-		return this.linspace(a, b, n).map(x => Math.pow(exponent, x));
+		return this.linspace(a, b, n).map(x => Math.pow(Math.exp(1), x));
+	}
+
+	sqrtspace(a, b, n, exponent) {
+		return this.linspace(a, b, n).map(x => Math.pow(x, 2));
 	}
 }
