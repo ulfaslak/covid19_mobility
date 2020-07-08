@@ -254,7 +254,7 @@ class MovementsMapBrush {
 
 				if (this.hovering != undefined) {
 					this.tooltipDefault(this.hovering)
-					this.highlightRegion(this.namePolygonMap[this.hovering], 'black')
+					this.highlightRegion(this.namePolygonMap[this.hovering], '#ff7f50')
 				}
 			}
 			else if (evt.key === "Shift" && this.selected != undefined) {
@@ -649,10 +649,10 @@ class MovementsMapBrush {
 						this.mouseover();
 						this.hovering = datum.kommune;
 						if (typeof this.selected == 'undefined') {
-							this.highlightRegion(datum.polygons, 'black');
+							this.highlightRegion(datum.polygons, '#ff7f50');
 						} else {
 							if (datum.kommune != this.selected)
-								this.highlightRegion(datum.polygons, 'grey');
+								this.highlightRegion(datum.polygons, '#ff7f50');
 						}
 					}
 				})
@@ -687,7 +687,7 @@ class MovementsMapBrush {
 
 					if (dataExists) {
 						this.unhighlightAllRegions();
-						this.highlightRegion(datum.polygons, 'black');
+						this.highlightRegion(datum.polygons, '#ff7f50');
 
 						if (this.selected === undefined) {
 							this.selected = datum.kommune;
@@ -712,7 +712,7 @@ class MovementsMapBrush {
 
 		if (this.selected != undefined) {
 			this.recolorRegions(this.selected);
-			this.highlightRegion(this.namePolygonMap[this.selected], 'black');
+			this.highlightRegion(this.namePolygonMap[this.selected], '#ff7f50');
 		}
 	}
 
