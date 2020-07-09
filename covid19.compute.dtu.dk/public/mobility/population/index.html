@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 10:50:19
+<meta name="description" content="Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 8:10:17
 .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1."><meta property="og:title" content="Population density" />
-<meta property="og:description" content="Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 10:50:19
+<meta property="og:description" content="Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 8:10:17
 .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/mobility/population/" />
-<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
+<meta property="article:modified_time" content="2020-06-02T08:10:17+02:00" />
 <title>Population density | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -160,7 +160,7 @@ Population landscape</a></li>
       
       
   <article class="markdown"><h1 id="population-density-during-lockdown"><strong>Population density during lockdown</strong></h1>
-<p><span style="font-size:14px"><em>Report by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a>, <a href="mailto:l.alessandretti@gmail.com">Laura Alessandretti</a>, and <a href="mailto:sljo@dtu.dk">Sune Lehmann</a>.</em></span> <span style="font-size:14px"><em>Updated: June, 2, 2020 10:50:19</em></span></p>
+<p><span style="font-size:14px"><em>Report by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a>, <a href="mailto:l.alessandretti@gmail.com">Laura Alessandretti</a>, and <a href="mailto:sljo@dtu.dk">Sune Lehmann</a>.</em></span> <span style="font-size:14px"><em>Updated: June, 2, 2020 8:10:17</em></span></p>
 
 
 
@@ -426,40 +426,7 @@ Population landscape</a></li>
 		return !isNaN(str)
 	}
 
-    
-    if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
-    function createWorld() {
-        var countries = []
-        d3.json("/data/countries.json").then(function(data){
-            countries = data.sort();
-            body = document.getElementsByClassName('container flex')[0];
-            toc = document.createElement('aside');
-            toc.className = "book-toc";
-            nav = document.createElement('nav');
-            nav.id = "countries";
-            ul = document.createElement('ul');
-            countries.forEach(function (item,index){
-                li = document.createElement('li');
-                a = document.createElement('a');
-                a.text = item;
-                a.style.cursor = "pointer";
-                if (item != sessionStorage.country) {
-                    a.onclick = function() {
-                        sessionStorage.country=item;
-                        window.location.reload();
-                    };
-                } else {
-                    a.style.color = "red";
-                    a.style["font-weight"] = "bold";
-                }   
-                li.appendChild(a);
-                ul.appendChild(li);
-            });
-            nav.appendChild(ul);
-            toc.appendChild(nav);
-            body.appendChild(toc);
-        })}
-    createWorld();
+
 </script>
 
 <p>An important aspect of understanding how the lockdown affects mobility is <em>how the population is re-distributed across the country.</em></p>

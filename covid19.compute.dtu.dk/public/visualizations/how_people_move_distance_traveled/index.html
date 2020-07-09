@@ -8,7 +8,7 @@
 <meta property="og:description" content="Distance traveled Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/how_people_move_distance_traveled/" />
-<meta property="article:modified_time" content="2020-06-06T21:47:02+02:00" />
+<meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
 <title>How People Move Distance Traveled | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -424,6 +424,10 @@ Population landscape</a></li>
 		return !isNaN(str)
 	}
 
+
+</script>
+
+<script>
     
     if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
     function createWorld() {
@@ -449,7 +453,7 @@ Population landscape</a></li>
                 } else {
                     a.style.color = "red";
                     a.style["font-weight"] = "bold";
-                }   
+                }
                 li.appendChild(a);
                 ul.appendChild(li);
             });
@@ -459,7 +463,6 @@ Population landscape</a></li>
         })}
     createWorld();
 </script>
-
 By averaging the length of trips between tiles we get an estimate of the average distance traveled each day by users in the dataset. During the lockdown we should expect this quantity to be significantly reduced, primarily because people work from home.</p>
 <p>Note that this is <em>an extremely conservative lower bound</em> on mobility. The shortest distance we can measure is 2.63 km, and we only have information about trips if they start and end in different time windows (eight hours apart), in different places where the user spent large amounts of time. For example, if someone leaves their home in the suburbs during working hours (10–18) to spend the afternoon in the city yet overall spent most of that time window at home (not an unlikely scenario for a shopping trip on the weekend), the entire movement goes unrecorded, and it will appear as if the user stayed in at home the whole time. It is only if the user went to the city—or other place different than where they would spend the afternoon and night—for the majority part of the time window that the trip is recorded.</p>
 <p>As a result, <strong>seeing the distance rise even a small amount, is a strong signal that people are going back to work.</strong></p>

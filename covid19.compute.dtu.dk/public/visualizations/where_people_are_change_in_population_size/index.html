@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Change in population sizes Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0."><meta property="og:title" content="" />
-<meta property="og:description" content="Change in population sizes Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
+<meta name="description" content="Change in population sizes Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0."><meta property="og:title" content="" />
+<meta property="og:description" content="Change in population sizes Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/where_people_are_change_in_population_size/" />
-<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
+<meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
 <title>Where People Are Change in Population Size | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -159,7 +159,7 @@ Population landscape</a></li>
       
   <article class="markdown"><h1 id="change-in-population-sizes"><strong>Change in population sizes</strong></h1>
 <span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
-
+<p>
 
 
 
@@ -424,6 +424,10 @@ Population landscape</a></li>
 		return !isNaN(str)
 	}
 
+
+</script>
+
+<script>
     
     if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
     function createWorld() {
@@ -449,7 +453,7 @@ Population landscape</a></li>
                 } else {
                     a.style.color = "red";
                     a.style["font-weight"] = "bold";
-                }   
+                }
                 li.appendChild(a);
                 ul.appendChild(li);
             });
@@ -458,8 +462,7 @@ Population landscape</a></li>
             body.appendChild(toc);
         })}
     createWorld();
-</script>
-
+</script></p>
 <p>The figures below show how the number of occupants changed over time across Danish municipalities. You can play with the figures as follows:</p>
 <ul>
 <li>Change the (rel<span style="color:white">/</span><strong>abs</strong>) button on the top left of the figure to display absolute values or relative changes with respect to February.</li>

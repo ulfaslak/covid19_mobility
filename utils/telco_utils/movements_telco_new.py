@@ -116,16 +116,16 @@ def run(country):
     PATH_IN_DAT = r"/data/ctdk/raw/"
 
     # Load data
-    df1 = pd.read_csv(PATH_IN_DAT + 'df_safe.csv.gz', parse_dates=['date'],
+    data = pd.read_csv(PATH_IN_DAT + 'df_safe.csv.gz', parse_dates=['date'],
                       dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
-    df2 = pd.read_csv(PATH_IN_DAT + 'df_safe_within.csv.gz', parse_dates=['date'],
-                      dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
+    #df2 = pd.read_csv(PATH_IN_DAT + 'df_safe_within.csv.gz', parse_dates=['date'],
+    #                  dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
 
-    df1 = compute_relative_change(df1)  # .set_index('date')
-    df2 = compute_relative_change(df2)  # .set_index('date')
-    data = pd.concat([df1, df2])
-    date_min = max(df1.date.min(),df2.date.min())
-    date_max = min(df1.date.max(),df2.date.max())
+    data = compute_relative_change(data)  # .set_index('date')
+    #df2 = compute_relative_change(df2)  # .set_index('date')
+    #data = pd.concat([df1, df2])
+    #date_min = max(df1.date.min(),df2.date.min())
+    #date_max = min(df1.date.max(),df2.date.max())
 
     zips = pd.read_csv(PATH_IN_ZIP + 'zipcodes.csv')
     zips = zips.drop_duplicates(subset=['city_code', 'city']).set_index('city_code')
@@ -139,7 +139,7 @@ def run(country):
 
     # TODO: THIS IS A TEMPORARY FIX. ZIPCODE 411 IS MISSING FROM THE ZIPS FILE
     data.dropna(axis=0,inplace=True)
-    data = data[data.index <= date_max]
+    #data = data[data.index <= date_max]
     data = data.astype({'n_crisis':'int'})
 
     path_boo = os.path.exists(PATH_OUT)
