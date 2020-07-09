@@ -8,7 +8,7 @@
 <meta property="og:description" content="Movements from telco data Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/telco_brush/" />
-<meta property="article:modified_time" content="2020-07-08T14:03:36+02:00" />
+<meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
 <title>Telco Brush | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -424,40 +424,7 @@ Population landscape</a></li>
 		return !isNaN(str)
 	}
 
-    
-    if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
-    function createWorld() {
-        var countries = []
-        d3.json("/data/countries.json").then(function(data){
-            countries = data.sort();
-            body = document.getElementsByClassName('container flex')[0];
-            toc = document.createElement('aside');
-            toc.className = "book-toc";
-            nav = document.createElement('nav');
-            nav.id = "countries";
-            ul = document.createElement('ul');
-            countries.forEach(function (item,index){
-                li = document.createElement('li');
-                a = document.createElement('a');
-                a.text = item;
-                a.style.cursor = "pointer";
-                if (item != sessionStorage.country) {
-                    a.onclick = function() {
-                        sessionStorage.country=item;
-                        window.location.reload();
-                    };
-                } else {
-                    a.style.color = "red";
-                    a.style["font-weight"] = "bold";
-                }   
-                li.appendChild(a);
-                ul.appendChild(li);
-            });
-            nav.appendChild(ul);
-            toc.appendChild(nav);
-            body.appendChild(toc);
-        })}
-    createWorld();
+
 </script>
 
 <!-- raw HTML omitted -->

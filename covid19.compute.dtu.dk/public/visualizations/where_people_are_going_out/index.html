@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0."><meta property="og:title" content="" />
-<meta property="og:description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
+<meta name="description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } ."><meta property="og:title" content="" />
+<meta property="og:description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } ." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/" />
-<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
+<meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
 <title>Where People Are Going Out | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -159,7 +159,7 @@ Population landscape</a></li>
       
   <article class="markdown"><h1 id="going-out-during-the-day"><strong>Going out during the day</strong></h1>
 <span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
-
+<p>
 
 
 
@@ -424,6 +424,10 @@ Population landscape</a></li>
 		return !isNaN(str)
 	}
 
+
+</script>
+
+<script>
     
     if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
     function createWorld() {
@@ -449,7 +453,7 @@ Population landscape</a></li>
                 } else {
                     a.style.color = "red";
                     a.style["font-weight"] = "bold";
-                }   
+                }
                 li.appendChild(a);
                 ul.appendChild(li);
             });
@@ -458,8 +462,7 @@ Population landscape</a></li>
             body.appendChild(toc);
         })}
     createWorld();
-</script>
-
+</script></p>
 <p>By looking at how the number of people spending most of their time in a given area changes between working hours (10–18) and non-working hours (18–02) we can assess how many individuals leave their home during the day (for example to go to work). We use the following reasoning: if 80 people spent most of their time in a given tile during working hours and the number is 100 during non-working hours (allowing us to assume that 100 people live there), we can say that 20 people were not at home during the working hours of the day. This is not a perfect measure, as work and home areas are not fully seperated, so the numbers we report are a lower bound, as some people will work very near home, or work where others live. <em>The important to look for here is how the daily measurements deviate from the baseline.</em></p>
 <p>Note that this figure is similar to the the one presented in &lsquo;<strong>Visualizations</strong> &gt; <em>How people move</em> &gt; Staying at home&rsquo;. The figures measure essentially the same thing, but from different perspectives using different datasets.</p>
 

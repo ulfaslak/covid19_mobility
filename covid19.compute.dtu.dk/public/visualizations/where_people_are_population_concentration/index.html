@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0."><meta property="og:title" content="" />
-<meta property="og:description" content="Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
+<meta name="description" content="Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0."><meta property="og:title" content="" />
+<meta property="og:description" content="Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/where_people_are_population_concentration/" />
-<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
+<meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
 <title>Where People Are Population Concentration | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -159,7 +159,7 @@ Population landscape</a></li>
       
   <article class="markdown"><h1 id="population-distribution"><strong>Population distribution</strong></h1>
 <span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
-
+<p>
 
 
 
@@ -424,6 +424,10 @@ Population landscape</a></li>
 		return !isNaN(str)
 	}
 
+
+</script>
+
+<script>
     
     if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
     function createWorld() {
@@ -449,7 +453,7 @@ Population landscape</a></li>
                 } else {
                     a.style.color = "red";
                     a.style["font-weight"] = "bold";
-                }   
+                }
                 li.appendChild(a);
                 ul.appendChild(li);
             });
@@ -458,8 +462,7 @@ Population landscape</a></li>
             body.appendChild(toc);
         })}
     createWorld();
-</script>
-
+</script></p>
 <p>The figure below displays the <strong>fraction of people that have changed location</strong> compared to a similar time frame before the lockdown. We estimate this variable by summing the positive and absolute negative baseline population deviation across all tiles and dividing my two. Simply, this corresponds to averaging the amount of red and green in the <a href="/mobility/popdensevis/index.html">Landscape visualization</a>, which signals that someone is not where they usually are during this time of the week.</p>
 <p>Note that the change we see here is <em>a lower bound</em> of the actual movement because we can assume there are cases where pairs of people (coincidentally) trade places, which cancels out any measurable deviation in the population distribution. This point is important in interpreting the figure.</p>
 

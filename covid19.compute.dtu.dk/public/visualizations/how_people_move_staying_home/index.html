@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Staying home Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0."><meta property="og:title" content="" />
-<meta property="og:description" content="Staying home Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
+<meta name="description" content="Staying home Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0."><meta property="og:title" content="" />
+<meta property="og:description" content="Staying home Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/how_people_move_staying_home/" />
-<meta property="article:modified_time" content="2020-06-02T10:50:19+02:00" />
+<meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
 <title>How People Move Staying Home | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -159,7 +159,7 @@ Population landscape</a></li>
       
   <article class="markdown"><h1 id="staying-home"><strong>Staying home</strong></h1>
 <span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
-
+<p>
 
 
 
@@ -424,6 +424,10 @@ Population landscape</a></li>
 		return !isNaN(str)
 	}
 
+
+</script>
+
+<script>
     
     if (sessionStorage.country == undefined) {sessionStorage.country = "Denmark";}
     function createWorld() {
@@ -449,7 +453,7 @@ Population landscape</a></li>
                 } else {
                     a.style.color = "red";
                     a.style["font-weight"] = "bold";
-                }   
+                }
                 li.appendChild(a);
                 ul.appendChild(li);
             });
@@ -458,8 +462,7 @@ Population landscape</a></li>
             body.appendChild(toc);
         })}
     createWorld();
-</script>
-
+</script></p>
 <p>In the Movement maps dataset, one movement is recorded for each active user. A movement is registered when in time window <em>t</em> - 1 a user spends most of their time in location <em>A</em>, then in time window <em>t</em> spends most of their time in location <em>B</em>, and <em>A</em> ≠ <em>B</em>. If this condition is not met, either because the time of the stay was too short of the user simply didn&rsquo;t move, the length of the movement is set to 0 km.</p>
 <p>It is, therefore, clear that the most likely type of movement to be recorded in the Movement maps are trips between home and work.</p>
 <p>For this visualization we have counted the fraction of the population that spent most of their time during working (10–18) and late-afternoon hours (18–02) in the same tile. Given the constraints in the data due to preprocessing by Facebook, it is best interpreted as <strong>a conservative upper bound on the number of individuals that do not go to work</strong> during the day.</p>
