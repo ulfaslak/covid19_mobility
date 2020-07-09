@@ -88,6 +88,8 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         data16['n_crisis'] *= N_POP / data16.n_crisis.astype(float).sum()
         data16 = data16.drop(['lat', 'lon'], axis=1)
 
+        #import pdb; pdb.set_trace()
+
         data08_nn = data08.loc[data08.kommune.notnull()]
         data16_nn = data16.loc[data16.kommune.notnull()]
         kommunes = sorted(set(data08_nn.kommune.tolist() + data16_nn.kommune.tolist()))
@@ -107,9 +109,10 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     locations = []
     for key, value in data_out['allday'].items():
         if key!='all':
-            if ('undefined' not in value['percent_change']):
-                if (sum(np.array(value['percent_change']) == 0) <= 2) & (np.all(np.array(value['percent_change'])<1000000)):
-                    locations.append(key)
+            # if ('undefined' not in value['percent_change']):
+            #     if (sum(np.array(value['percent_change']) == 0) <= 2) & (np.all(np.array(value['percent_change'])<1000000)):
+            #         locations.append(key)
+            locations.append(key)
 
     data_out['_meta']['locations'] = ['all']+sorted(locations)
 

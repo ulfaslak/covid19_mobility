@@ -137,8 +137,8 @@ def run(country):
         columns={'city': 'target_kommune'}).set_index('date')
     data = data.rename(columns={'all_ref': 'n_baseline', 'all': 'n_crisis', 'rel_change': 'percent_change'})
 
-    # TODO: THIS IS A TEMPORARY FIX. ZIPCODE 411 IS MISSING FROM THE ZIPS FILE
-    data.dropna(axis=0,inplace=True)
+
+    data.dropna(axis=0,inplace=True) # TODO: THIS IS A TEMPORARY FIX. ZIPCODE 411 IS MISSING FROM THE ZIPS FILE
     data = data[data.index <= date_max]
     data = data.astype({'n_crisis':'int'})
 
