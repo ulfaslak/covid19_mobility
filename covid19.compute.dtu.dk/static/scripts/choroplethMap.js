@@ -267,6 +267,9 @@ class MovementsMap {
 	// ---------------
 
 	setLegend() {
+		d3.selectAll('.legend-component').remove();
+
+
 		let legendRange,
 			legendTitle;
 		if (this.radioOption == "percent_change") {
@@ -280,6 +283,7 @@ class MovementsMap {
 
 		// Title text
 		this.svg.append('text')
+			.attr('class', 'legend-component')
 			.attr('x', this.width-120)
 			.attr('y', 20)
 			.attr('font-weight', 700)
@@ -290,6 +294,7 @@ class MovementsMap {
 
 			// Rects
 			this.svg.append('rect')
+				.attr('class', 'legend-component')
 				.attr('x', this.width-120)
 				.attr('y', idx * 23 + 40)
 				.attr('width', 15)
@@ -303,6 +308,7 @@ class MovementsMap {
 
 			// labels
 			this.svg.append('text')
+				.attr('class', 'legend-component')
 				.attr('x', this.width-95)
 				.attr('y', idx * 23 + 52.5)
 				.attr('font-size', 13)
@@ -659,10 +665,8 @@ class MovementsMap {
 			this.radiosvg.select('#radio-rect-' + option)
 				.attr('class', 'radio-rect selected');
 			this.radioOption = option;
-			if (this.selected === undefined)
-				this.restoreDefault();
-			else
-				this.recolorRegions(this.selected);
+			this.refreshDrawing();
+			this.setLegend();
 		}
 	}
 
