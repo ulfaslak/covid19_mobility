@@ -5,7 +5,7 @@
 
 <!-- {{< vspace 20 >}} -->
 
-When a person is active on their telecommunications device (like a smartphone) the cell tower is logged. Cell towers have known position, and as such the movements of telecommunication users can be recorded at large scale. The visualization below plots the aggregated movements of ~97%* of the Danish population, through a span of time that covers the 2020 coronavirus lockdown period and more.
+When a person is active on their telecommunications device (like a smartphone) the cell tower is logged. Cell towers have known position, and as such the movements of telecommunication users can be recorded at large scale. The visualization below plots the aggregated movements of ~5.600.000* telecommunications users, through a span of time that covers the 2020 coronavirus lockdown period and more.
 
 {{< figures/movements_between_admin_regions_telco_brush >}}
 
@@ -19,4 +19,4 @@ When a person is active on their telecommunications device (like a smartphone) t
 > * **Scroll** on the map to zoom.
 > * **Drag** the curser on the map to pan.
 
-\* Data comes from three major mobile phone operators with ~5.600.000 users in Denmark.
+\* Data comes from three major mobile phone operators. While ~5.600.000 is roughly 97% of the Danish populations this number does not take into account persons carrying multiple devices with a sim card or even dual sim devices.
