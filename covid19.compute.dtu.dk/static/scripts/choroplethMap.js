@@ -386,8 +386,7 @@ class MovementsMap {
 			.default(this.t)
 			.on('onchange', t => {
 				this.t = t;
-				this.clearData();
-				this.redrawData();
+				this.refreshDrawing();
 			});
 
 		// Append to div
@@ -423,7 +422,7 @@ class MovementsMap {
 			    		return this.defaultFill(datum.kommune)
 			    })
 				.on('mouseover', polygon => {
-					if (dataExists) {
+					// if (dataExists) {
 						this.mouseover();
 						this.hovering = datum.kommune;
 						if (typeof this.selected == 'undefined') {
@@ -432,25 +431,24 @@ class MovementsMap {
 							if (datum.kommune != this.selected)
 								this.highlightRegion(datum.polygons, 'grey');
 						}
-					}
+					// }
 				})
 				.on('mousemove', () => {
-					if (dataExists) {
+					// if (dataExists) {
 						if (typeof this.selected == 'undefined')
-							this.tooltipDefault(datum.kommune);
+							this.tooltipDefault(datum.kommune, dataExists);
 						else {
-							this.tooltipSelected(datum.kommune);
-
+							this.tooltipSelected(datum.kommune, dataExists);
 						}
-					}
+					// }
 				})
 				.on('mouseout', polygon => {
-					if (dataExists) {
+					// if (dataExists) {
 						this.mouseout();
 						this.hovering = undefined;
 						if (datum.kommune != this.selected)
 							this.unhighlightRegion()
-					}
+					// }
 				})
 				.on('click', polygon => {
 					if (dataExists) {
@@ -494,20 +492,24 @@ class MovementsMap {
 		this.tooltip.style("display", "none");
 	}
 
-	tooltipDefault(d) {
-		let crisis = this.data[d]["_" + d]['crisis'][this.t][this.idx0or1];
-		let baseline = this.data[d]["_" + d]['baseline'][this.t][this.idx0or1];
-		let percent_change = this.data[d]["_" + d]['percent_change'][this.t][this.idx0or1];
-
+	tooltipDefault(d, exists) {
 		let tooltiptext = "";
-		if (this.idx0or1 == 0)
-			tooltiptext += "Share of <b>" + d + "</b> population<br>commuting to anywhere<br><br>";
-		else
-			tooltiptext += "Commuters in <b>" + d + "</b><br>relative to its population<br><br>";
-		tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
-		tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
-		if (baseline > 0)
-			tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";
+		if (exists) {
+			let crisis = this.data[d]["_" + d]['crisis'][this.t][this.idx0or1];
+			let baseline = this.data[d]["_" + d]['baseline'][this.t][this.idx0or1];
+			let percent_change = this.data[d]["_" + d]['percent_change'][this.t][this.idx0or1];
+
+			if (this.idx0or1 == 0)
+				tooltiptext += "Share of <b>" + d + "</b> population<br>commuting to anywhere<br><br>";
+			else
+				tooltiptext += "Commuters in <b>" + d + "</b><br>relative to its population<br><br>";
+			tooltiptext += "On date: <b>" + round(crisis * 100, 1e2) + "%</b><br>";
+			tooltiptext += "Baseline: <b>" + round(baseline * 100, 1e2) + "%</b><br>";
+			if (baseline > 0)
+				tooltiptext += "Deviation: <b>" + round(percent_change * 100, 1e2) + "%</b>";
+		} else {
+			tooltiptext += "<b>" + d + "</b>"
+		}
 
 		if (d3.event != null) {
 			this.tooltip
@@ -637,7 +639,7 @@ class MovementsMap {
 		})
 	}
 
-	restoreDefault(t) {
+	restoreDefault() {
 		this.geoData.forEach(datum_ => {
 			this.svg.selectAll('#' + idify(datum_.kommune))
 				.style('fill', this.defaultFill(datum_.kommune))
@@ -657,8 +659,6 @@ class MovementsMap {
 			this.radiosvg.select('#radio-rect-' + option)
 				.attr('class', 'radio-rect selected');
 			this.radioOption = option;
-			// this.clearData();
-			// this.redrawData();
 			if (this.selected === undefined)
 				this.restoreDefault();
 			else
@@ -684,6 +684,12 @@ class MovementsMap {
 		this.redrawData();
 	}
 
+	refreshDrawing() {
+		if (this.selected === undefined)
+			this.restoreDefault();
+		else
+			this.recolorRegions(this.selected);
+	}
 
 
 	// Utilities
