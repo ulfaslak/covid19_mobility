@@ -187,6 +187,7 @@
 
 <!-- Local scripts -->
 <script src="/scripts/eventDates.js"></script>
+<script src="/scripts/kommunePop.js"></script>
 <script src="/scripts/timeSeriesFigure.js"></script>
 <script src="/scripts/choroplethMap.js"></script>
 <script src="/scripts/choroplethMapBrush.js"></script>
@@ -252,7 +253,7 @@
 	}
 
 	function insertKSeperators(x) {
-	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 
 	function idify(str) {
