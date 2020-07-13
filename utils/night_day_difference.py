@@ -109,10 +109,9 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     locations = []
     for key, value in data_out['allday'].items():
         if key!='all':
-            # if ('undefined' not in value['percent_change']):
-            #     if (sum(np.array(value['percent_change']) == 0) <= 2) & (np.all(np.array(value['percent_change'])<1000000)):
-            #         locations.append(key)
-            locations.append(key)
+            if ('undefined' not in value['percent_change']):
+                if (sum(np.array(value['percent_change']) == 0) <= 2) & (np.all(np.array(value['percent_change'])<1000000)):
+                    locations.append(key)
 
     data_out['_meta']['locations'] = ['all']+sorted(locations)
 
