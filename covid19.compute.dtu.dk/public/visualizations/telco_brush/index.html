@@ -8,7 +8,7 @@
 <meta property="og:description" content="Movements from telco data Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/telco_brush/" />
-<meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
+<meta property="article:modified_time" content="2020-07-09T11:38:35+02:00" />
 <title>Telco Brush | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -428,7 +428,7 @@ Population landscape</a></li>
 </script>
 
 <!-- raw HTML omitted -->
-<p>When a person is active on their telecommunications device (like a smartphone) the cell tower is logged. Cell towers have known position, and as such the movements of telecommunication users can be recorded at large scale. The visualization below plots the movements of a representative sample of the Danish population, through a span of time that covers the 2020 coronavirus lockdown period and more.</p>
+<p>When a person is active on their telecommunications device (like a smartphone) the cell tower is logged. Cell towers have known position, and as such the movements of telecommunication users can be recorded at large scale. The visualization below plots the aggregated movements of ~97%* of the Danish population, through a span of time that covers the 2020 coronavirus lockdown period and more.</p>
 
 
 <!DOCTYPE html>
@@ -470,13 +470,14 @@ Population landscape</a></li>
 <li><strong>Hover</strong> the curser over a municipality to display the number of movements from, to and within.</li>
 <li><strong>Click</strong> any municipality to see travel between it and other municipalities, then <strong>hover</strong> other municipalities to see the exact quantities.</li>
 <li><strong>Drag</strong> the time brush below or change its span to visualize travel in different time periods.</li>
-<li><strong>Select</strong> whether to display square root (<em>sqrt</em>) or <em>log</em> scaled colors.</li>
+<li><strong>Select</strong> whether to display square root (<em>sqrt</em>) or <em>log</em> scaled colors. Toggle by pressing the buttons in the legend or hitting the <code>shift</code> key. Feature only available when focusing on a region.</li>
 <li><strong>Press</strong> <code>shift</code> key to toggle between <em>sqrt</em> and <em>log</em> color scaling.</li>
-<li><strong>Press</strong> <code>Esc</code> key to unselect.</li>
+<li><strong>Press</strong> <code>esc</code> key to unselect.</li>
 <li><strong>Scroll</strong> on the map to zoom.</li>
 <li><strong>Drag</strong> the curser on the map to pan.</li>
 </ul>
 </blockquote>
+<p>* Data comes from three major mobile phone operators with ~5.600.000 users in Denmark.</p>
 </article>
  
       

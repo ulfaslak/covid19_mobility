@@ -5,7 +5,7 @@ cd ~/HOPE/WorldCovid19/
 # execute all python scripts
 /home/petem/Applications/anaconda3/bin/python3 pull_data/pull.py
 /home/petem/Applications/anaconda3/envs/geo_env/bin/python3 preprocess_everything.py;
-/home/petem/Applications/anaconda3/envs/geo_env/bin/python3 preprocess_telco_new.py;
+/home/petem/Applications/anaconda3/envs/geo_env/bin/python3 preprocess_telco.py;
 
 
 # then build the website

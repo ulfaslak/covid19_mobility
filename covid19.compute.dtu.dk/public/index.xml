@@ -148,7 +148,7 @@ Description: A Movement map seperates the country into different areas. It then 
       
       <guid>https://covid19.compute.dtu.dk/data/population_density_maps/</guid>
       <description>Population Density Maps For understanding Where people are we use &amp;ldquo;Population Density Maps&amp;rdquo;, which are provided by the Facebook&amp;rsquo;s Data for Good initiative. Specifically, we use Population density maps at the tile level (see Granularity).
-Description: A Population density map seperates the country into different areas, and for each it counts the number of users that spend most of their time there, for three eight hour time windows each day. For example, for the 10–18 (working hours) time window on May 4, there may be 52.</description>
+Description: A Population density map seperates the country into different areas, and for each it counts the number of users that spend most of their time there, for three eight hour time windows each day. For example, for the 08–16 (working hours) time window on May 4, there may be 52.</description>
     </item>
     
     <item>
