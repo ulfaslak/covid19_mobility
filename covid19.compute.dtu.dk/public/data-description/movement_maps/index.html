@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Movement Maps For understanding How people move we use so-called &ldquo;Movement Maps&rdquo;, which are provided by the Facebook&rsquo;s Data for Good initiative. Specifically, we use a combination of Movement maps at tile level and administrative region level (see Granularity and Further preprocessing).
+Description: A Movement map seperates the country into different areas. It then reports the number of users that travel between areas, for three eight hour time windows each day."><meta property="og:title" content="Movement Maps" />
+<meta property="og:description" content="Movement Maps For understanding How people move we use so-called &ldquo;Movement Maps&rdquo;, which are provided by the Facebook&rsquo;s Data for Good initiative. Specifically, we use a combination of Movement maps at tile level and administrative region level (see Granularity and Further preprocessing).
+Description: A Movement map seperates the country into different areas. It then reports the number of users that travel between areas, for three eight hour time windows each day." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/data-description/movement_maps/" />
+<meta property="article:modified_time" content="2020-07-09T12:51:34+02:00" />
+<title>Movement Maps | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.8a947f30ccbc45289baa778fab553fcbefa728e514331d0228e194e9c7b19e9a.css" integrity="sha256-ipR/MMy8RSibqnePq1U/y&#43;&#43;nKOUUMx0CKOGU6cexnpo=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>June</em>
+<ul>
+<li><a href="/posts/escape_from_covid_island/">29 - <em>Gaming</em>:<br>
+Escape from Covid island</a></li>
+</ul>
+</li>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18 - <em>Denmark</em>:<br>
+Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14 - <em>Denmark</em>:<br>
+Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11 - <em>Denmark</em>: <br>
+What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7 - <em>Denmark</em>: <br>
+Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_movements_between_municipalities/"><strong>New</strong> Movements between regions</a></li>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data-description/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data-description/movement_maps/"class=active>Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Movement Maps</strong>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="movement-maps">Movement Maps</h1>
+<p>For understanding <em>How people move</em> we use so-called &ldquo;Movement Maps&rdquo;, which are provided by the Facebook&rsquo;s <a href="https://dataforgood.fb.com/">Data for Good</a> initiative. Specifically, we use a combination of Movement maps at tile level and administrative region level (see <em>Granularity</em> and <em>Further preprocessing</em>).</p>
+<p><strong>Description</strong>: A Movement map seperates the country into different areas. It then reports the number of users that travel between areas, for three eight hour time windows each day. Specifically, a movement count between two regions, for a given time window, represents the number of people that, in the previous time window, spent most of their time in one region and in this time window spent most of their time on the other region. For example, for the 18-02 time window (night hours) on May 4, we may observe 43 active Facebook users moving between Hillerød and Helsingør municipalities. This means that 43 people spent most of their time during the 10–18 time window inside on of these municipalities, and then during 18–02 time window spent most of their time in the other one. Non-movement is recorded in the same way, that is for each region Facebook also counts the number of users that do not move. Because data is aggregated like this, there is no information left to identify individuals and privacy is thus preserved (see <em>Privacy and data loss</em> below).</p>
+<p><strong>Time</strong>: The earliest data made for available for a country typically starts shortly before the lockdowns or shortly after. For the UK, Spain, Italy, New Zealand and France data collection starts before their respective lockdown periods begin, and for the remaining countries data collections starts after. For each country, we receive new data with ~1.5 days delay. For each day, three data files are provided; one for each of the time windows 0–8, 8–16, and 16–24 GMT. In Denmark, for example, from March 29 to October 25 (DST), time windows in local time are 02–10, 10–18 and 18–02.</p>
+<p><strong>Granularity</strong>: Movement maps are delivered at two levels of granularity. Level (1) describes movement counts at the lowest <em>administrative</em> level, which for Denmark is municipalities. Level (2) describes movement counts between geographical <em>tiles</em> up to 3 km by 3 km in size. Note that this is twice the width and length (four times the area) of tiles in the Population density maps. The administrative level maps are aggregates of the tile level maps, but they differ in a systematic way due to privacy preservation (see <em>Privacy and data loss</em> below).</p>
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    Granularity: <strong>Administrative regions</strong>
+<img src="/data_description_movement_admin.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    Granularity: <strong>Tiles</strong>
+<img src="/data_description_movement_tile.png" alt="img">
+  </div>
+  
+</div>
+
+<p><strong>Baseline</strong>: For each movement count (whether it is for a tile or an administrative region) a corresponding <em>baseline</em> count is provided. The baseline is the average count for the same day of the week and time window over the 45 days prior to data generation. It is important to note, that since data generation starts at different times, and for many countries <em>after</em> their lockdown begins, a baseline measure may be polluted by data from the lockdown period. Therefore, by comparing to this baseline <em>reported effects may smaller</em> than those we might have obtained if comparing to baselines that did not include lockdown.</p>
+<p><strong>Crisis and baseline movement counts between Hillerød and Helsingør municipalities</strong>
+<img src="/data_description_movement_baseline.png" alt="img" /></p>
+<p><strong>Further preprocessing</strong>:
+In any given time interval, there is some number of movement and non-movement events rcorded. For example, for Denmark this is between 327k and 430k (<em>mean</em>: 360k; <em>median</em>: 353k; typically lowest between 0–8 GMT). There is one movement or non-movement recorded for each Facebook user with location tracking enabled that actively use the Facebook mobile app at some time during two adjacent time-intervals (like being active both in the 08–16 interval and the 16–00 interval). One reason why there are fewer mobility events than population counts it that it is not guaranteed that location for a user can be recorded in both time intervals. Another reason is due to privacy preservation (see <em>Privacy and data loss</em>). To offer realistic population counts, we factor into these mobility counts the ratio between the total number of people in a country (source: <a href="https://www.worldometers.info/world-population/denmark-population/">Worldometer</a>) and the number of mobility and non-mobility events in a given time interval. This ratio—the inverse fraction of active Facebook users for a country in a given time interval—typically varies between 13.5 and 17.7, depenent on country and time. Although Facebook provides precomputed percentage change values between baseline and crisis, the percentage changes we report are computed <em>after</em> factoring in this ratio, seperately for crisis and baseline. This recalibration assumes that active Facebook users are distributed evenly throughout the space and population of a country.</p>
+<p>To base our analysis on as much data as possible, we combine tile level and administrative region level maps. As described in <em>Privacy and data loss</em> below, a significant proportion of mobility events, especially long range ones, in the tile level maps are made unavailable because they are too rare (to lower risk of individual reidentification). At the same time, administrative level maps do not distinguish between movements and non-movements within administrative regions. We, therefore, discard movements <em>between</em> administrative region from the tile level data, and discard movements <em>within</em> administrative region from the administrative region level data, and combine these into one datasets.</p>
+<p><strong>Privacy and data loss</strong>: Mobility counts are made unavailale between tiles/municipalties at times when they occur less than 10 times. This causes a systematic underreporting of mobility from rural areas where there is a lower density of people and more possible destinations to move between. This is especially a problem in the tile-level maps. For this reason, long-range trips are often lost in tile-level maps. The average data loss in tile level mobility maps compared to administrative region level mobility maps is e.g. 92% (±8%) for Denmark, and loss is greater in rural than in urban regions of the country.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
