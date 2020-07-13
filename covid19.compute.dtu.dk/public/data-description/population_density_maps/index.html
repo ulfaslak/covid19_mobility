@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Population Density Maps For understanding Where people are we use &ldquo;Population Density Maps&rdquo;, which are provided by the Facebook&rsquo;s Data for Good initiative. Specifically, we use Population density maps at the tile level (see Granularity).
+Description: A Population density map seperates the country into different areas, and for each it counts the number of users that spend most of their time there, for three eight hour time windows each day. For example, for the 08–16 (working hours) time window on May 4, there may be 52."><meta property="og:title" content="Population Density Maps" />
+<meta property="og:description" content="Population Density Maps For understanding Where people are we use &ldquo;Population Density Maps&rdquo;, which are provided by the Facebook&rsquo;s Data for Good initiative. Specifically, we use Population density maps at the tile level (see Granularity).
+Description: A Population density map seperates the country into different areas, and for each it counts the number of users that spend most of their time there, for three eight hour time windows each day. For example, for the 08–16 (working hours) time window on May 4, there may be 52." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/data-description/population_density_maps/" />
+<meta property="article:modified_time" content="2020-07-09T12:51:34+02:00" />
+<title>Population Density Maps | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.8a947f30ccbc45289baa778fab553fcbefa728e514331d0228e194e9c7b19e9a.css" integrity="sha256-ipR/MMy8RSibqnePq1U/y&#43;&#43;nKOUUMx0CKOGU6cexnpo=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>June</em>
+<ul>
+<li><a href="/posts/escape_from_covid_island/">29 - <em>Gaming</em>:<br>
+Escape from Covid island</a></li>
+</ul>
+</li>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18 - <em>Denmark</em>:<br>
+Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14 - <em>Denmark</em>:<br>
+Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11 - <em>Denmark</em>: <br>
+What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7 - <em>Denmark</em>: <br>
+Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_movements_between_municipalities/"><strong>New</strong> Movements between regions</a></li>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data-description/population_density_maps/"class=active>Population Density Maps</a></li>
+<li><a href="/data-description/movement_maps/">Movement Maps</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>Population Density Maps</strong>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="population-density-maps">Population Density Maps</h1>
+<p>For understanding <em>Where people are</em> we use &ldquo;Population Density Maps&rdquo;, which are provided by the Facebook&rsquo;s <a href="https://dataforgood.fb.com/">Data for Good</a> initiative. Specifically, we use Population density maps at the tile level (see <em>Granularity</em>).</p>
+<p><strong>Description</strong>: A Population density map seperates the country into different areas, and for each it counts the number of users that spend most of their time there, for three eight hour time windows each day. For example, for the 08–16 (working hours) time window on May 4, there may be 52.1k active Facebook users that spend most of their time inside a certain area of Copenhagen. Because data is aggregated like this, there is no information left to identify individuals and privacy is thus preserved (see <em>Privacy and data loss</em> below).</p>
+<p><strong>Time</strong>: The earliest data made for available for a country typically starts shortly before the lockdowns or shortly after. For the UK, Spain, Italy, New Zealand and France data collection starts before their respective lockdown periods begin, and for the remaining countries data collections starts after. For each country, we receive new data with ~1.5 days delay. For each day, three data files are provided; one for each of the time windows 0–8, 8–16, and 16–24 GMT. In Denmark, for example, from March 29 to October 25 (DST), time windows in local time are 02–10, 10–18 and 18–02.</p>
+<p><strong>Granularity</strong>: Population density maps splits the country into different areas. We gain access to two different levels of granularity. Level (1) describes population counts at the lowest <em>administrative</em> level, which for Denmark is municipalities. Level (2) describes population counts inside geographical <em>tiles</em> up to 1.5 km by 1.5 km in size. The administrative level maps are aggregates of the tile level maps, but they differ in a systematic way due to privacy preservation (see <em>Privacy and data loss</em> below).</p>
+<div class="book-columns flex flex-wrap">
+  
+  <div class="flex-even markdown-inner">
+    Granularity: <strong>Administrative regions</strong>
+<img src="/data_description_population_admin.png" alt="img">
+  </div>
+  
+  <div class="flex-even markdown-inner">
+    Granularity: <strong>Tiles</strong>
+<img src="/data_description_population_tile.png" alt="img">
+  </div>
+  
+</div>
+
+<p><strong>Baseline</strong>: For each count (whether it is for a tile or an administrative region) a corresponding <em>baseline</em> count is provided. The baseline is the average count for the same day of the week and time window over the 45 days prior to data generation. It is important to note, that since data generation starts at different times, and for many countries <em>after</em> their lockdown begins, a baseline measure may be polluted by data from the lockdown period. Therefore, by comparing to this baseline <em>reported effects may smaller</em> than those we might have obtained if comparing to baselines that did not include lockdown.</p>
+<p><strong>Crisis and baseline counts for an administrative region</strong>
+<img src="/data_description_population_baseline.png" alt="img" /></p>
+<p><strong>Further preprocessing</strong>:
+In any given time interval, there is some number of counted individuals across all tiles in a country. For example, for Denmark this is between 344k and 540k (<em>mean</em>: 459k; <em>median</em>: 447k; typically lowest between 0–8 GMT). These are Facebook users with location tracking enabled that actively use the Facebook mobile app at some time during a given interval. To offer realistic population counts, we factor into these user counts the ratio between the total number of people in a country (source: <a href="https://www.worldometers.info/world-population/denmark-population/">Worldometer</a>) and the number of active users in a given time interval. This ratio typically varies between 10.7 and 16.8, dependent on country and time. Although Facebook provides precomputed percentage change values between baseline and crisis, the percentage changes we report are computed <em>after</em> factoring in this ratio, seperately for crisis and baseline. This recalibration assumes that active Facebook users are distributed evenly throughout the population.</p>
+<p><strong>Privacy and data loss</strong>: Counts are made unavailale in tiles/municipalties at times when there are less than 10 active users. This causes a systematic underreporting of population counts from very low-density rural regions. This is especially a problem in the tile-level maps where it is more likely that an area has few users. Thus, there is a trade-off between granularity and data availablity. The average data loss in tile level maps compared to administrative region level maps is e.g. 82% (±11%) for Denmark, and loss is greater in rural than in urban regions of the country.</p>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

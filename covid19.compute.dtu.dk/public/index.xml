@@ -25,7 +25,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/how_people_move_distance_traveled/</guid>
-      <description>Distance traveled Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.</description>
+      <description>Distance traveled Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.</description>
     </item>
     
     <item>
@@ -34,7 +34,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/how_people_move_movements_between_municipalities/</guid>
-      <description>Movements between regions Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.</description>
+      <description>Movements between regions Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.</description>
     </item>
     
     <item>
@@ -43,7 +43,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/how_people_move_staying_home/</guid>
-      <description>Staying home Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.</description>
+      <description>Staying home Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.</description>
     </item>
     
     <item>
@@ -52,7 +52,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/telco/</guid>
-      <description>Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.</description>
+      <description>Movements between municipalities Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.</description>
     </item>
     
     <item>
@@ -61,7 +61,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/telco_brush/</guid>
-      <description>Movements from telco data Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.</description>
+      <description>Movements from telco data Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.</description>
     </item>
     
     <item>
@@ -70,7 +70,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/where_people_are_change_in_population_size/</guid>
-      <description>Change in population sizes Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.</description>
+      <description>Change in population sizes Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.</description>
     </item>
     
     <item>
@@ -79,7 +79,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/</guid>
-      <description>Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .</description>
+      <description>Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.</description>
     </item>
     
     <item>
@@ -98,7 +98,7 @@ In the two figures below we plot tiles with a height that corresponds to their b
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/where_people_are_population_concentration/</guid>
-      <description>Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.</description>
+      <description>Population distribution Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.</description>
     </item>
     
     <item>
@@ -123,10 +123,10 @@ At the peak of the Danish lock-down, most public employees (all except for those
     
     <item>
       <title>Movement Maps</title>
-      <link>https://covid19.compute.dtu.dk/data/movement_maps/</link>
+      <link>https://covid19.compute.dtu.dk/data-description/movement_maps/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://covid19.compute.dtu.dk/data/movement_maps/</guid>
+      <guid>https://covid19.compute.dtu.dk/data-description/movement_maps/</guid>
       <description>Movement Maps For understanding How people move we use so-called &amp;ldquo;Movement Maps&amp;rdquo;, which are provided by the Facebook&amp;rsquo;s Data for Good initiative. Specifically, we use a combination of Movement maps at tile level and administrative region level (see Granularity and Further preprocessing).
 Description: A Movement map seperates the country into different areas. It then reports the number of users that travel between areas, for three eight hour time windows each day.</description>
     </item>
@@ -137,16 +137,16 @@ Description: A Movement map seperates the country into different areas. It then 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/mobility/population/</guid>
-      <description>Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 8:10:17
-.vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.</description>
+      <description>Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 22:16:15
+.vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.</description>
     </item>
     
     <item>
       <title>Population Density Maps</title>
-      <link>https://covid19.compute.dtu.dk/data/population_density_maps/</link>
+      <link>https://covid19.compute.dtu.dk/data-description/population_density_maps/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://covid19.compute.dtu.dk/data/population_density_maps/</guid>
+      <guid>https://covid19.compute.dtu.dk/data-description/population_density_maps/</guid>
       <description>Population Density Maps For understanding Where people are we use &amp;ldquo;Population Density Maps&amp;rdquo;, which are provided by the Facebook&amp;rsquo;s Data for Good initiative. Specifically, we use Population density maps at the tile level (see Granularity).
 Description: A Population density map seperates the country into different areas, and for each it counts the number of users that spend most of their time there, for three eight hour time windows each day. For example, for the 08–16 (working hours) time window on May 4, there may be 52.</description>
     </item>
@@ -169,7 +169,7 @@ Sometimes looking at the data is as easy as plotting x against y.</description>
       <guid>https://covid19.compute.dtu.dk/posts/spread_of_population/</guid>
       <description>Population re-distributed! Post by Sune Lehmann and Laura Alessandretti. Published: May 12, 2020. The lockdown presented a massive disruption to daily lives in Denmark.
 As discussed in the Population Landscape post, we observed a massive decrease of the number of people in the central districts of cities and airports. We can see this quite clearly in the screenshot from the Landscape visualization, which shows Copenhagen during Easter.
- A view of Copenhagen during Easter.</description>
+A view of Copenhagen during Easter.</description>
     </item>
     
     <item>
@@ -178,8 +178,8 @@ As discussed in the Population Landscape post, we observed a massive decrease of
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/mobility/mobility/</guid>
-      <description>Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 8:10:17
-.vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .</description>
+      <description>Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 22:16:15
+.vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.</description>
     </item>
     
     <item>

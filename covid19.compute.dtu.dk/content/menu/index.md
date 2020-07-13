@@ -29,7 +29,7 @@ headless: true
 		- [Staying home]({{< relref "/visualizations/how_people_move_staying_home.md" >}})
 		<!-- - [Movements between municipalities]({{< relref "/visualizations/how_people_move_movements_between_municipalities.md" >}}) -->
 - **Data**
-	- [Population Density Maps]({{< relref "/data/population_density_maps.md" >}})
-	- [Movement Maps]({{< relref "/data/movement_maps.md" >}})
+	- [Population Density Maps]({{< relref "/data description/population_density_maps.md" >}})
+	- [Movement Maps]({{< relref "/data description/movement_maps.md" >}})
 <br />
 

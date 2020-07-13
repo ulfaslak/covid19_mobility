@@ -118,11 +118,11 @@ class TimeSeriesFigure {
 					if (t == 'allday')
 						return 'All day';
 					else if (t == '00')
-						return "02–10";
+						return "00–08";
 					else if (t == '08')
-						return "10–18";
+						return "08–16";
 					else if (t == '16')
-						return "18–02";
+						return "16–00";
                     else
                         return t;
 				})
@@ -512,11 +512,12 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 10+4)
 			.text('daily')
-		this.svg.append('rect')
+		let dailyrect = this.svg.append('rect')
 			.attr('x', this.width+10)
 			.attr('y', 0)
 			.attr('width', 55)
 			.attr('height', 20)
+			.style('fill', 'white')
 			.style('opacity', 0)
 			.style('cursor', 'pointer')
 			.on('click', () => {
@@ -534,6 +535,10 @@ class SingleLinePlot extends TimeSeriesFigure {
 				}
 			})
 
+		dailyrect
+			.on('mouseover', () => dailyrect.style('opacity', 0.5))
+			.on('mouseout', () => dailyrect.style('opacity', 0))
+
 		// 7 day avg
 		this.svg.append('line')
 			.attr('class', 'trendline')
@@ -546,11 +551,12 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 30+4)
 			.text('7 day avg')
-		this.svg.append('rect')
+		let weeklyrect = this.svg.append('rect')
 			.attr('x', this.width+10)
 			.attr('y', 20)
 			.attr('width', 80)
 			.attr('height', 20)
+			.style('fill', 'white')
 			.style('opacity', 0)
 			.style('cursor', 'pointer')
 			.on('click', () => {
@@ -563,6 +569,10 @@ class SingleLinePlot extends TimeSeriesFigure {
 						.style('stroke-opacity', 0)
 				}
 			})
+
+		weeklyrect
+			.on('mouseover', () => weeklyrect.style('opacity', 0.5))
+			.on('mouseout', () => weeklyrect.style('opacity', 0))
 	}
 
 
@@ -818,11 +828,12 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 10+4)
 			.text('daily')
-		this.svg.append('rect')
+		let dailyrect = this.svg.append('rect')
 			.attr('x', this.width+10)
 			.attr('y', 0)
 			.attr('width', 55)
 			.attr('height', 20)
+			.style('fill', 'white')
 			.style('opacity', 0)
 			.style('cursor', 'pointer')
 			.on('click', () => {
@@ -840,6 +851,10 @@ class DeviationPlot extends TimeSeriesFigure {
 				}
 			})
 
+		dailyrect
+			.on('mouseover', () => dailyrect.style('opacity', 0.5))
+			.on('mouseout', () => dailyrect.style('opacity', 0))
+
 		// baseline
 		this.svg.append('line')
 			.attr('class', 'line-baseline')
@@ -852,11 +867,12 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 30+4)
 			.text('baseline')
-		this.svg.append('rect')
+		let baselinerect = this.svg.append('rect')
 			.attr('x', this.width+10)
 			.attr('y', 20)
 			.attr('width', 75)
 			.attr('height', 20)
+			.style('fill', 'white')
 			.style('opacity', 0)
 			.style('cursor', 'pointer')
 			.on('click', () => {
@@ -870,6 +886,10 @@ class DeviationPlot extends TimeSeriesFigure {
 				}
 			})
 
+		baselinerect
+			.on('mouseover', () => baselinerect.style('opacity', 0.5))
+			.on('mouseout', () => baselinerect.style('opacity', 0))
+
 		// 7 day avg
 		this.svg.append('line')
 			.attr('class', 'trendline')
@@ -882,11 +902,12 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x', this.width+35)
 			.attr('y', 50+4)
 			.text('7 day avg')
-		this.svg.append('rect')
+		let weeklyrect = this.svg.append('rect')
 			.attr('x', this.width+10)
 			.attr('y', 40)
 			.attr('width', 80)
 			.attr('height', 20)
+			.style('fill', 'white')
 			.style('opacity', 0)
 			.style('cursor', 'pointer')
 			.on('click', () => {
@@ -899,6 +920,10 @@ class DeviationPlot extends TimeSeriesFigure {
 						.style('stroke-opacity', 0)
 				}
 			})
+
+		weeklyrect
+			.on('mouseover', () => weeklyrect.style('opacity', 0.5))
+			.on('mouseout', () => weeklyrect.style('opacity', 0))
 	}
 
 

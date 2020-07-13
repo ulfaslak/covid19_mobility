@@ -704,8 +704,8 @@ class MovementsMapBrush {
 					}
 
 					this.refreshDrawing();
-					this.updateInfoBox();
 					this.redrawBrushLine();
+					this.updateInfoBox();
 					this.setLegend();
 				});
 		}
