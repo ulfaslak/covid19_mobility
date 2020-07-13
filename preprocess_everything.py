@@ -24,20 +24,11 @@ def run():
     data_path = r'covid19.compute.dtu.dk/static/data/'
     with open(data_path + 'countries.json','w') as f:
         json.dump(country_list,f)
+
+
     # First run serially
     print("Adding the admin locations to the CSV files:")
     prep_countries.run(path)
-    '''
-    for country in country_list:
-        print(f'\nUpdating {country}')
-        iso = pycountry.countries.get(name=country).alpha_2
-        print('\nupdate_baseline_counts\n' + '-'*len('update_baseline_counts'))
-        update_baseline_counts.run(country,iso)
-        print('\nfill_baseline\n' + '-'*len('fill_baseline'))
-        fill_baseline.run(country,iso)
-        print('\nestablish_flow_baseline\n' + '-'*len('establish_flow_baseline'))
-        establish_flow_baseline.run(country,iso)
-    '''
 
 
     # Then run in parallel
