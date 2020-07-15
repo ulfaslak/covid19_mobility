@@ -412,7 +412,6 @@ class MovementsMap {
 
 	drawMap() {
 		for (let datum of this.geoData) {
-			let dataExists = this.exists(datum.kommune);
 			this.g.selectAll(idify(datum.kommune))
 				.data(datum.polygons)
 				.enter().append("polygon")
@@ -428,36 +427,30 @@ class MovementsMap {
 			    		return this.defaultFill(datum.kommune)
 			    })
 				.on('mouseover', polygon => {
-					// if (dataExists) {
-						this.mouseover();
-						this.hovering = datum.kommune;
-						if (typeof this.selected == 'undefined') {
-							this.highlightRegion(datum.polygons, 'black');
-						} else {
-							if (datum.kommune != this.selected)
-								this.highlightRegion(datum.polygons, 'grey');
-						}
-					// }
+					this.mouseover();
+					this.hovering = datum.kommune;
+					if (typeof this.selected == 'undefined') {
+						this.highlightRegion(datum.polygons, 'black');
+					} else {
+						if (datum.kommune != this.selected)
+							this.highlightRegion(datum.polygons, 'grey');
+					}
 				})
 				.on('mousemove', () => {
-					// if (dataExists) {
-						if (typeof this.selected == 'undefined')
-							this.tooltipDefault(datum.kommune, dataExists);
-						else {
-							this.tooltipSelected(datum.kommune, dataExists);
-						}
-					// }
+					if (typeof this.selected == 'undefined')
+						this.tooltipDefault(datum.kommune);
+					else {
+						this.tooltipSelected(datum.kommune);
+					}
 				})
 				.on('mouseout', polygon => {
-					// if (dataExists) {
-						this.mouseout();
-						this.hovering = undefined;
-						if (datum.kommune != this.selected)
-							this.unhighlightRegion()
-					// }
+					this.mouseout();
+					this.hovering = undefined;
+					if (datum.kommune != this.selected)
+						this.unhighlightRegion()
 				})
 				.on('click', polygon => {
-					if (dataExists) {
+					if (this.exists(datum.kommune)) {
 						this.unhighlightAllRegions();
 						this.highlightRegion(datum.polygons, 'black');
 						if (typeof this.selected == 'undefined') {
@@ -498,9 +491,9 @@ class MovementsMap {
 		this.tooltip.style("display", "none");
 	}
 
-	tooltipDefault(d, exists) {
+	tooltipDefault(d) {
 		let tooltiptext = "";
-		if (exists) {
+		if (this.exists(d)) {
 			let crisis = this.data[d]["_" + d]['crisis'][this.t][this.idx0or1];
 			let baseline = this.data[d]["_" + d]['baseline'][this.t][this.idx0or1];
 			let percent_change = this.data[d]["_" + d]['percent_change'][this.t][this.idx0or1];
