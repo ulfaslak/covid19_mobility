@@ -3,22 +3,23 @@ title: "Midsommar"
 type: post
 draft: true
 ---
-# **Midsommar in Sweden**
+# **Midsummer in Sweden**
 {{< fontsize 14 >}}*Post by [Peter Edsberg Møllgaard](mailto:petem@dtu.dk). Published: DATE, 2020.*{{< /fontsize >}}
 {{< vspace 15 >}}
-Outside of Sweden *Midsommar* might be known as a horror movie of the same name and event, but in reality it is not as sinister.
-In Sweden it is a public holiday where families get together to celebrate the summer solstice and everyone is enjoying a public day off.
+Outside of Sweden *Midsummer* might be known as a horror movie of the same name and event, but in reality it is not as sinister.
+In Sweden it is a public holiday where families get together to celebrate the summer solstice, with traditional food, games and dancing.
 
-In this post we explore how such a public holiday impacts the mobility and interactions during the COVID-19 pandemic. 
+In this post we explore how this public holiday impacted the mobility and interactions during the COVID-19 pandemic. 
 
-Looking at the change in population distributions across Sweden big spikes are being seen on the day of Midsommar in Sweden. 
+Looking at the change in population distributions across Sweden, big spikes are being seen on the day of Midsummer, 19. of June, in Sweden. 
 
 *Change in population (relative)*
 ![img](/midsommar-changeall1.png)
 
-People are leaving the big cities like Stockholm, Göteborg and Malmö and traveling to the countryside, especially vacation areas like Borgholm, 
-Sotenäs, and Tanum. To give some perspective then ~200.000 people left Stockholm on this given day. It seems like this date marks the beginning of the summer due to the steady increase of population numbers 
-in the countryside since then.
+People are leaving the big cities like Stockholm, Gothenburg (Göteborg) and Malmö and traveling to the countryside, especially vacation areas like Borgholm, 
+Sotenäs, and Tanum. To give some perspective: ~200.000 people left Stockholm on this given day. Sweden had previously banned all travels longer 
+than 2 hours (by car) that was lifted 4 days [prior](https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/fragor-och-svar/?fbclid=IwAR1tjvvqaxj8JllJXR4oiH6aYy9j8Utag_bfd_akuwcWmYoHb_1AnjcLv3o) to Midsummer. 
+This date is clearly marked in the data as the first individuals daring the trips to the across country. Since then a steady increase of population numbers in the countryside can be seen.
 
 *Change in population (absolute)*
 ![img](/midsommar-changeall2.png)
@@ -26,28 +27,31 @@ in the countryside since then.
 
 The pattern is very clear when looking at just the locations mentioned above as shown in the figure below. 
 The 3 countryside locations have an increase between 140% and 260%. Stockholm and Göteborg sees a decrease of 30% and 20% respectively, 
-where Malmö just sees a decrease of 5%. **(Kommenter på hvorfor dette kunne være)**.
+where Malmö just sees a decrease of 5%. This low decrease in Malmö could be due to the high diversity of cultures within the city since other traditions
+might be at play. Around 34.4% of the population are [foreign born](http://www.statistikdatabasen.scb.se/pxweb/en/ssd/START__BE__BE0101__BE0101Q/UtlSvBakgFin/table/tableViewLayout1/?rxid=86abd797-7854-4564-9150-c9b06ae3ab07c9b06ae3ab07),
+in Malmö compared to 24.4% in Stockholm.
+
 
 *Share of population relocated*
 ![img](/midsommar-change.png)
 
 When investigating the percentage of people that relocated on this given day in all of Sweden, we see that around 10.9% 
 of the population relocated. On the previous and next friday only 3.3% and 5.2% respectively relocated, so more than a doubling
-of people are moving. It is not unthinkable that a portion of relocations happened thursday evening and unsurprisingly 
+of people are moving. It is not unthinkable that a portion of relocations happened thursday evening which is confirmed by the 
 5.4% of the population relocated on the previous day compared to the previous and next thursday, which respectively has 
 2.6% and 4.6%.
 
 ![img](/midsommar-popurelocate.png)
 
 Looking at movements between regions, see figure below, all we see is that people are not being very mobile relative to the previous Friday. 
-This is likely a consequence of midsommar being a full day event, where the movement plot explores the differences between 
+This is likely a consequence of midsummer being a full day event, where the movement plot explores the differences between 
 the most visited location during working hours and in the evening. Hence on this day people travels during the early hours and then 
 stay stationary throughout the remainder of the day.
 {{< columns >}}
-*Movements (Day of Midsommar)*
+*Movements (Day of Midsummer)*
 ![img](/midsommar-choro1.png)
 <--->
-*Movements (One week prior to Midsommar)*
+*Movements (One week prior to Midsummer)*
 ![img](/midsommar-choro2.png)
 {{< /columns >}}
 
