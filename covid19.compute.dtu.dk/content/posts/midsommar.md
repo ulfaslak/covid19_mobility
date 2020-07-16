@@ -1,7 +1,6 @@
 ---
 title: "Midsommar"
 type: post
-draft: true
 ---
 # **Midsommar in Sweden**
 {{< fontsize 14 >}}*Post by [Peter Edsberg Møllgaard](mailto:petem@dtu.dk). Published: DATE, 2020.*{{< /fontsize >}}

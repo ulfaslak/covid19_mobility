@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Movements between regions Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0."><meta property="og:title" content="" />
-<meta property="og:description" content="Movements between regions Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis {margin: 0 auto;height: 370px;}.line-baseline { stroke: black;stroke-width: 1.5;fill: none;stroke-dasharray: 10 5;opacity: 0.2;}.line-crisis { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0.25;}.line-changeall { fill: none;stroke: black;stroke-width: 1;stroke-opacity: 0.7;}.line-tooltip {stroke: &#39;black&#39;;stroke-dasharray: 5 2.5;stroke-width: 1.5;}.line { fill: none;stroke: black;stroke-width: 2;stroke-opacity: 0." />
+<meta name="description" content="Movements between regions Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0."><meta property="og:title" content="" />
+<meta property="og:description" content="Movements between regions Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } .line { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/how_people_move_movements_between_municipalities/" />
-<meta property="article:modified_time" content="2020-07-08T15:54:59+02:00" />
+<meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
 <title>How People Move Movements Between Municipalities | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -343,6 +343,7 @@ Population landscape</a></li>
 
 
 <script src="/scripts/eventDates.js"></script>
+<script src="/scripts/kommunePop.js"></script>
 <script src="/scripts/timeSeriesFigure.js"></script>
 <script src="/scripts/choroplethMap.js"></script>
 <script src="/scripts/choroplethMapBrush.js"></script>
@@ -408,7 +409,7 @@ Population landscape</a></li>
 	}
 
 	function insertKSeperators(x) {
-	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
 
 	function idify(str) {

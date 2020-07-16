@@ -124,17 +124,10 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     # Filenames
     fn_days_tile = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_TILE) if fn.endswith('.csv')]))
     fn_days_admin = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_ADMIN) if fn.endswith('.csv')]))
-
-    if fn_days_admin[0]!=fn_days_tile[0]:
-        if fn_days_admin[0] in fn_days_tile:
-            start_idx = fn_days_tile.index(fn_days_admin[0])
-            fn_days_tile = fn_days_tile[start_idx:]
-        elif fn_days_tile[0] in fn_days_admin:
-            start_idx = fn_days_admin.index(fn_days_tile[0])
-            fn_days_admin= fn_days_admin[start_idx:]
+    fn_days = sorted(set(fn_days_tile).intersection(fn_days_admin))
 
     # Loop
-    for idx, fn_day in tqdm(enumerate(fn_days_tile[start:]), total=len(fn_days_tile[start:])):
+    for idx, fn_day in tqdm(enumerate(fn_days[start:]), total=len(fn_days[start:])):
         # Get the actual id for the date
         idx_date = idx+start
 
@@ -147,7 +140,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         # Load data
         filename = fn_day + "_" + window + ".csv"
         data_tile = load_prepare_tile(PATH_IN_TILE + filename,iso)
-        filename = fn_days_admin[idx] + "_" + window + ".csv"
+        filename = fn_days[idx] + "_" + window + ".csv"
         data_admin = load_prepare_admin(PATH_IN_ADMIN + filename,iso)
 
         # Relabel
@@ -183,7 +176,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             update_data_out(kommune, idx_date, data_within_kommune)
 
     # Time
-    data_out['_meta']['datetime'] = [str(dt.datetime(int(d[-10:-6]), int(d[-5:-3]), int(d[-2:]))) for d in fn_days_tile]
+    data_out['_meta']['datetime'] = [str(dt.datetime(int(d[-10:-6]), int(d[-5:-3]), int(d[-2:]))) for d in fn_days]
 
     # Locations
     locations = []

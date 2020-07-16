@@ -212,14 +212,14 @@ def nearest(row, geom_union, df1, df2, geom1_col='geometry', geom2_col='geometry
         row[adm] = df2[nearest][adm.split('_')[-1]].values[0]
     return row
 
-def load_shape(country, adm=2, force_recompute=False):
+def load_shape(country, adm='adm2', force_recompute=False):
     shape_file_name = 'utils/shapefiles/' + country + '.pkl'
 
     if os.path.isfile(shape_file_name) and (not force_recompute):
         with open(shape_file_name, 'rb') as f:
             shapeDF = pickle.load(f)
     else:
-        shapeDF = geo_utils.create_shape_file(country, adm, return_geo_pd=True).drop(['NAME_0'], axis=1)
+        shapeDF = geo_utils.create_shape_file(country, adm[-1], return_geo_pd=True).drop(['NAME_0'], axis=1)
         shapeDF = shapeDF[shapeDF.columns[shapeDF.columns.str.startswith('NAME_')].union(['geometry'])]
         shapeDF.rename(
             columns={'NAME_0': 'adm0', 'NAME_1': 'adm1', 'NAME_2': 'adm2', 'NAME_3': 'adm3', 'NAME_4': 'adm4'},
@@ -285,7 +285,7 @@ def check_update(path):
     return files
 
 
-def Update_CSV(data_path, country_name, save_path=None, dat_type='popu'):
+def Update_CSV(data_path, country_name, save_path=None, dat_type='popu',adm =2):
     """
     Desciption:
         Updates facebook CSV files with admin levels. The saved files might be reduced due to removal of locations that are
@@ -333,7 +333,7 @@ def Update_CSV(data_path, country_name, save_path=None, dat_type='popu'):
         print('First file is empty. Deleting file: ' + data_path + file)
         return None
 
-    shapeDF = load_shape(country_name)
+    shapeDF = load_shape(country_name,adm=adm)
     unary_union = shapeDF.rename(columns={'geometry': 'polygons', 'centroid': 'geometry'}).unary_union
     df_poputile = reverse_geo_adm(df_poputile, shapeDF,unary_union, dat_type=dat_type)
     # for adm, dat_kd in enumerate(list_dat):

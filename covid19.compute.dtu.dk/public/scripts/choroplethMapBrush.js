@@ -3,13 +3,15 @@ class MovementsMapBrush {
 	constructor(data, geoData, uniqueId) {
 		// Variables
 		this.data = data;
-		this.geoData = geoData;
+		this.geoData = geoData.filter(d => d.kommune != 'Christiansø');
 		this.uniqueId = uniqueId;
-		this.maxFlow = data._meta.variables.Max // we sum in and out
 		this.datetime = data._meta.datetime;
 		this.t0 = this.data._meta.defaults.t - 7;
 		this.t1 = this.data._meta.defaults.t;
 		this.scaling = 'sqrt';  // DEBUG: implement this when everything else works
+		this.normidx = 0;
+		// this.maxFlow = data._meta.variables.Max // we sum in and out
+		this.maxFlow = this.recomputeMaxFlow();
 
 		// define div dimensions
 		this.width = 770;
@@ -205,21 +207,9 @@ class MovementsMapBrush {
 			minY = upperLeft[1],
 			maxY = lowerLeft[1];
 
-		console.log(
-			"maxX", maxX, "\n",
-			"minX", minX, "\n",
-			"minY", minY, "\n",
-			"maxY", maxY, "\n",
-		)
-
 		// Width and height
 		let mapWidth = maxX - minX,
 			mapHeight = maxY - minY;
-
-		console.log(
-			"mapWidth", mapWidth, "\n",
-			"mapHeight", mapHeight, "\n",
-		)
 
 		let diff = this.mapHeight - this.width
 
@@ -245,6 +235,7 @@ class MovementsMapBrush {
 				this.unhighlightAllRegions();
 
 				this.maxFlow = this.data._meta.variables.Max;
+				this.maxFlow = this.recomputeMaxFlow();
 				this.setScaling('sqrt');
 
 				this.refreshDrawing();
@@ -280,47 +271,60 @@ class MovementsMapBrush {
 	setLegend() {
 		d3.selectAll('.legend-component').remove();
 
-		// let legendRange = d3.range(-1, this.n_steps),
-		// 	legendTitle = this.data._meta.variables.legend_label_count;
 		let legendTitle = this.data._meta.variables.legend_label_count;
 		let legendRange;
 		if (this.scaling == 'sqrt')
 			legendRange = this.sqrtspace(0, Math.sqrt(this.maxFlow), this.n_steps);
 		else if (this.scaling == "log")
-			legendRange = this.logspace(Math.log(1), Math.log(this.maxFlow), this.n_steps);
+			legendRange = this.logspace(Math.log(1), Math.log(this.maxFlow+1), this.n_steps);
 
 		// Title text
+		let offy = 20;
 		this.svgMap.append('text')
 			.attr('class', 'legend-component')
 			.attr('x', this.width-120)
-			.attr('y', 20)
+			.attr('y', offy)
 			.attr('font-weight', 700)
 			.text(legendTitle)
-
-		// Scaling buttons
 		this.svgMap.append('text')
 			.attr('class', 'legend-component')
 			.attr('x', this.width-120)
-			.attr('y', 45)
+			.attr('y', 20 + offy)
+			.attr('font-weight', 700)
+			.text(() => {
+				if (this.normidx == 0)
+					return 'counted'
+				else if (this.normidx == 1)
+					return 'per capita'
+				else if (this.normidx == 2)
+					return 'per square km'
+			})
+
+		// Scaling buttons
+		offy = 52;
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-120)
+			.attr('y', 13 + offy)
 			.attr('font-style', 'italic')
-			.attr('font-weight', 200)
+			.attr('font-size', 14)
 			.text('scale:')
 
 		this.svgMap.append('text')
 			.attr('class', 'legend-component')
-			.attr('x', this.width-70)
-			.attr('y', 45)
+			.attr('x', this.width-79)
+			.attr('y', 13 + offy)
 			.attr('font-style', 'italic')
-			.attr('font-weight', 300)
+			.attr('font-size', 14)
 			.text('sqrt')
 
 		this.svgMap.append('rect')
 			.attr('class', 'legend-component')
 			.attr('id', 'sqrt-text-box')
-			.attr('x', this.width-73)
-			.attr('y', 30)
-			.attr('width', 35)
-			.attr('height', 20)
+			.attr('x', this.width-81)
+			.attr('y', offy)
+			.attr('width', 30)
+			.attr('height', 18)
 			.attr('stroke', this.scaling == 'sqrt' ? 'black' : 'grey')
 			.attr('fill', 'white')
 			.attr('fill-opacity', this.scaling == 'sqrt' ? 0 : 0.5)
@@ -350,19 +354,19 @@ class MovementsMapBrush {
 		if (this.selected != undefined) {
 			this.svgMap.append('text')
 				.attr('class', 'legend-component')
-				.attr('x', this.width-25)
-				.attr('y', 45)
+				.attr('x', this.width-46)
+				.attr('y', 13 + offy)
 				.attr('font-style', 'italic')
-				.attr('font-weight', 300)
+				.attr('font-size', 14)
 				.text('log')
 
 			this.svgMap.append('rect')
 				.attr('class', 'legend-component')
 				.attr('id', 'log-text-box')
-				.attr('x', this.width-28)
-				.attr('y', 30)
-				.attr('width', 28)
-				.attr('height', 20)
+				.attr('x', this.width-48)
+				.attr('y', offy)
+				.attr('width', 23)
+				.attr('height', 18)
 				.attr('stroke', this.scaling == 'log' ? 'black' : 'grey')
 				.attr('fill', 'white')
 				.attr('fill-opacity', this.scaling == 'log' ? 0 : 0.5)
@@ -387,47 +391,172 @@ class MovementsMapBrush {
 						this.setLegend();
 					}
 				})
-			}
+		}
+
+		// Norm buttons
+		offy = 73;
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-120)
+			.attr('y', 13 + offy)
+			.attr('font-style', 'italic')
+			.attr('font-size', 14)
+			.text('norm:')
+
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-79)
+			.attr('y', 13 + offy)
+			.attr('font-style', 'italic')
+			.attr('font-size', 14)
+			.text('no')
+
+		this.svgMap.append('rect')
+			.attr('class', 'legend-component')
+			.attr('id', 'none-text-box')
+			.attr('x', this.width-81)
+			.attr('y', offy)
+			.attr('width', 19)
+			.attr('height', 18)
+			.attr('stroke', this.normidx == 0 ? 'black' : 'grey')
+			.attr('fill', 'white')
+			.attr('fill-opacity', this.normidx == 0 ? 0 : 0.5)
+			.on('mouseover', () => {
+				if (this.normidx != 0) {
+					this.svgMap.select('#none-text-box')
+						.attr('stroke', 'black')
+						.attr('fill-opacity', 0);
+				}
+			})
+			.on('mouseout', () => {
+				if (this.normidx != 0) {
+					this.svgMap.select('#none-text-box')
+						.attr('stroke', 'grey')
+						.attr('fill-opacity', 0.5);
+				}
+			})
+			.on('click', () => {
+				if (this.idx != 0) {
+					this.normidx = 0;
+					this.maxFlow = this.recomputeMaxFlow(this.selected);
+					this.setScaling(this.scaling);
+					this.refreshDrawing();
+					this.setLegend();
+					this.updateInfoBox();
+				}
+			})
+
+
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-57)
+			.attr('y', 13 + offy)
+			.attr('font-style', 'italic')
+			.attr('font-size', 14)
+			.text('pop')
+
+		this.svgMap.append('rect')
+			.attr('class', 'legend-component')
+			.attr('id', 'pop-text-box')
+			.attr('x', this.width-59)
+			.attr('y', offy)
+			.attr('width', 27)
+			.attr('height', 18)
+			.attr('stroke', this.normidx == 1 ? 'black' : 'grey')
+			.attr('fill', 'white')
+			.attr('fill-opacity', this.normidx == 1 ? 0 : 0.5)
+			.on('mouseover', () => {
+				if (this.normidx != 1) {
+					this.svgMap.select('#pop-text-box')
+						.attr('stroke', 'black')
+						.attr('fill-opacity', 0);
+				}
+			})
+			.on('mouseout', () => {
+				if (this.normidx != 1) {
+					this.svgMap.select('#pop-text-box')
+						.attr('stroke', 'grey')
+						.attr('fill-opacity', 0.5);
+				}
+			})
+			.on('click', () => {
+				if (this.idx != 1) {
+					this.normidx = 1;
+					this.maxFlow = this.recomputeMaxFlow(this.selected);
+					this.setScaling(this.scaling);
+					this.refreshDrawing();
+					this.setLegend();
+					this.updateInfoBox();
+				}
+			})
+
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-28)
+			.attr('y', 13 + offy)
+			.attr('font-style', 'italic')
+			.attr('font-size', 14)
+			.text('area')
+
+		this.svgMap.append('rect')
+			.attr('class', 'legend-component')
+			.attr('id', 'area-text-box')
+			.attr('x', this.width-29)
+			.attr('y', offy)
+			.attr('width', 28.5)
+			.attr('height', 18)
+			.attr('stroke', this.normidx == 2 ? 'black' : 'grey')
+			.attr('fill', 'white')
+			.attr('fill-opacity', this.normidx == 2 ? 0 : 0.5)
+			.on('mouseover', () => {
+				if (this.normidx != 1) {
+					this.svgMap.select('#area-text-box')
+						.attr('stroke', 'black')
+						.attr('fill-opacity', 0);
+				}
+			})
+			.on('mouseout', () => {
+				if (this.normidx != 2) {
+					this.svgMap.select('#area-text-box')
+						.attr('stroke', 'grey')
+						.attr('fill-opacity', 0.5);
+				}
+			})
+			.on('click', () => {
+				if (this.idx != 2) {
+					this.normidx = 2;
+					this.maxFlow = this.recomputeMaxFlow(this.selected);
+					this.setScaling(this.scaling);
+					this.refreshDrawing();
+					this.setLegend();
+					this.updateInfoBox();
+				}
+			})
 
 
 		// Rects and labels
-		legendRange = ["No data", ...legendRange];
+		offy = 100;
 		legendRange.forEach((i, idx) => {
 
 			// Rects
 			this.svgMap.append('rect')
 				.attr('class', 'legend-component')
 				.attr('x', this.width-120)
-				.attr('y', idx * 23 + 70)
+				.attr('y', idx * 23 + offy)
 				.attr('width', 15)
 				.attr('height', 15)
 				.attr('fill', () => {
-					if (idx == 0)
-						return 'url(#thinlines)';
-					else
-						return this.getColor(i);
+					return this.getColor(i);
 				})
+				.attr('stroke', i == 0 ? '#dddddd' : null)
 
 			// labels
 			this.svgMap.append('text')
 				.attr('class', 'legend-component')
 				.attr('x', this.width-95)
-				.attr('y', idx * 23 + 82.5)
+				.attr('y', idx * 23 + 12.5 + offy)
 				.attr('font-size', 13)
-				.text(() => {
-					if (idx == 0)
-						return "No data";
-					else {
-						if (i <= 100)
-							return round(i, 1e0);
-						else if (i <= 10_000)
-							return round(i, 1e-2);
-						else if (i <= 1_000_000)
-							return round(i / 1e3, 1e0) + "K";
-						else
-							return round(i / 1e6, 1e1) + "M";
-					}
-				})
+				.text(() => this.formatValue(i))
 		})
 	}
 
@@ -600,7 +729,13 @@ class MovementsMapBrush {
 			.style('font-weight', 700)
 			.text(() => {
 				let crisis = d3.mean(this.values.slice(this.t0, this.t1+1))
-				return 'Denmark: ' + insertKSeperators(parseInt(crisis)) + " movements per day";
+				crisis /= kommunePopAgg[this.normidx];
+				let normtext = "";
+				if (this.normidx == 1)
+					normtext = "per capita";
+				if (this.normidx == 2)
+					normtext = "per square km";
+				return 'Denmark: ' + this.formatInfoBoxValue(crisis) + " trips " + normtext + " per day";
 			});
 	}
 
@@ -610,14 +745,22 @@ class MovementsMapBrush {
 
 		this.selectedLocationText
 			.text(() => {
+				let normtext = "";
+				if (this.normidx == 1)
+					normtext = "per capita";
+				if (this.normidx == 2)
+					normtext = "per square km";
+
 				if (typeof this.selected == 'undefined') {
 					let crisis = d3.mean(this.values.slice(this.t0, this.t1+1));
-					return 'Denmark: ' + insertKSeperators(parseInt(crisis)) + " movements per day";
+					crisis /= kommunePopAgg[this.normidx];
+					return 'Denmark: ' + this.formatInfoBoxValue(crisis) + " trips " + normtext + " per day";
 				}
 				else {
 					let d = this.selected;
 					let crisis = d3.mean(this.data[d]["_" + d].slice(this.t0, this.t1+1));
-					return this.selected + ": " + insertKSeperators(parseInt(crisis)) + " movements per day";
+					crisis /= kommunePop[d][this.normidx];
+					return this.selected + ": " + this.formatInfoBoxValue(crisis) + " trips " + normtext + " per day";
 				}
 			})
 	}
@@ -675,13 +818,14 @@ class MovementsMapBrush {
 					}
 				})
 				.on('click', polygon => {
-
 					if (this.selected != datum.kommune) {
-						this.maxFlow = this.placeMax(datum.kommune);
+						this.maxFlow = this.recomputeMaxFlow(datum.kommune);
 						this.setScaling(this.scaling);
 					}
 					else {
 						this.maxFlow = this.data._meta.variables.Max;
+						if (this.normidx != 0)
+							this.maxFlow = this.recomputeMaxFlow();
 						this.setScaling('sqrt');
 					}
 
@@ -734,7 +878,9 @@ class MovementsMapBrush {
 
 		let tooltiptext = "";
 		tooltiptext += "<b>" + d + "</b><br><br>";
-		tooltiptext += "<b>" + insertKSeperators(round(crisis, 1e0)) + "</b> per day";
+		tooltiptext += "<b>" + this.formatInfoBoxValue(crisis) + "</b> trips in total<br>";
+		tooltiptext += "<b>" + this.formatInfoBoxValue(crisis / kommunePop[d][1]) + "</b> trips per capita<br>";
+		tooltiptext += "<b>" + this.formatInfoBoxValue(crisis / kommunePop[d][2]) + "</b> trips per square km";
 
 		if (d3.event != null) {
 			this.tooltip
@@ -755,6 +901,7 @@ class MovementsMapBrush {
 		let crisis = 0
 		if (d in this.data[this.selected] && this.t0 < this.data[this.selected][d].length) {
 			crisis = d3.mean(this.data[this.selected][d].slice(this.t0, this.t1+1));
+			crisis /= kommunePop[d][this.normidx];
 		}
 
 		let tooltiptext = "";
@@ -762,7 +909,8 @@ class MovementsMapBrush {
 			tooltiptext += "Within <b>" + this.selected + "</b><br><br>";
 		else
 			tooltiptext += "Between <b>" + this.selected + "</b> and <b>" + this.hovering + "</b><br><br>";
-		tooltiptext += "<b>" + insertKSeperators(round(crisis, 1e0)) + "</b> per day";
+		tooltiptext += "<b>" + this.formatInfoBoxValue(crisis) + "</b> trips in total<br>";
+		tooltiptext += "<b>" + this.formatInfoBoxValue(crisis / kommunePop[d][1]) + "</b> trips per capita<br>";
 
 		if (d3.event != null) {
 			this.tooltip
@@ -783,6 +931,7 @@ class MovementsMapBrush {
 	defaultFill(d) {
 		if (this.exists(d)) {
 			let crisis = d3.mean(this.data[d]["_" + d].slice(this.t0, this.t1+1));
+			crisis /= kommunePop[d][this.normidx];
 			return this.getColor(crisis);
 		} else {
 			return 'url(#thinlines)';
@@ -829,6 +978,7 @@ class MovementsMapBrush {
 		// Color each kommune by their flow into `d`
 		Object.keys(this.data[d]).forEach(neighbor => {
 			let crisis = d3.mean(this.data[d][neighbor].slice(this.t0, this.t1+1));
+			crisis /= kommunePop[d][this.normidx];
 			if (crisis > 0) {
 				this.svgMap.selectAll('#' + idify(neighbor))
 					.style('fill', this.getColor(crisis));
@@ -851,7 +1001,7 @@ class MovementsMapBrush {
 	setScaling(scaling) {
 		this.scaling = scaling;
 		if (scaling == "log")
-			this.colorDomain = [0, Math.log(this.maxFlow)];
+			this.colorDomain = [0, Math.log(this.maxFlow+1)];
 		else
 			this.colorDomain = [0, Math.sqrt(this.maxFlow)];
 		this.colorScale.domain(this.colorDomain);
@@ -873,7 +1023,7 @@ class MovementsMapBrush {
 		if (this.scaling == 'sqrt')
 			return this.colorScale(Math.sqrt(value)).hex()
 		else if (this.scaling == "log")
-			return this.colorScale(Math.log(value)).hex()
+			return this.colorScale(Math.log(value+1)).hex()
 	}
 
 	idxToDate(i) {
@@ -927,30 +1077,101 @@ class MovementsMapBrush {
 	}
 
 	aggregatePlaces(d) {
-		if (d != undefined)
-			return this.data[d]["_"+d];
+		let arr;
+		if (d != undefined) {
+			arr = this.data[d]["_"+d];
+			// arr = arr.map(v => v / kommunePop[d][this.normidx]);
+		}
 		else {
-			let arr = this.datetime.map(() => 0);
-			let places = Object.keys(this.data).sort().filter(d => d[0] != "_");
+			arr = this.datetime.map(() => 0);
 			Object.keys(this.data).forEach(d => {
 				if (d != "_meta") {
 					this.data[d]["_"+d].forEach((v, i) => {
-						arr[i] += v;
+						arr[i] += v / 2;
 					});
 				}
 			})
-			return arr;
+			// arr = arr.map(v => v / kommunePopAgg[this.normidx]);
 		}
+		return arr;
 	}
 
 	placeMax(d) {
-		// return d3.max(this.data[d]["_"+d])
 		let max = 0
 		Object.keys(this.data[d]).forEach(n => {
 			if (n != "_" + d && n != d)
-				max = Math.max(max, d3.max(this.data[d][n]))
+				max = Math.max(max, d3.max(this.data[d][n]));
 		})
+		max /= kommunePop[d][this.normidx];
 		return max;
+	}
+
+	recomputeMaxFlow(d) {
+		if (d == undefined) {
+			return d3.max(
+				this.geoData.map(d => {
+					let max = d3.max(this.data[d.kommune]["_"+d.kommune]);
+					max /= kommunePop[d.kommune][this.normidx];
+					return max;
+				})
+			);
+		} else {
+			return this.placeMax(d);
+		}
+	}
+
+	formatValue(i) {
+		if (i < 1e-1)
+			return round(i, 1e4);
+		else if (i < 1e-1)
+			return round(i, 1e3);
+		else if (i < 1e0)
+			return round(i, 1e2);
+		else if (i < 1e1)
+			return round(i, 1e1);
+		else if (i < 1e2)
+			return round(i, 1e0);
+		else if (i < 1e3)
+			return round(i, 1e-1);
+		else if (i < 1e4)
+			return round(i / 1e3, 1e1) + "K";
+		else if (i < 1e5)
+			return round(i / 1e3, 1e0) + "K";
+		else if (i < 1e6)
+			return round(i / 1e3, 1e-1) + "K";
+		else if (i < 1e7)
+			return round(i / 1e6, 1e1) + "M";
+		else if (i < 1e8)
+			return round(i / 1e6, 1e0) + "M";
+		else if (i < 1e9)
+			return round(i / 1e6, 1e-1) + "M";
+		else if (i < 1e10)
+			return round(i / 1e9, 1e1) + "B";
+		else if (i < 1e11)
+			return round(i / 1e9, 1e0) + "B";
+		else if (i < 1e12)
+			return round(i / 1e9, 1e-1) + "B";
+		else if (i < 1e13)
+			return round(i / 1e12, 1e1) + "T";
+		else if (i < 1e14)
+			return round(i / 1e12, 1e0) + "T";
+		else
+			return round(i / 1e12, 1e-1) + "T";
+	}
+
+	formatInfoBoxValue(i) {
+		if (i < 1e-2)
+			return round(i, 1e4);
+		else if (i < 1e-1)
+			return round(i, 1e3);
+		else if (i < 1e0)
+			return round(i, 1e2);
+		else if (i < 1e1)
+			return round(i, 1e1);
+		else if (i < 1e2)
+			return round(i, 1e0);
+		else
+			return insertKSeperators(parseInt(i));
 	}
 
 	linspace(a, b, n) {

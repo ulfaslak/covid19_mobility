@@ -4,52 +4,52 @@
   
   <url>
     <loc>https://covid19.compute.dtu.dk/forecast/metapop/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/how_people_move_distance_traveled/</loc>
-    <lastmod>2020-07-08T15:54:59+02:00</lastmod>
+    <lastmod>2020-07-08T16:03:14+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/how_people_move_movements_between_municipalities/</loc>
-    <lastmod>2020-07-08T15:54:59+02:00</lastmod>
+    <lastmod>2020-07-08T16:03:14+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/how_people_move_staying_home/</loc>
-    <lastmod>2020-07-08T15:54:59+02:00</lastmod>
+    <lastmod>2020-07-08T16:03:14+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/telco/</loc>
-    <lastmod>2020-07-02T11:32:52+02:00</lastmod>
+    <lastmod>2020-07-01T11:27:25+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/telco_brush/</loc>
-    <lastmod>2020-07-13T08:26:48+02:00</lastmod>
+    <lastmod>2020-07-13T08:19:59+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/where_people_are_change_in_population_size/</loc>
-    <lastmod>2020-07-08T15:55:10+02:00</lastmod>
+    <lastmod>2020-07-08T16:03:14+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/</loc>
-    <lastmod>2020-07-08T15:55:13+02:00</lastmod>
+    <lastmod>2020-07-08T16:03:14+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/where_people_are_landscape/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/where_people_are_population_concentration/</loc>
-    <lastmod>2020-07-08T15:53:23+02:00</lastmod>
+    <lastmod>2020-07-08T16:03:14+02:00</lastmod>
   </url>
   
   <url>
@@ -58,62 +58,67 @@
   
   <url>
     <loc>https://covid19.compute.dtu.dk/data-description/</loc>
-    <lastmod>2020-07-09T12:51:34+02:00</lastmod>
+    <lastmod>2020-07-13T08:38:01+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/posts/escape_from_covid_island/</loc>
-    <lastmod>2020-06-29T14:49:34+02:00</lastmod>
+    <lastmod>2020-06-29T10:23:09+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/forecast/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/posts/going_to_work/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/</loc>
-    <lastmod>2020-06-26T11:13:05+02:00</lastmod>
+    <lastmod>2020-06-24T20:04:15+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://covid19.compute.dtu.dk/posts/midsommar/</loc>
+    <lastmod>2020-07-13T14:39:52+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/mobility/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/data-description/movement_maps/</loc>
-    <lastmod>2020-07-09T12:51:34+02:00</lastmod>
+    <lastmod>2020-07-13T08:38:01+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/mobility/population/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/data-description/population_density_maps/</loc>
-    <lastmod>2020-07-09T12:51:34+02:00</lastmod>
+    <lastmod>2020-07-13T08:38:01+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/posts/population_landscape/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/posts/spread_of_population/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/posts/</loc>
-    <lastmod>2020-06-29T14:49:34+02:00</lastmod>
+    <lastmod>2020-07-13T14:39:52+02:00</lastmod>
   </url>
   
   <url>
@@ -122,17 +127,17 @@
   
   <url>
     <loc>https://covid19.compute.dtu.dk/mobility/mobility/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/visualizations/</loc>
-    <lastmod>2020-07-13T08:26:48+02:00</lastmod>
+    <lastmod>2020-07-13T08:19:59+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/posts/change_in_population_sizes/</loc>
-    <lastmod>2020-06-02T22:16:15+02:00</lastmod>
+    <lastmod>2020-06-02T08:10:17+02:00</lastmod>
   </url>
   
 </urlset>

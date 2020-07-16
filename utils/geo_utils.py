@@ -60,7 +60,7 @@ def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo
                     return geodf
                 geodf.geometry = geodf.geometry.simplify(0.001)
 
-    shape_file = [{'kommune': loc['NAME_2'], 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
+    shape_file = [{'kommune': loc[f'NAME_{adm}'], 'polygons': poly_convert(loc['geometry'])} for i, loc in geodf.iterrows()]
     if save_dir != False:
         full_path = save_dir + country.title() + '_geojson.json'
         with open(full_path, 'w') as f:

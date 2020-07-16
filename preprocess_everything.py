@@ -35,9 +35,14 @@ def run():
     print('\n-----------\nrun in parallel:\n----------------')
     for country in country_list:
         print(f'Processing {country}')
-        create_shape_file(country,2,data_path)
-        adm_kommune = 'adm2'
-        adm_region = 'adm1'
+        if country == 'Ireland':
+            adm_kommune = 'adm1'
+            adm_region = 'adm1'
+            create_shape_file(country,1,data_path)
+        else:
+            adm_kommune = 'adm2'
+            adm_region = 'adm1'
+            create_shape_file(country,2,data_path)
         iso = pycountry.countries.get(name=country).alpha_2
         #tile_csv_to_geojson.run(country,iso,adm_region,adm_kommune)
         # movements.run(country,iso,adm_region,adm_kommune)
