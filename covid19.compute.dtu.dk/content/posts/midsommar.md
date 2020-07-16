@@ -6,6 +6,9 @@ draft: true
 # **Midsummer in Sweden**
 {{< fontsize 14 >}}*Post by [Peter Edsberg Møllgaard](mailto:petem@dtu.dk). Published: DATE, 2020.*{{< /fontsize >}}
 {{< vspace 15 >}}
+![img](/midsommer.png)
+*Bengt Nyman from Vaxholm, Sweden / CC BY (https://creativecommons.org/licenses/by/2.0)*
+
 Outside of Sweden *Midsummer* might be known as a horror movie of the same name and event, but in reality it is not as sinister.
 In Sweden it is a public holiday where families get together to celebrate the summer solstice, with traditional food, games and dancing.
 
