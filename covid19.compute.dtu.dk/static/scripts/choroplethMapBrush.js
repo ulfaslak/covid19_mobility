@@ -8,7 +8,7 @@ class MovementsMapBrush {
 		this.datetime = data._meta.datetime;
 		this.t0 = this.data._meta.defaults.t - 7;
 		this.t1 = this.data._meta.defaults.t;
-		this.scaling = 'sqrt';  // DEBUG: implement this when everything else works
+		this.scaling = 'sqrt';
 		this.normidx = 0;
 		// this.maxFlow = data._meta.variables.Max // we sum in and out
 		this.maxFlow = this.recomputeMaxFlow();
@@ -152,18 +152,6 @@ class MovementsMapBrush {
 		];
 	}
 
-	// projection([lon, lat]) {
-	// 	// https://mathworld.wolfram.com/GnomonicProjection.html
-	// 	let lam0 = lon / 180 * Math.PI;
-	// 	let phi1 = lat / 180 * Math.PI;
-	// 	let cosc = Math.sin(phi1) * Math.sin(this.phi) + Math.cos(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0);
-		
-	// 	let x = Math.cos(this.phi) * Math.sin(this.lam - lam0) / cosc;
-	// 	let y = Math.cos(phi1) * Math.sin(this.phi) - Math.sin(phi1) * Math.cos(this.phi) * Math.cos(this.lam - lam0) / cosc;
-
-	// 	return [x, y];
-	// }
-
 	projection([lon, lat]) {
 		// https://mathworld.wolfram.com/OrthographicProjection.html
 		let lam0 = lon / 180 * Math.PI;
@@ -182,7 +170,6 @@ class MovementsMapBrush {
 	}
 
 	setCoordinateScaling() {
-		// lat,lon bounding box
 		let bbCoords = this.getBoundingBox();
 		let latMin = bbCoords[0],
 			latMax = bbCoords[1],
@@ -227,10 +214,6 @@ class MovementsMapBrush {
 		document.onkeydown = evt => {
 			evt = evt || window.event;
 			if (evt.key === "Escape" || evt.key === "Esc") {
-				// this.resetState();
-				// this.clearData();
-				// this.redrawData();
-				// this.redrawBrushLine();
 				this.selected = undefined;
 				this.unhighlightAllRegions();
 
@@ -273,7 +256,9 @@ class MovementsMapBrush {
 
 		let legendTitle = this.data._meta.variables.legend_label_count;
 		let legendRange;
-		if (this.scaling == 'sqrt')
+		if (this.scaling == 'lin')
+			legendRange = this.linspace(0, this.maxFlow, this.n_steps);
+		else if (this.scaling == 'sqrt')
 			legendRange = this.sqrtspace(0, Math.sqrt(this.maxFlow), this.n_steps);
 		else if (this.scaling == "log")
 			legendRange = this.logspace(Math.log(1), Math.log(this.maxFlow+1), this.n_steps);
@@ -316,12 +301,53 @@ class MovementsMapBrush {
 			.attr('y', 13 + offy)
 			.attr('font-style', 'italic')
 			.attr('font-size', 14)
+			.text('lin')
+
+		this.svgMap.append('rect')
+			.attr('class', 'legend-component')
+			.attr('id', 'lin-text-box')
+			.attr('x', this.width-81)
+			.attr('y', offy)
+			.attr('width', 19)
+			.attr('height', 18)
+			.attr('stroke', this.scaling == 'lin' ? 'black' : 'grey')
+			.attr('fill', 'white')
+			.attr('fill-opacity', this.scaling == 'lin' ? 0 : 0.5)
+			.on('mouseover', () => {
+				if (this.scaling != 'lin') {
+					this.svgMap.select('#lin-text-box')
+						.attr('stroke', 'black')
+						.attr('fill-opacity', 0);
+				}
+
+			})
+			.on('mouseout', () => {
+				if (this.scaling != 'lin') {
+					this.svgMap.select('#lin-text-box')
+						.attr('stroke', 'grey')
+						.attr('fill-opacity', 0.5);
+				}
+			})
+			.on('click', () => {
+				if (this.scaling != 'lin') {
+					this.setScaling('lin');
+					this.refreshDrawing();
+					this.setLegend();
+				}
+			})
+
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-57)
+			.attr('y', 13 + offy)
+			.attr('font-style', 'italic')
+			.attr('font-size', 14)
 			.text('sqrt')
 
 		this.svgMap.append('rect')
 			.attr('class', 'legend-component')
 			.attr('id', 'sqrt-text-box')
-			.attr('x', this.width-81)
+			.attr('x', this.width-59)
 			.attr('y', offy)
 			.attr('width', 30)
 			.attr('height', 18)
@@ -329,7 +355,7 @@ class MovementsMapBrush {
 			.attr('fill', 'white')
 			.attr('fill-opacity', this.scaling == 'sqrt' ? 0 : 0.5)
 			.on('mouseover', () => {
-				if (this.scaling == 'log') {
+				if (this.scaling != 'sqrt') {
 					this.svgMap.select('#sqrt-text-box')
 						.attr('stroke', 'black')
 						.attr('fill-opacity', 0);
@@ -337,61 +363,59 @@ class MovementsMapBrush {
 
 			})
 			.on('mouseout', () => {
-				if (this.scaling == 'log') {
+				if (this.scaling != 'sqrt') {
 					this.svgMap.select('#sqrt-text-box')
 						.attr('stroke', 'grey')
 						.attr('fill-opacity', 0.5);
 				}
 			})
 			.on('click', () => {
-				if (this.scaling == 'log') {
+				if (this.scaling != 'sqrt') {
 					this.setScaling('sqrt');
 					this.refreshDrawing();
 					this.setLegend();
 				}
 			})
 
-		if (this.selected != undefined) {
-			this.svgMap.append('text')
-				.attr('class', 'legend-component')
-				.attr('x', this.width-46)
-				.attr('y', 13 + offy)
-				.attr('font-style', 'italic')
-				.attr('font-size', 14)
-				.text('log')
+		this.svgMap.append('text')
+			.attr('class', 'legend-component')
+			.attr('x', this.width-24)
+			.attr('y', 13 + offy)
+			.attr('font-style', 'italic')
+			.attr('font-size', 14)
+			.text('log')
 
-			this.svgMap.append('rect')
-				.attr('class', 'legend-component')
-				.attr('id', 'log-text-box')
-				.attr('x', this.width-48)
-				.attr('y', offy)
-				.attr('width', 23)
-				.attr('height', 18)
-				.attr('stroke', this.scaling == 'log' ? 'black' : 'grey')
-				.attr('fill', 'white')
-				.attr('fill-opacity', this.scaling == 'log' ? 0 : 0.5)
-				.on('mouseover', () => {
-					if (this.scaling == 'sqrt') {
-						this.svgMap.select('#log-text-box')
-							.attr('stroke', 'black')
-							.attr('fill-opacity', 0);
-					}
-				})
-				.on('mouseout', () => {
-					if (this.scaling == 'sqrt') {
-						this.svgMap.select('#log-text-box')
-							.attr('stroke', 'grey')
-							.attr('fill-opacity', 0.5);
-					}
-				})
-				.on('click', () => {
-					if (this.scaling == 'sqrt' && this.selected != undefined) {
-						this.setScaling('log');
-						this.refreshDrawing();
-						this.setLegend();
-					}
-				})
-		}
+		this.svgMap.append('rect')
+			.attr('class', 'legend-component')
+			.attr('id', 'log-text-box')
+			.attr('x', this.width-26)
+			.attr('y', offy)
+			.attr('width', 23)
+			.attr('height', 18)
+			.attr('stroke', this.scaling == 'log' ? 'black' : 'grey')
+			.attr('fill', 'white')
+			.attr('fill-opacity', this.scaling == 'log' ? 0 : 0.5)
+			.on('mouseover', () => {
+				if (this.scaling != 'log') {
+					this.svgMap.select('#log-text-box')
+						.attr('stroke', 'black')
+						.attr('fill-opacity', 0);
+				}
+			})
+			.on('mouseout', () => {
+				if (this.scaling != 'log') {
+					this.svgMap.select('#log-text-box')
+						.attr('stroke', 'grey')
+						.attr('fill-opacity', 0.5);
+				}
+			})
+			.on('click', () => {
+				if (this.scaling != 'log') {
+					this.setScaling('log');
+					this.refreshDrawing();
+					this.setLegend();
+				}
+			})
 
 		// Norm buttons
 		offy = 73;
@@ -901,7 +925,6 @@ class MovementsMapBrush {
 		let crisis = 0
 		if (d in this.data[this.selected] && this.t0 < this.data[this.selected][d].length) {
 			crisis = d3.mean(this.data[this.selected][d].slice(this.t0, this.t1+1));
-			crisis /= kommunePop[d][this.normidx];
 		}
 
 		let tooltiptext = "";
@@ -1000,10 +1023,12 @@ class MovementsMapBrush {
 
 	setScaling(scaling) {
 		this.scaling = scaling;
-		if (scaling == "log")
-			this.colorDomain = [0, Math.log(this.maxFlow+1)];
-		else
+		if (scaling == "lin")
+			this.colorDomain = [0,this.maxFlow];
+		else if (scaling == 'sqrt')
 			this.colorDomain = [0, Math.sqrt(this.maxFlow)];
+		else if (scaling == "log")
+			this.colorDomain = [0, Math.log(this.maxFlow+1)];
 		this.colorScale.domain(this.colorDomain);
 	}
 
@@ -1020,7 +1045,9 @@ class MovementsMapBrush {
 	// ---------
 
 	getColor(value) {
-		if (this.scaling == 'sqrt')
+		if (this.scaling == 'lin')
+			return this.colorScale(value).hex()
+		else if (this.scaling == 'sqrt')
 			return this.colorScale(Math.sqrt(value)).hex()
 		else if (this.scaling == "log")
 			return this.colorScale(Math.log(value+1)).hex()
