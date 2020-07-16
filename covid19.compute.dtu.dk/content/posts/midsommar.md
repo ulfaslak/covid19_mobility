@@ -29,7 +29,7 @@ The pattern is very clear when looking at just the locations mentioned above as 
 The 3 countryside locations have an increase between 140% and 260%. Stockholm and Göteborg sees a decrease of 30% and 20% respectively, 
 where Malmö just sees a decrease of 5%. This low decrease in Malmö could be due to the high diversity of cultures within the city since other traditions
 might be at play. Around 34.4% of the population are [foreign born](http://www.statistikdatabasen.scb.se/pxweb/en/ssd/START__BE__BE0101__BE0101Q/UtlSvBakgFin/table/tableViewLayout1/?rxid=86abd797-7854-4564-9150-c9b06ae3ab07c9b06ae3ab07),
-in Malmö compared to 24.4% in Stockholm.
+in Malmö compared to 24.4% in Stockholm. However the real reason is out of scope of this post.
 
 
 *Share of population relocated*
