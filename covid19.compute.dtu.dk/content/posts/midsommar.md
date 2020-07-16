@@ -17,9 +17,9 @@ Looking at the change in population distributions across Sweden, big spikes are 
 ![img](/midsommar-changeall1.png)
 
 People are leaving the big cities like Stockholm, Gothenburg (Göteborg) and Malmö and traveling to the countryside, especially vacation areas like Borgholm, 
-Sotenäs, and Tanum. To give some perspective: ~200.000 people left Stockholm on this given day. Sweden had previously banned all travels longer 
-than 2 hours (by car) that was lifted 4 days [prior](https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/fragor-och-svar/?fbclid=IwAR1tjvvqaxj8JllJXR4oiH6aYy9j8Utag_bfd_akuwcWmYoHb_1AnjcLv3o) to Midsummer. 
-This date is clearly marked in the data as the first individuals daring the trips to the across country. Since then a steady increase of population numbers in the countryside can be seen.
+Sotenäs, and Tanum. To give some perspective: ~200.000 people left Stockholm on this given day. Sweden previously recommended that all travels longer 
+than 2 hours (by car) should be avoided, but that recommendation was lifted 4 days [prior](https://www.folkhalsomyndigheten.se/smittskydd-beredskap/utbrott/aktuella-utbrott/covid-19/fragor-och-svar/?fbclid=IwAR1tjvvqaxj8JllJXR4oiH6aYy9j8Utag_bfd_akuwcWmYoHb_1AnjcLv3o) to Midsummer. 
+This date is clearly marked in the data as the first individuals starts daring trips across country. Since then a steady increase of population numbers in the countryside can be seen.
 
 *Change in population (absolute)*
 ![img](/midsommar-changeall2.png)
