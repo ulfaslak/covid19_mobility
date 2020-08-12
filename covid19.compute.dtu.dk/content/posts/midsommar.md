@@ -3,7 +3,7 @@ title: "Midsommar"
 type: post
 ---
 # **Midsummer in Sweden**
-{{< fontsize 14 >}}*Post by [Peter Edsberg Møllgaard](mailto:petem@dtu.dk). Published: DATE, 2020.*{{< /fontsize >}}
+{{< fontsize 14 >}}*Post by [Peter Edsberg Møllgaard](mailto:petem@dtu.dk). Published: July 16, 2020.*{{< /fontsize >}}
 {{< vspace 15 >}}
 ![img](/midsommer.png)
 {{< fontsize 12 >}} *Bengt Nyman from Vaxholm, Sweden / CC BY (https://creativecommons.org/licenses/by/2.0)* {{< /fontsize >}}

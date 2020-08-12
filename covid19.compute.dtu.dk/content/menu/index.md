@@ -5,6 +5,9 @@ headless: true
 - **[Main Page]({{< relref "/_index.md" >}})**
 - **Posts**
 
+    - *July*
+        - [16 - *Sweden*:  
+        Midsummer in Sweden]({{< relref "/posts/midsommar.md" >}})
     - *June*
         - [29 - *Gaming*:  
         Escape from Covid island]({{< relref "/posts/escape_from_covid_island.md" >}})
