@@ -1,6 +1,6 @@
 class TimeSliderScatterPlot {
 
-	constructor(data, mainDivId, uniqueId, xlabel, ylabel, rlabel) {
+	constructor(data, mainDivId, uniqueId, xlabel, ylabel, rlabel, rlabelInfo0, rlabelInfo1) {
 		// Variables
 		this.data = data;
 		this.mainDivId = mainDivId;
@@ -8,14 +8,17 @@ class TimeSliderScatterPlot {
 		this.xlabel = xlabel;
 		this.ylabel = ylabel;
 		this.rlabel = rlabel;
+		this.rlabelInfo0 = rlabelInfo0;
+		this.rlabelInfo1 = rlabelInfo1;
 		this.datetime = data._meta.datetime;
-		this.worstMunis = data._meta.worst_munis.slice(0, 5);
+		this.worstMunis = data._meta.worst_munis.slice(0, 2);
 		delete data._meta;
 		[this.xExtent, this.yExtent] = this.getExtents();
 		this.xExtent = [-150, 150]
+		this.yExtent[1] += 20;
 
 		// Global variables
-		this.t = 9;
+		this.t = this.datetime.length - 1;
 		this.focus = false;
 
 	
@@ -141,7 +144,7 @@ class TimeSliderScatterPlot {
 			.attr("x", this.width / 2)
 			.attr("y", this.height + 40)
 			.style("text-anchor", "middle")
-			.style("font-weight", 250)
+			.style("font-weight", 400)
 			.text(this.xlabel)
 
 		// y-label
@@ -150,7 +153,7 @@ class TimeSliderScatterPlot {
 			.attr("y", -40)
 			.attr("x", -this.height / 2)
 			.style("text-anchor", "middle")
-			.style("font-weight", 250)
+			.style("font-weight", 400)
 			.text(this.ylabel)
 	}
 
@@ -180,7 +183,7 @@ class TimeSliderScatterPlot {
 			.attr("x", this.margin.left - 30)
 			.attr("y", this.margin.top)
 			.style("text-anchor", "left")
-			.style("font-weight", 250)
+			.style("font-weight", 600)
 			.text(
 				weekdayStr + dateStr
 			)
@@ -262,14 +265,14 @@ class TimeSliderScatterPlot {
 				)
 
 			// draw muni point
-			let xMuni_t = this.clip(this.data[muni][this.xlabel][this.t], -2, 2),
-				yMuni_t = this.clip(this.data[muni][this.ylabel][this.t], 0, Infinity);
+			let xMuni_t = this.data[muni][this.xlabel][this.t],
+				yMuni_t = this.data[muni][this.ylabel][this.t];
 
 			this.svg.append('circle')
 				.attr('id', muni + 'Point')
 				.attr('cx', this.x(xMuni_t))
 				.attr('cy', this.y(yMuni_t))
-				.attr('r', this.data[muni][this.rlabel][this.t]**(1/2) / 2)
+				.attr('r', this.data[muni][this.rlabel][this.t] ** (1/2) * 2)
 				.style('fill', colorMuni)
 				.style('stroke', 'white')
 				.style('stroke-width', 0.5)
@@ -369,8 +372,8 @@ class TimeSliderScatterPlot {
 			let xMuni_t = this.data[muni][this.xlabel][this.t],
 				yMuni_t = this.data[muni][this.ylabel][this.t];
 			this.svg.select('#' + muni + 'Point')
-				.transition().duration(250)
-				.attr('r', this.data[muni][this.rlabel][this.t]**(1/2) / 2)
+				.transition().duration(400)
+				.attr('r', this.data[muni][this.rlabel][this.t] ** (1/2) * 2)
 				.attr('cx', this.x(xMuni_t))
 				.attr('cy', this.y(yMuni_t))
 		}
@@ -391,8 +394,9 @@ class TimeSliderScatterPlot {
 
 	tooltipDefault(muni) {
 		let tooltipText = "<b>" + muni + "</b><br><br>";
-		tooltipText += "<i>Total cases</i>: " + parseInt(this.data[muni][this.rlabel][this.t]) + "<br>"
-		tooltipText += "<i>Cases per 100k</i>: " + parseInt(this.data[muni][this.capitalize(this.ylabel.slice(4))][this.t])
+		tooltipText += "<i>" + this.rlabel + "</i>: " + parseInt(this.data[muni][this.rlabel][this.t]) + "<br>"
+		tooltipText += "<i>" + this.rlabelInfo0 + "</i>: " + parseInt(this.data[muni][this.rlabelInfo0][this.t]) + "<br>"
+		tooltipText += "<i>" + this.rlabelInfo1.slice(0, 21) + "..." + "</i>: " + parseInt(this.data[muni][this.rlabelInfo1][this.t]) + "%"
 		this.tooltip
 			.html(tooltipText)
 			.style("left", (d3.event.pageX + 10) + "px")
@@ -422,13 +426,15 @@ class TimeSliderScatterPlot {
 	}
 
 	idxToDate(i) {
-		let days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		let days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 		let date = this.parseDate(this.datetime[0]);
 		date.setHours(date.getHours() + 24 * i);
 		let dateString = "";
-		dateString += days[date.getDay()] + " ";
-		dateString += date.getDate() + "/";
-		dateString += date.getMonth() + 1
+		if (days[date.getDay()] == 'Fr')
+			dateString += days[date.getDay()] + " ";
+		dateString += date.getDate()
+		if (date.getDate() == 1)
+			dateString += "/" + (date.getMonth() + 1)
 		return dateString
 	}
 
