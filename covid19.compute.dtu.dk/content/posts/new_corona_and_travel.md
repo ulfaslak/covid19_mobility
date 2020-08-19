@@ -3,9 +3,9 @@ title: How new corona cases impact travel
 type: post
 ---
 
-# **How new corona cases impact travel**
+# **How new corona cases impact local behavior**
 
-{{< fontsize 14 >}}*Post by [Ulf Aslak](mailto:ulfaslak@gmail.com). Published: Aug, 13, 2020.*{{< /fontsize >}}
+{{< fontsize 14 >}}*Post by [Ulf Aslak](mailto:ulfaslak@gmail.com). Published: Aug, 19, 2020.*{{< /fontsize >}}
 
 {{< figures/globals >}}
 
