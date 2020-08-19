@@ -19,9 +19,9 @@ The first media mention of new corona cases [occured on July 29](https://www.dr.
 
 ## A look at case numbers
 
-The figure below shows the number of newly infected since July 28 per 100.000 inhabitants, for the five most affected municipalities.
+The figure below shows the number of newly infected since July 28 per 100.000 inhabitants, for the six most affected municipalities.
 
-{{< figure src="/change_in_infected.png" caption="***Relative case number increase since July 28*** *in the five most affected municipalities. Shaded regions indicate new cases since last reading. Aarhus and Ringsted, where initial superspreading occured, stand apart but other municipalities like Silkeborg (neighbor of Aarhus), and Ishøj and Brøndby (near Copenhagen) have increasing numbers of infected.*">}}
+{{< figure src="/change_in_infected.png" caption="***Relative case number increase since July 28*** *in the six most affected municipalities. Shaded regions indicate new cases since last reading. Aarhus and Ringsted, where initial superspreading occured, stand apart but other municipalities like Silkeborg (neighbor of Aarhus), and Ishøj and Brøndby (near Copenhagen) have increasing numbers of infected. Values on weekends are interpolated.*">}}
 
 Since almost all media attention has been on Aarhus and Ringsted, this figure is somewhat reassuring. **Aarhus and Ringsted visibly stand apart in case numbers.** Note also that case number increase has stabilized to a linear increase in these places, and has seemingly ceased in Ringsted.
 
@@ -34,7 +34,7 @@ Looking at how much people leave their home during daytime in Aarhus, Ringsted a
 
 {{< figure src="/travel_divergence.png" caption="***Deviation in how much people leave home during the day in Aarhus, Ringsted and Ishøj***. *The vertical dashed line indicates July 28 where case numbers suddenly rose.*">}}
 
-Reversely, when we visualize the same metric for Silkeborg and Brøndby who are also in the top five of affected municipalities the opposite happens. Here, the number of people that spend time outside of their homes during the day appears to increase.
+Reversely, when we visualize the same metric for Silkeborg and Brøndby who are also in the top six of affected municipalities the opposite happens. Here, the number of people that spend time outside of their homes during the day appears to increase.
 
 {{< figure src="/travel_divergence_bad.png" caption="***Deviation in daily distance traveled for people in Brøndby and Silkeborg***.">}}
 
