@@ -26,9 +26,7 @@ The first media mention of new COVID-19 cases [occured on July 29](https://www.d
 
 The figure below shows the number of newly infected since July 28 per 100.000 inhabitants, for the six most affected municipalities.
 
-{{< figure src="/change_in_infected.png" caption="***Relative case number increase since July 28*** *in the five most affected municipalities. 
-Shaded regions indicate new cases since last reading.
-Aarhus and Ringsted, where initial superspreading occured, stand apart but other municipalities like Silkeborg (neighbor of Aarhus), and Ishøj and Brøndby (near Copenhagen) have increasing numbers of infected.*">}}
+{{< figure src="/change_in_infected.png" caption="***Relative case number increase since July 28*** *in the five most affected municipalities. Shaded regions indicate new cases since last reading. Aarhus and Ringsted, where initial superspreading occured, stand apart but other municipalities like Silkeborg (neighbor of Aarhus), and Ishøj and Brøndby (near Copenhagen) have increasing numbers of infected.*" >}}
 
 Since almost all media attention has focused on Aarhus and Ringsted, this figure is somewhat reassuring. 
 **Aarhus and Ringsted visibly stand apart in case numbers.** 
@@ -66,7 +64,6 @@ The percentage change is relative to the average from July 21 to 28.
 {{< figures/case_numbers_vs_travel >}}
 
 **Things to discover in this plot:**
-* **People go out less on weekends** (circles move left on Saturdays and Sundays).
-* **Weekend activity drops**. For most affected municipalities it is the case that people go out less on weekends over time. And this positive change occurs in spite of recent sunny days.
+* **There is no apparent correlation between cases and behavior**. We might have expected to see that more affected municipalities reduced going out behavior more, but this is only really the case for Aarhus and Ringsted. And in Ringsted even, this is only the case on weekends.
 * **Aarhus is by far the biggest container of new corona cases**. Accordingly, it is also the municipality where we see the clearest indication of self-quarantine in both weekdays and weekends.
-* No noticable change in behavior in Copenhagen (*København*). In fact there appears to be a slight increase in activity.
+* **No noticable change in behavior in Copenhagen (*København*)**. In fact there is a slight increase in activity.
