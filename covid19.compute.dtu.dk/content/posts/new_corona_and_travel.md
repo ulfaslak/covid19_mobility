@@ -1,5 +1,5 @@
 ---
-title: What's happening in my city?
+title: How new corona cases impact travel
 type: post
 ---
 
