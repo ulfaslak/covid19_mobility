@@ -11,7 +11,7 @@ type: post
 
 There have been two recent, highly publicized outbreaks of COVID-19 in Denmark; one in Aarhus and another in Ringsted. 
 Both outbreaks started around the same time, approximately on July 28. Both are highly localized, the one in Ringsted, among workers at a butchery and the one in Aarhus was among visitors to a cultural center. 
-The outbreaks may related to so-called 'superspreading' events, and regardless of their specific nature, these local flare-ups are events that we expect to happen based on how we understand viruses spread when the fraction of susceptible individuals is very high.
+The outbreaks may be related to so-called 'superspreading' events, and regardless of their specific nature, these local flare-ups are events that we expect to happen based on how we understand viruses spread when the fraction of susceptible individuals is very high.
 
 Both spreading events received a large amount of media attention, and with overall case numbers going up on the affected - and nearby - regions, new lockdown restrictions were - and are - being advertised by government and municipalities. 
 As we learned early on, lockdown strongly impacts travel patterns. 
@@ -32,14 +32,14 @@ Aarhus and Ringsted, where initial superspreading occured, stand apart but other
 
 Since almost all media attention has focused on Aarhus and Ringsted, this figure is somewhat reassuring. 
 **Aarhus and Ringsted visibly stand apart in case numbers.** 
-Note also that case number increase has stabilized to a linear increase in these places, and has seemingly ceased in Ringsted.
+Note also that the case number increase has stabilized to a linear increase in these places, and has seemingly ceased in Ringsted.
 
 
 ## Do people stay at home?
 
 The most interesting measure of travel to inspect in relation to growing case numbers, is the degree to which people stay at home during the day. 
-Read about how we measure this in the [Going out](http://localhost:1313/visualizations/where_people_are_going_out/) visualization page. T
-he two plots below are screenshots from that section of our website. 
+Read about how we measure this in the [Going out](http://localhost:1313/visualizations/where_people_are_going_out/) visualization page.
+The two plots below are screenshots from that section of our website. 
 Note that the curves are smoothened to a seven-day average to reveal trends.
 
 Looking at how much people leave their home during daytime in Aarhus, Ringsted and Ishøj compared to the whole country as a baseline, it is clear that, following July 28, a collective drop seems to occur. 
