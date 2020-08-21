@@ -123,6 +123,10 @@ class TimeSeriesFigure {
 						return "08–16";
 					else if (t == '16')
 						return "16–00";
+					else if (t == 'within')
+						return 'Within'
+					else if (t == 'between')
+						return 'Betw'
                     else
                         return t;
 				})
