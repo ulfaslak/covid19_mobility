@@ -506,11 +506,6 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('x2', this.width+30)
 			.attr('y1', 10)
 			.attr('y2', 10)
-		this.svg.append('circle')
-			.attr('class', 'dot')
-			.attr('cx', this.width+20)
-			.attr('cy', 10)
-			.attr('r', 2.5)
 		this.svg.append('text')
 			.attr('class', 'right-legend')
 			.attr('x', this.width+35)
@@ -527,13 +522,9 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.on('click', () => {
 				showDaily = !showDaily;
 				if (showDaily) {
-					this.svg.selectAll('.dot')
-						.style('opacity', null)
 					this.svg.selectAll('.line-crisis')
 						.style('stroke-opacity', null)
 				} else {
-					this.svg.selectAll('.dot')
-						.style('opacity', 0)
 					this.svg.selectAll('.line-crisis')
 						.style('stroke-opacity', 0)
 				}
@@ -599,14 +590,6 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('class', 'line-crisis')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
-		this.svg.selectAll("dot")
-			.data(datum)
-			.enter().append("circle")
-			.attr("class", "dot")
-			.attr("id", "data" + this.uniqueId)
-			.attr("cx", d => this.x(d[0]))
-			.attr("cy", d => this.y(d[1]))
-			.attr("r", 2.5)
 	}
 
 
@@ -822,11 +805,6 @@ class DeviationPlot extends TimeSeriesFigure {
 			.attr('x2', this.width+30)
 			.attr('y1', 10)
 			.attr('y2', 10)
-		this.svg.append('circle')
-			.attr('class', 'dot')
-			.attr('cx', this.width+20)
-			.attr('cy', 10)
-			.attr('r', 2.5)
 		this.svg.append('text')
 			.attr('class', 'right-legend')
 			.attr('x', this.width+35)
@@ -843,13 +821,9 @@ class DeviationPlot extends TimeSeriesFigure {
 			.on('click', () => {
 				this.showDaily = !this.showDaily;
 				if (this.showDaily) {
-					this.svg.selectAll('.dot')
-						.style('opacity', null)
 					this.svg.selectAll('.line-crisis')
 						.style('stroke-opacity', null)
 				} else {
-					this.svg.selectAll('.dot')
-						.style('opacity', 0)
 					this.svg.selectAll('.line-crisis')
 						.style('stroke-opacity', 0)
 				}
@@ -968,16 +942,6 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.showDaily ? null : 0)
-            this.svg.selectAll("dot")
-                .data(datum)
-                .enter().append("circle")
-                .attr("class", "dot")
-                .attr("id", "data" + this.uniqueId)
-                .attr("cx", d => this.x(d[0]))
-                .attr("cy", d => this.y(this.checkUndefined(d[1])))
-                .attr("r", 2.5)
-                .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
-                .style('opacity', this.showDaily ? null : 0);
         })
 	}
 
@@ -1003,16 +967,6 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.showDaily ? null : 0);
-            this.svg.selectAll("dot")
-                .data(datum)
-                .enter().append("circle")
-                .attr("class", "dot")
-                .attr("id", "data" + this.uniqueId)
-                .attr("cx", d => this.x(d[0]))
-                .attr("cy", d => this.y(this.checkUndefined(d[1])))
-                .attr("r", 2.5)
-                .style("fill",function(d) {if (d[1]=='undefined'){ return 'red'}})
-                .style('opacity', this.showDaily ? null : 0);
         })
 	}
 
