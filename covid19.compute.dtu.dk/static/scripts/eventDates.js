@@ -16,7 +16,8 @@ let eventDates = {
 		["2020-05-08 00:00:00", 'Great prayer day (public holiday)', 'event8'],
 		["2020-05-11 00:00:00", 'Retail (including malls) reopens', 'event9'],
 		["2020-05-18 00:00:00", 'Restaurants, cafes, churches and elementary schools reopen', 'event10'],
-		["2020-05-27 00:00:00", 'Everything except nightclubs, festivals, etc. reopen', 'event11']
+		["2020-05-27 00:00:00", 'Everything except nightclubs, festivals, etc. reopen', 'event11'],
+		["2020-07-28 00:00:00", 'COVID-19 outbreaks in Aarhus and Ringsted', 'event12']
 	],
     'italy': [
         ["2020-02-19 00:00:00", 'First local case', 'event12'],
