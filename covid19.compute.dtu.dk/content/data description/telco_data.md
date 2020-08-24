@@ -43,7 +43,7 @@ approximately equivalent to the company’s share of customers. We proceeded as 
 * We took company c1 as a reference and computed the ratio {{< katex >}} \frac{T_c}{T_{c1}}. {{< /katex >}}
 * We computed the customer ratio {{< katex >}} \frac{N_c}{N_{c1}} {{< /katex >}}, where {{< katex >}} N_c {{< /katex >}} 
 is the number of customer of company c, obtained from publicly available data.
-* For each company, we computed the constant {{< katex >}} k_C {{< /katex >}}, such that {{< katex >}} \frac{N_c}{N_{c1}}=k_c\frac{T_c}{T_{c1}}. {{< /katex >}}
+* For each company, we computed the constant {{< katex >}} k_c {{< /katex >}}, such that {{< katex >}} \frac{N_c}{N_{c1}}=k_c\frac{T_c}{T_{c1}}. {{< /katex >}}
 * We multiplied by {{< katex >}} k_c {{< /katex >}} the number of trips measured by company c.  
 
 {{< html >}} <ins>Aggregation:</ins> {{< /html >}}  
