@@ -1,0 +1,35 @@
+<!-- HTML -->
+<!-- ---- -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Div that SVG objects are appended to -->
+<div class='vis1' id='vis-casesvstravel'></div>
+<div id="slider-casesvstravelFig"></div>
+
+
+<!-- JavaScript -->
+<!-- ---------- -->
+
+<!-- Code -->
+<script>
+
+	let spinnercasesvstravel = new Spinner(spinnerOpts).spin(document.getElementById('vis-casesvstravel'));
+
+	let instance_casesvstravel;
+	d3.json('/data/fb_vs_ssi.json').then(function(data) {
+		spinnercasesvstravel.stop();
+		instance_casesvstravel = new TimeSliderScatterPlot(
+			data, 'vis-casesvstravel', 'casesvstravelFig',
+			'Percent change in number of people not home during the day',
+			'New cases per 100.000',
+			'New cases',
+			'New cases per 100.000',
+			'Percent change in number of people not home during the day'
+		);
+		instance_casesvstravel.setup();
+		instance_casesvstravel.drawLayout();
+		instance_casesvstravel.drawData();
+	})
+
+</script>
