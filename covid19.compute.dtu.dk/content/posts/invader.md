@@ -1,7 +1,6 @@
 ---
-title: "Midsommar"
+title: "Invader"
 type: post
-draft: true
 ---
 # **Invader**
 {{< fontsize 14 >}}*Post by [Peter Edsberg Møllgaard](mailto:petem@dtu.dk). Published: DATE, 2020.*{{< /fontsize >}}

@@ -93,14 +93,23 @@ class data_updater:
         self.start_driver()
         self.login()
         time.sleep(3)
+        list_of_failed = []
         for country in countries:
             print(f'{country}')
-            for i in self.data.loc[['folder', country]].items():
+            for ix, i in enumerate(self.data.loc[['folder', country]].items()):
+                self.cwtype = self.data.columns[ix]
                 links, text = self.get_links(f'https://www.facebook.com/geoinsights-portal/downloads/?id={i[1][1]}')
-                print(f'Downloading {i[1][0]}')
-                self.download_links(links,text,f'{self.outdir}/{country}/{i[1][0]}',country)
+                if len(links)==0:
+                    print(f"Website loaded empty for {country} with datatype {i[1][0]}")
+                    list_of_failed.append([country,i[1][0]])
+                else:
+                    print(f'Downloading {i[1][0]}')
+                    self.download_links(links,text,f'{self.outdir}/{country}/{i[1][0]}',country)
             print('')
 
+        print('Failed download attempts:')
+        for ele in list_of_failed:
+            print(f"{ele[0]}: {ele[1]}")
         self.driver.quit()
 
     def download_id(self, id_web_link, country, folder_name):
@@ -133,7 +142,7 @@ class data_updater:
             for link in tqdm(dl_links):
                 self.driver.get(link)
                 time.sleep(wait_time)
-            wait_time += 10
+            wait_time = min(wait_time+10,60)
             self.move_most_recent_files(outdir, links,country)
             dl_links = np.array(links)[~np.isin(dates, os.listdir(f'{outdir}'))]
 
@@ -188,9 +197,18 @@ class data_updater:
         sorted_files = [f[0] for f in sorted(csv_files.items(), key=operator.itemgetter(1), reverse=True)[:len(urls)]]
 
         new_fns = [self.get_new_file_name(file,country) for file in sorted_files]
-
         for i, sorted_file in enumerate(sorted_files):
-            self.rename_and_move(sorted_file.split('/')[-1].split('\\')[-1], self.download_folder, new_fns[i], outdir)
+            if country == 'United Kingdom':
+                country_tmp = 'Britain'
+            else:
+                country_tmp = country
+            if country_tmp in sorted_file:
+                if self.cwtype in sorted_file:
+                    self.rename_and_move(sorted_file.split('/')[-1].split('\\')[-1], self.download_folder, new_fns[i], outdir)
+                else:
+                    print(sorted_file)
+            else:
+                print(sorted_file)
 
     def remove_empty_files(self,start_dir):
         for root, dirs, files in os.walk(start_dir):
