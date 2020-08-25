@@ -30,5 +30,15 @@ Description: A Movement map seperates the country into different areas. It then 
 Description: A Population density map seperates the country into different areas, and for each it counts the number of users that spend most of their time there, for three eight hour time windows each day. For example, for the 08–16 (working hours) time window on May 4, there may be 52.</description>
     </item>
     
+    <item>
+      <title>Telco data description</title>
+      <link>https://covid19.compute.dtu.dk/data-description/telco_data/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/data-description/telco_data/</guid>
+      <description>Movement maps using telco data These data show the number of daily trips between Danish Municipalities, estimated from aggregated mobile phone data provided by four large telecommunication companies. The purpose of the data is to study changes in mobility behaviour following the interventions introduced by the Danish government in response to the COVID-19 pandemics. Data covers the period from 1. February of 2020.
+Statistical presentation The data includes the daily number of trips between pairs of municipalities.</description>
+    </item>
+    
   </channel>
 </rss>

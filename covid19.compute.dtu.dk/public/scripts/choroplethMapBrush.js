@@ -55,7 +55,7 @@ class MovementsMapBrush {
 				.extent([[100, 18], [this.width, this.mapHeight]])
 				.scaleExtent([1, 4])
 				.on("zoom", () => this.zoomed())
-		);
+		).on("dblclick.zoom", null);
 
 		// Brush svg
 		this.svgBrush = d3.select('#brush-' + this.uniqueId)
@@ -211,35 +211,45 @@ class MovementsMapBrush {
 	}
 
 	setKeyEvents() {
+		let resetMap = () => {
+			this.selected = undefined;
+			this.unhighlightAllRegions();
+
+			this.maxFlow = this.data._meta.variables.Max;
+			this.maxFlow = this.recomputeMaxFlow();
+			this.setScaling(this.scaling);
+
+			this.refreshDrawing();
+			this.redrawBrushLine();
+			this.updateInfoBox();
+			this.setLegend();
+
+			if (this.hovering != undefined) {
+				this.tooltipDefault(this.hovering)
+				this.highlightRegion(this.namePolygonMap[this.hovering], '#ff7f50')
+			}
+		}
 		document.onkeydown = evt => {
 			evt = evt || window.event;
-			if (evt.key === "Escape" || evt.key === "Esc") {
-				this.selected = undefined;
-				this.unhighlightAllRegions();
-
-				this.maxFlow = this.data._meta.variables.Max;
-				this.maxFlow = this.recomputeMaxFlow();
-				this.setScaling('sqrt');
-
-				this.refreshDrawing();
-				this.redrawBrushLine();
-				this.updateInfoBox();
-				this.setLegend();
-
-				if (this.hovering != undefined) {
-					this.tooltipDefault(this.hovering)
-					this.highlightRegion(this.namePolygonMap[this.hovering], '#ff7f50')
-				}
-			}
-			else if (evt.key === "Shift" && this.selected != undefined) {
-				if (this.scaling == "log")
+			if (evt.key === "Escape" || evt.key === "Esc")
+				resetMap();
+			// else if (evt.key === "Shift" && this.selected != undefined) {
+			else if (evt.key === "Shift") {
+				if (this.scaling == "lin")
 					this.setScaling('sqrt');
-				else
+				else if (this.scaling == "sqrt")
 					this.setScaling("log");
+				else if (this.scaling == "log")
+					this.setScaling("lin");
 				this.refreshDrawing();
 				this.setLegend();
 			}
 		};
+
+		this.svgMap.on('click', () => {
+			if (d3.event.target.tagName == 'svg' && this.selected !== undefined)
+				resetMap();
+		})
 	}
 
 	resetState() {
@@ -681,6 +691,22 @@ class MovementsMapBrush {
 			.style('stroke', '#999999')
 			.html('Almost everything reopens')
 
+		this.svgBrush.append("line")
+			.attr('x1', xi(178))
+			.attr('x2', xi(178))
+			.attr('y1', this.margin.top)
+			.attr('y2', figheight)
+			.attr('class', 'line-baseline')
+
+		this.svgBrush.append('text')
+			.attr('x', xi(178) - 4)
+			.attr('y', 75)
+			.attr('text-anchor', 'end')
+			.attr('font-size', 11)
+			.style('stroke', '#999999')
+			.html('New outbreaks')
+			
+
 		// Draw axis
 		this.svgBrush.append("g")	
 			.attr("class", "x axis")
@@ -850,7 +876,7 @@ class MovementsMapBrush {
 						this.maxFlow = this.data._meta.variables.Max;
 						if (this.normidx != 0)
 							this.maxFlow = this.recomputeMaxFlow();
-						this.setScaling('sqrt');
+						this.setScaling(this.scaling);
 					}
 
 					if (dataExists) {

@@ -5,9 +5,17 @@ type: post
 # Movement maps using telco data
 
 These data show the number of daily trips between Danish Municipalities, estimated from aggregated mobile phone data 
-provided by four large telecommunication companies. The purpose of the data is to study changes in mobility behaviour 
-following the interventions introduced by the Danish government in response to the COVID-19 pandemics. Data covers the 
+provided by four large telecommunication companies. 
+It is not possible to infer individual mobility from this dataset.
+Data covers the 
 period from 1. February of 2020.
+
+## Origin of data
+
+The data set was delivered by four major Danish telcos to [Statistics Denmark](https://www.dst.dk/da/) (DST) to help the Danish [State Serum Institute](https://en.wikipedia.org/wiki/Statens_Serum_Institut) (SSI) - the Danish equivalent to the US's CDC - to model the spread of COVID-19 and understand population behavior in response to various lock-down/mitigation measures. 
+The dataset was officially requested by SSI and the legality of its use was ensured by the [Ministry of Industry, Business, and Financial Affairs](https://eng.em.dk).
+To release the data from DST, we have removed a small amount of data to ensure the origin of the data (which operator) is confidential, see below.
+We are currently working on releasing the full data set in downloadable form.
 
 ## Statistical presentation
 The data includes the daily number of trips between pairs of municipalities. Each entry consists of: 
@@ -17,7 +25,7 @@ The data includes the daily number of trips between pairs of municipalities. Eac
 * Counts: estimated number of trips between origin and destination
 
 ## Statistical processing
-The number of trips are estimated combining aggregated location-based services data provided  by four major Danish 
+The number of trips are estimated combining aggregated location-based services data provided by four major Danish 
 telecommunication companies. First, we pre-processed the data to make the four datasets comparable. Secondly, we 
 combined the four datasets together. Finally, we filtered data to remove potentially sensitive information.
 
@@ -43,7 +51,7 @@ approximately equivalent to the company’s share of customers. We proceeded as 
 * We took company c1 as a reference and computed the ratio {{< katex >}} \frac{T_c}{T_{c1}}. {{< /katex >}}
 * We computed the customer ratio {{< katex >}} \frac{N_c}{N_{c1}} {{< /katex >}}, where {{< katex >}} N_c {{< /katex >}} 
 is the number of customer of company c, obtained from publicly available data.
-* For each company, we computed the constant {{< katex >}} k_C {{< /katex >}}, such that {{< katex >}} \frac{N_c}{N_{c1}}=k_c\frac{T_c}{T_{c1}}. {{< /katex >}}
+* For each company, we computed the constant {{< katex >}} k_c {{< /katex >}}, such that {{< katex >}} \frac{N_c}{N_{c1}}=k_c\frac{T_c}{T_{c1}}. {{< /katex >}}
 * We multiplied by {{< katex >}} k_c {{< /katex >}} the number of trips measured by company c.  
 
 {{< html >}} <ins>Aggregation:</ins> {{< /html >}}  
@@ -87,11 +95,5 @@ mobility behaviour in Denmark.
 The statistics is based on combining data from different mobile-phone sources using heuristics. Trends are reliable 
 but exact counts are only indicative
 
-## Timeliness and punctuality
-The statistics are normally published each …
-
-## Comparability
- 
-## Accessibility and clarity
 
 

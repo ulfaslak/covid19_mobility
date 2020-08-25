@@ -31,6 +31,15 @@ At the peak of the Danish lock-down, most public employees (all except for those
     </item>
     
     <item>
+      <title>How new corona cases impact travel</title>
+      <link>https://covid19.compute.dtu.dk/posts/new_corona_and_travel/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://covid19.compute.dtu.dk/posts/new_corona_and_travel/</guid>
+      <description>How new corona cases impact local behavior Post by Ulf Aslak. Published: Aug, 19, 2020. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
+    </item>
+    
+    <item>
       <title>Invader</title>
       <link>https://covid19.compute.dtu.dk/posts/invader/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
