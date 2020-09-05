@@ -3,7 +3,7 @@ title: "Invader"
 type: post
 ---
 # **Invader**
-{{< fontsize 14 >}}*Post by [Peter Edsberg Møllgaard](mailto:petem@dtu.dk). Published: DATE, 2020.*{{< /fontsize >}}
+{{< fontsize 14 >}}*Post by [Jaume Palmer Real](mailto:jpre@dtu.dk). Formatted by [Peter Edsberg Møllgaard](mailto:petem@dtu.dk). Published: August 26, 2020.*{{< /fontsize >}}
 {{< vspace 15 >}}
 
 In December 2019, a novel coronavirus strain (SARS-CoV-2) emerged in the city of Wuhan, China. In just a few months, this virus has taken over the world forcing countries all over to shut down, limit travel and lock down cities to avoid a worse spread.

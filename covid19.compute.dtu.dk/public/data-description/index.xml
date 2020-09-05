@@ -36,8 +36,8 @@ Description: A Population density map seperates the country into different areas
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/data-description/telco_data/</guid>
-      <description>Movement maps using telco data These data show the number of daily trips between Danish Municipalities, estimated from aggregated mobile phone data provided by four large telecommunication companies. The purpose of the data is to study changes in mobility behaviour following the interventions introduced by the Danish government in response to the COVID-19 pandemics. Data covers the period from 1. February of 2020.
-Statistical presentation The data includes the daily number of trips between pairs of municipalities.</description>
+      <description>Movement maps using telco data These data show the number of daily trips between Danish Municipalities, estimated from aggregated mobile phone data provided by four large telecommunication companies. It is not possible to infer individual mobility from this dataset. Data covers the period from 1. February of 2020.
+Origin of data The data set was delivered by four major Danish telcos to Statistics Denmark (DST) to help the Danish State Serum Institute (SSI) - the Danish equivalent to the US&amp;rsquo;s CDC - to model the spread of COVID-19 and understand population behavior in response to various lock-down/mitigation measures.</description>
     </item>
     
   </channel>
