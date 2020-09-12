@@ -4,11 +4,11 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Movements from telco data Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2."><meta property="og:title" content="" />
-<meta property="og:description" content="Movements from telco data Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
+<meta name="description" content="Highly detailed travel data within Denmark Visualization, data analysis and data processing by Ulf Aslak, Peter Møllgaard and Laura Alessandretti. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0."><meta property="og:title" content="" />
+<meta property="og:description" content="Highly detailed travel data within Denmark Visualization, data analysis and data processing by Ulf Aslak, Peter Møllgaard and Laura Alessandretti. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/telco_brush/" />
-<meta property="article:modified_time" content="2020-07-16T09:57:52+02:00" />
+<meta property="article:modified_time" content="2020-08-21T11:29:38+02:00" />
 <title>Telco Brush | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -111,6 +111,7 @@ Population landscape</a></li>
 </li>
 <li><em>How people move</em>
 <ul>
+<li><a href="/visualizations/telco_brush/"class=active><strong>New</strong>: Travel in Denmark</a></li>
 <li><a href="/visualizations/how_people_move_movements_between_municipalities/">Movements between regions</a></li>
 <li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
 <li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
@@ -172,8 +173,8 @@ Population landscape</a></li>
 
       
       
-  <article class="markdown"><h1 id="movements-from-telco-data"><strong>Movements from telco data</strong></h1>
-<span style="font-size:14px"><em>Visualization and data analysis by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a> and <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a>.</em></span>
+  <article class="markdown"><h1 id="highly-detailed-travel-data-within-denmark"><strong>Highly detailed travel data within Denmark</strong></h1>
+<span style="font-size:14px"><em>Visualization, data analysis and data processing by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a>, <a href="mailto:peter-em@hotmail.com">Peter Møllgaard</a> and <a href="mailto:l.alessandretti@gmail.com">Laura Alessandretti</a>.</em></span>
 
 
 
@@ -449,7 +450,7 @@ Population landscape</a></li>
 </script>
 
 <!-- raw HTML omitted -->
-<p>When a person is active on their telecommunications device (like a smartphone) the cell tower is logged. Cell towers have known position, and as such the movements of telecommunication users can be recorded at large scale. The visualization below plots the aggregated movements of ~5.600.000* telecommunications users, through a span of time that covers the 2020 coronavirus lockdown period and more.</p>
+<p>When a person is active on their telecommunications device (like a smartphone) the cell tower is logged. Cell towers have known position, and as such people&rsquo;s movements can be recorded at large scale. This visualization plots the aggregated movements of ~5.600.000* telecommunications users, through a span of time that covers the 2020 coronavirus lockdown period and more.</p>
 
 
 <!DOCTYPE html>
@@ -491,14 +492,54 @@ Population landscape</a></li>
 <li><strong>Hover</strong> the curser over a municipality to display the number of movements from, to and within.</li>
 <li><strong>Click</strong> any municipality to see travel between it and other municipalities, then <strong>hover</strong> other municipalities to see the exact quantities.</li>
 <li><strong>Drag</strong> the time brush below or change its span to visualize travel in different time periods.</li>
-<li><strong>Toggle</strong> color scaling: linear (<em>lin</em>), square root (<em>sqrt</em>), or logarithmic(<em>log</em>).</li>
+<li><strong>Toggle</strong> color scaling: linear (<em>lin</em>), square root (<em>sqrt</em>), or logarithmic(<em>log</em>). Use <code>shift</code> key to rotate between scalings or click the scaling buttons.</li>
 <li><strong>Toggle</strong> travel normalization: none (<em>no</em>), by local population count (<em>pop</em>), or by municipality area (<em>area</em>).</li>
-<li><strong>Press</strong> <code>esc</code> key to unselect.</li>
+<li><strong>Press</strong> <code>esc</code> key or click the white areas to unselect.</li>
 <li><strong>Scroll</strong> on the map to zoom.</li>
 <li><strong>Drag</strong> the curser on the map to pan.</li>
 </ul>
 </blockquote>
-<p>* Data comes from three major mobile phone operators. While ~5.600.000 is roughly 97% of the Danish populations this number does not take into account persons carrying multiple devices with a sim card or even dual sim devices.</p>
+<h2 id="time-series-plot">Time series plot</h2>
+<p>Here is the same data plotted as a time series. A couple of things to note:</p>
+<ul>
+<li>In aggregate, travel within municipalities reaches baseline levels much earlier than travel between. But looking at major cities like København, Århus and Odense, this difference is not apparent. It appears to be a property of suburban non-holiday municipalities (try Ringsted, Silkeborg, Holstebro).</li>
+<li>Travel relative to the baseline peaks on weekends. But note that this is because the baseline is winter time, where people stay home more on weekends. In actuality, people travel much less on weekends (try clicking &lsquo;abs&rsquo;).</li>
+<li>In urban municipalities (København, Århus, Odense), mobility dropped significantly during the lockdown. In nature rich municipalities, the opposite occurred (Gribskov, Halsnæs, Frederikshavn).</li>
+<li>Since June where the summer holiday began for many, there is a large increase in local travel (click &lsquo;within&rsquo;). This relative increase is highest in holiday destinations like Læsø, Samsø, Fanø, etc.</li>
+</ul>
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class="flex">
+	<div class="radio-timeframe" id='radio-changeFig'></div>
+	<div class="select-place" id='select-changeFig'></div>
+</div>
+<div class='vis' id='vis-change'></div>
+
+
+
+
+
+
+<script>
+
+	let spinnerchange = new Spinner(spinnerOpts).spin(document.getElementById('vis-change'));
+
+	let instance_change;
+	d3.json('/data/Denmark_telco_change.json').then(function(data) {
+		spinnerchange.stop();
+		instance_change = new DeviationPlot(data, 'vis-change', 'changeFig');
+		instance_change.setup();
+		instance_change.drawLayout();
+		instance_change.drawData();
+	})
+
+</script>
+
+<p><em>* Data comes from three major mobile phone operators. While ~5.600.000 is roughly 97% of the Danish populations this number does not take into account persons carrying multiple devices with a sim card or even dual sim devices.</em></p>
 </article>
  
       
