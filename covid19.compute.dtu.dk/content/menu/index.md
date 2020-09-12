@@ -6,6 +6,8 @@ headless: true
 - **Posts**
     
     - *August*
+        - [26 - *Denmark*:  
+        Invader]({{< relref "/posts/invader.md" >}})
         - [19 - *Denmark*:  
         New cases and travel]({{< relref "/posts/new_corona_and_travel.md" >}})
     - *July*
@@ -37,5 +39,6 @@ headless: true
 - **Data**
 	- [Population Density Maps]({{< relref "/data description/population_density_maps.md" >}})
 	- [Movement Maps]({{< relref "/data description/movement_maps.md" >}})
+    - [Movement Maps using Telco data]({{< relref "/data description/telco_data.md" >}})
 <br />
 

@@ -4,8 +4,8 @@
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } ."><meta property="og:title" content="" />
-<meta property="og:description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.5; stroke-width: 1.5; } ." />
+<meta name="description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2."><meta property="og:title" content="" />
+<meta property="og:description" content="Going out during the day Visualization and data analysis by Ulf Aslak and Peter Møllgaard.  .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/" />
 <meta property="article:modified_time" content="2020-07-08T16:03:14+02:00" />
@@ -64,6 +64,14 @@ https://github.com/alex-shpak/hugo-book
 <li>
 <p><strong>Posts</strong></p>
 <ul>
+<li><em>August</em>
+<ul>
+<li><a href="/posts/invader/">26 - <em>Denmark</em>:<br>
+Invader</a></li>
+<li><a href="/posts/new_corona_and_travel/">19 - <em>Denmark</em>:<br>
+New cases and travel</a></li>
+</ul>
+</li>
 <li><em>July</em>
 <ul>
 <li><a href="/posts/midsommar/">16 - <em>Sweden</em>:<br>
@@ -103,7 +111,7 @@ Population landscape</a></li>
 </li>
 <li><em>How people move</em>
 <ul>
-<li><a href="/visualizations/how_people_move_movements_between_municipalities/"><strong>New</strong> Movements between regions</a></li>
+<li><a href="/visualizations/how_people_move_movements_between_municipalities/">Movements between regions</a></li>
 <li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
 <li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
 </ul>
@@ -115,7 +123,8 @@ Population landscape</a></li>
 <p><strong>Data</strong></p>
 <ul>
 <li><a href="/data-description/population_density_maps/">Population Density Maps</a></li>
-<li><a href="/data-description/movement_maps/">Movement Maps</a>
+<li><a href="/data-description/movement_maps/">Movement Maps</a></li>
+<li><a href="/data-description/telco_data/">Movement Maps using Telco data</a>
 <!-- raw HTML omitted --></li>
 </ul>
 </li>
@@ -173,6 +182,10 @@ Population landscape</a></li>
 	.vis {
 		margin: 0 auto;
 		height: 370px;
+	}
+	.vis1 {
+		margin: 0 auto;
+		height: 500px;
 	}
 	.line-baseline { 
 		stroke: black;
@@ -353,6 +366,7 @@ Population landscape</a></li>
 <script src="/scripts/timeSeriesFigure.js"></script>
 <script src="/scripts/choroplethMap.js"></script>
 <script src="/scripts/choroplethMapBrush.js"></script>
+<script src="/scripts/timeSliderScatterPlot.js"></script>
 
 <script>
 

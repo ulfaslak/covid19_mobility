@@ -29,8 +29,7 @@ def run():
     # First run serially
     print("Adding the admin locations to the CSV files:")
     prep_countries.run(path)
-
-
+    # return
     # Then run in parallel
     print('\n-----------\nrun in parallel:\n----------------')
     for country in country_list:
@@ -44,7 +43,7 @@ def run():
             adm_region = 'adm1'
             create_shape_file(country,2,data_path)
         iso = pycountry.countries.get(name=country).alpha_2
-        #tile_csv_to_geojson.run(country,iso,adm_region,adm_kommune)
+        # mobility.run(country,iso,adm_region,adm_kommune)
         # movements.run(country,iso,adm_region,adm_kommune)
         # continue
         if country in ['Denmark','Sweden']:

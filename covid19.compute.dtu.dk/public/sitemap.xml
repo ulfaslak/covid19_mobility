@@ -58,7 +58,7 @@
   
   <url>
     <loc>https://covid19.compute.dtu.dk/data-description/</loc>
-    <lastmod>2020-07-13T08:38:01+02:00</lastmod>
+    <lastmod>2020-08-25T11:35:01+02:00</lastmod>
   </url>
   
   <url>
@@ -77,8 +77,18 @@
   </url>
   
   <url>
+    <loc>https://covid19.compute.dtu.dk/posts/new_corona_and_travel/</loc>
+    <lastmod>2020-08-24T13:07:55+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://covid19.compute.dtu.dk/</loc>
     <lastmod>2020-06-24T20:04:15+02:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://covid19.compute.dtu.dk/posts/invader/</loc>
+    <lastmod>2020-08-26T12:15:01+02:00</lastmod>
   </url>
   
   <url>
@@ -118,11 +128,16 @@
   
   <url>
     <loc>https://covid19.compute.dtu.dk/posts/</loc>
-    <lastmod>2020-07-16T16:42:28+02:00</lastmod>
+    <lastmod>2020-08-26T12:15:01+02:00</lastmod>
   </url>
   
   <url>
     <loc>https://covid19.compute.dtu.dk/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>https://covid19.compute.dtu.dk/data-description/telco_data/</loc>
+    <lastmod>2020-08-25T11:35:01+02:00</lastmod>
   </url>
   
   <url>

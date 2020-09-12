@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="How new corona cases impact local behavior Post by Ulf Aslak. Published: Aug, 19, 2020. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2."><meta property="og:title" content="How new corona cases impact travel" />
+<meta property="og:description" content="How new corona cases impact local behavior Post by Ulf Aslak. Published: Aug, 19, 2020. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://covid19.compute.dtu.dk/posts/new_corona_and_travel/" />
+<meta property="article:modified_time" content="2020-08-24T13:07:55+02:00" />
+<title>How new corona cases impact travel | COVID-19 mobility</title>
+<link rel="icon" href="/favicon.png" type="image/x-icon">
+
+
+<link rel="stylesheet" href="/book.min.8a947f30ccbc45289baa778fab553fcbefa728e514331d0228e194e9c7b19e9a.css" integrity="sha256-ipR/MMy8RSibqnePq1U/y&#43;&#43;nKOUUMx0CKOGU6cexnpo=">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-167958784-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+<!--
+Made with Book Theme
+https://github.com/alex-shpak/hugo-book
+-->
+
+  
+</head>
+
+<body>
+  <input type="checkbox" class="hidden" id="menu-control" />
+  <main class="container flex">
+    <aside class="book-menu">
+      
+  <nav>
+<h2 class="book-brand">
+  <a href="/"><img src="/dtu.png" alt="Logo" /><span>COVID-19 mobility</span>
+  </a>
+</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+  <ul>
+<li>
+<p><strong><a href="/">Main Page</a></strong></p>
+</li>
+<li>
+<p><strong>Posts</strong></p>
+<ul>
+<li><em>August</em>
+<ul>
+<li><a href="/posts/invader/">26 - <em>Denmark</em>:<br>
+Invader</a></li>
+<li><a href="/posts/new_corona_and_travel/"class=active>19 - <em>Denmark</em>:<br>
+New cases and travel</a></li>
+</ul>
+</li>
+<li><em>July</em>
+<ul>
+<li><a href="/posts/midsommar/">16 - <em>Sweden</em>:<br>
+Midsummer in Sweden</a></li>
+</ul>
+</li>
+<li><em>June</em>
+<ul>
+<li><a href="/posts/escape_from_covid_island/">29 - <em>Gaming</em>:<br>
+Escape from Covid island</a></li>
+</ul>
+</li>
+<li><em>May</em>
+<ul>
+<li><a href="/posts/going_to_work/">18 - <em>Denmark</em>:<br>
+Back to work</a></li>
+<li><a href="/posts/spread_of_population/">14 - <em>Denmark</em>:<br>
+Population re-distributed!</a></li>
+<li><a href="/posts/change_in_population_sizes/">11 - <em>Denmark</em>: <br>
+What&rsquo;s happening in my city?</a></li>
+<li><a href="/posts/population_landscape/">7 - <em>Denmark</em>: <br>
+Population landscape</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualizations</strong></p>
+<ul>
+<li><em>Where people are</em>
+<ul>
+<li><a href="/visualizations/where_people_are_landscape/">Landscape</a></li>
+<li><a href="/visualizations/where_people_are_going_out/">Going out</a></li>
+<li><a href="/visualizations/where_people_are_change_in_population_size/">Change in population size</a></li>
+<li><a href="/visualizations/where_people_are_population_concentration/">Population distribution</a></li>
+</ul>
+</li>
+<li><em>How people move</em>
+<ul>
+<li><a href="/visualizations/how_people_move_movements_between_municipalities/">Movements between regions</a></li>
+<li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
+<li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
+</ul>
+<!-- raw HTML omitted -->
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Data</strong></p>
+<ul>
+<li><a href="/data-description/population_density_maps/">Population Density Maps</a></li>
+<li><a href="/data-description/movement_maps/">Movement Maps</a></li>
+<li><a href="/data-description/telco_data/">Movement Maps using Telco data</a>
+<!-- raw HTML omitted --></li>
+</ul>
+</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+</nav>
+
+
+
+
+  <script>(function(){var menu=document.querySelector("aside.book-menu nav");addEventListener("beforeunload",function(event){localStorage.setItem("menu.scrollTop",menu.scrollTop);});menu.scrollTop=localStorage.getItem("menu.scrollTop");})();</script>
+
+
+ 
+    </aside>
+
+    <div class="book-page">
+      <header class="book-header">
+        
+  <div class="flex align-center justify-between">
+  <label for="menu-control">
+    <img src="/svg/menu.svg" class="book-icon" alt="Menu" />
+  </label>
+
+  <strong>How new corona cases impact travel</strong>
+
+  <label for="toc-control">
+    
+  </label>
+</div>
+
+
+  
+ 
+      </header>
+
+      
+      
+  <article class="markdown"><h1 id="how-new-corona-cases-impact-local-behavior"><strong>How new corona cases impact local behavior</strong></h1>
+<span style="font-size:14px"><em>Post by <a href="mailto:ulfaslak@gmail.com">Ulf Aslak</a>. Published: Aug, 19, 2020.</em></span>
+
+
+
+
+<style type="text/css">
+	.vis {
+		margin: 0 auto;
+		height: 370px;
+	}
+	.vis1 {
+		margin: 0 auto;
+		height: 500px;
+	}
+	.line-baseline { 
+		stroke: black;
+		stroke-width: 1.5;
+		fill: none;
+		stroke-dasharray: 10 5;
+		opacity: 0.2;
+	}
+ 
+	.line-crisis { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.line-changeall { 
+		fill: none;
+		stroke: black;
+		stroke-width: 1;
+		stroke-opacity: 0.7;
+	}
+	.line-tooltip {
+		stroke: 'black';
+		stroke-dasharray: 5 2.5;
+		stroke-width: 1.5;
+	}
+	.line { 
+		fill: none;
+		stroke: black;
+		stroke-width: 2;
+		stroke-opacity: 0.25;
+	}
+	.rect-tooltip {
+		fill: white;
+		fill-opacity: 0;
+		z-index: 1;
+	}
+	.trendline {
+		fill: none; 
+		stroke: #5897fb;
+		stroke-width: 2.5;
+	}
+	.brushline {
+		fill: none; 
+		stroke: #000000;
+		stroke-width: 1.5;
+	}
+	.histEvent {
+		stroke: grey;
+		stroke-width: 2;
+		stroke-opacity: 1;
+	}
+	.histEventDot {
+		fill: grey;
+	}
+	.map-polygon-movements {
+		stroke: grey;
+		stroke-width: 0.3;
+	}
+	.map-polygon-movements-circumference {
+		stroke: black;
+		stroke-width: 1;
+	}
+	.dot-baseline {
+		fill: white;
+		stroke: #2c3e50;
+		stroke-width: 2;
+		opacity: 0;
+	}
+	.dot {
+		fill: black;
+		opacity: 0.5;
+	}
+	.right-legend {
+		font-size: 12px;
+		-webkit-user-select: none;          
+		-moz-user-select: none;  
+		-ms-user-select: none;  
+		user-select: none;  
+	}
+	.tooltip {	
+		position: absolute;
+		top: 0;
+		line-height: 1;
+		font-weight: 500;
+		padding: 12px;
+		background: rgba(0, 0, 0, 0.8);
+		color: #fff;
+		border-radius: 2px;	
+	}
+	.toggle {
+		-webkit-user-select: none;          
+		-moz-user-select: none;  
+		-ms-user-select: none;  
+		user-select: none;  
+	}
+	.select-place {
+		position: absolute;
+  		width: 300px;
+  		height: 10px;
+		right: 0px;
+	}
+	.flex {
+		display: flex;
+	}
+	.flex-col {
+		flex-direction: column;
+	}
+	.radio-rect {
+		cursor: pointer;
+		fill: #636e72;
+	}
+
+	.radio-rect.selected {
+		fill: #0984e3;
+	}
+
+	.radio-text {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+		cursor: pointer;
+	}
+
+	.radio-text.selected {
+		text-anchor: middle;
+		stroke: none;
+		fill: white;
+		font-weight: 600;
+	}
+
+	@keyframes spinner-line-fade-quick {
+	  0%, 39%, 100% {
+	    opacity: 0.25;  
+	  }
+	  40% {
+	    opacity: 1;
+	  }
+	}
+
+</style>
+
+
+
+
+
+
+<div style="max-height: 0px">
+	<svg>
+	  <defs>
+	    <pattern id="lines" height="10" width="10" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="4" x2="10" y2="4" stroke-width="2" stroke="black"/>
+	    </pattern>
+	    <pattern id="thinlines" height="5" width="5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+	      <line x1="0" y1="2" x2="10" y2="2" stroke-width="0.5" stroke="black"/>
+	    </pattern>
+	  </defs>
+	</svg>
+</div>
+
+
+
+
+
+
+
+<script src="/dist/d3.v5.min.js"></script>
+<script src="/dist/d3-simple-slider.min.js"></script>
+<script src="/dist/chroma.min.js"></script>
+<script src="/dist/spin.min.js"></script>
+<script src="/dist/slimselect.min.js"></script>
+<link href="/dist/slimselect.min.css" rel="stylesheet"></link>
+
+
+<script src="/scripts/eventDates.js"></script>
+<script src="/scripts/kommunePop.js"></script>
+<script src="/scripts/timeSeriesFigure.js"></script>
+<script src="/scripts/choroplethMap.js"></script>
+<script src="/scripts/choroplethMapBrush.js"></script>
+<script src="/scripts/timeSliderScatterPlot.js"></script>
+
+<script>
+
+	
+	
+
+	console.log("Greetings! Thanks for visiting. Looking at the code? Tweet at @ulfaslak with questions, bugs, comments, etc.!")
+
+	
+	
+	
+
+	
+	let spinnerOpts = {
+		lines: 8, 
+		length: 0, 
+		width: 8, 
+		radius: 18, 
+		corners: 10, 
+		color: '#313131', 
+		fadeColor: 'transparent', 
+		speed: 1, 
+		rotate: 0, 
+		animation: 'spinner-line-fade-quick', 
+	};
+
+	
+	function adjustBaseline(datum) {
+		datumy = d3.range(7).map(() => []);
+		datum.forEach((d, i) => {
+		    datumy[i%7].push(d[1]);
+		});
+		datumy = datumy.map(d => d3.mean(d));
+		return datum.map((d, i) => [d[0], datumy[i%7]]);
+	}
+
+	
+	function zip(a, b) {
+		return a.map((e, i) => [e, b[i]]);
+	}
+
+	function round(val, order) {
+		return Math.round(val * order) / order;
+	}
+
+	Date.prototype.addDays = function(n) {
+	    let date = new Date(this.valueOf());
+	    date.setDate(date.getDate() + n);
+	    return date;
+	}
+
+	function weekavg(y) {
+		let y_avg = [];
+		y.forEach((v, i) => {
+			let i0 = Math.max(0, i-3);
+			let i1 = Math.min(y.length-1, i+4);
+			y_avg.push(d3.mean(y.slice(i0, i1)));
+		});
+		return y_avg;
+	}
+
+	function insertKSeperators(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
+	function idify(str) {
+		
+		if (str.includes(" "))
+			str = str.replace(/ /g, "-");
+		if (isInt(str[0]))
+			str = "d" + str;
+		return str;
+	}
+
+	function isInt(str) {
+		return !isNaN(str)
+	}
+
+
+</script>
+
+<p>There have been two recent, highly publicized outbreaks of COVID-19 in Denmark; one in Aarhus and another in Ringsted.
+Both outbreaks started around the same time, approximately on July 28. Both are highly localized, the one in Ringsted, among workers at a butchery and the one in Aarhus was among visitors to a cultural center.
+The outbreaks may be related to so-called &lsquo;superspreading&rsquo; events, and regardless of their specific nature, these local flare-ups are events that we expect to happen based on how we understand viruses spread when the fraction of susceptible individuals is very high.</p>
+<p>Both spreading events received a large amount of media attention, and with overall case numbers going up on the affected - and nearby - regions, new lockdown restrictions were - and are - being advertised by government and municipalities.
+As we learned early on, lockdown strongly impacts travel patterns.
+And though potential restrictions have been advertised, no serious restrictions have been imposed yet.
+Any sign of behavioral change we can detect in our data is, therefore, mostly due to people&rsquo;s own choices.</p>
+<p>In this blog post we investigate the impact of increasing corona cases and renewed media attention on travel inside different municipalities of the country.</p>
+<p>The first media mention of new COVID-19 cases <a href="https://www.dr.dk/nyheder/indland/stor-stigning-i-antallet-af-smittede-paa-dansk-slagteri">occured on July 29</a> in connection to the Ringsted outbreak. Later on August 3, <a href="https://www.dr.dk/nyheder/indland/det-er-nok-en-supersprednings-begivenhed-smittetal-i-aarhus-mangedoblet-over">a soccer win celebration in Aarhus</a> was connected to rapidly rising case numbers.</p>
+<h2 id="a-look-at-case-numbers">A look at case numbers</h2>
+<p>The figure below shows the number of newly infected since July 28 per 100.000 inhabitants, for the six most affected municipalities.</p>
+<figure>
+    <img src="/change_in_infected.png"
+         alt="Relative case number increase since July 28 in the five most affected municipalities. Shaded regions indicate new cases since last reading. Aarhus and Ringsted, where initial superspreading occured, stand apart but other municipalities like Silkeborg (neighbor of Aarhus), and Ishøj and Brøndby (near Copenhagen) have increasing numbers of infected."/> <figcaption>
+            <p><em><strong>Relative case number increase since July 28</strong></em> <em>in the five most affected municipalities. Shaded regions indicate new cases since last reading. Aarhus and Ringsted, where initial superspreading occured, stand apart but other municipalities like Silkeborg (neighbor of Aarhus), and Ishøj and Brøndby (near Copenhagen) have increasing numbers of infected.</em></p>
+        </figcaption>
+</figure>
+
+<p>Since almost all media attention has focused on Aarhus and Ringsted, this figure is somewhat reassuring.
+<strong>Aarhus and Ringsted visibly stand apart in case numbers.</strong>
+Note also that the case number increase has stabilized to a linear increase in these places, and has seemingly ceased in Ringsted.</p>
+<h2 id="do-people-stay-at-home">Do people stay at home?</h2>
+<p>The most interesting measure of travel to inspect in relation to growing case numbers, is the degree to which people stay at home during the day.
+Read about how we measure this in the <a href="http://localhost:1313/visualizations/where_people_are_going_out/">Going out</a> visualization page.
+The two plots below are screenshots from that section of our website.
+Note that the curves are smoothened to a seven-day average to reveal trends.</p>
+<p>Looking at how much people leave their home during daytime in Aarhus, Ringsted and Ishøj compared to the whole country as a baseline, it is clear that, following July 28, a collective drop seems to occur.
+This is good news.
+Aarhus and Ringsted have received most of the medias attention, and this seems to have had an effect on the people&rsquo;s behavior.</p>
+<figure>
+    <img src="/travel_divergence.png"
+         alt="Deviation in how much people leave home during the day in Aarhus, Ringsted and Ishøj. The vertical dashed line indicates July 28 where case numbers suddenly rose."/> <figcaption>
+            <p><em><strong>Deviation in how much people leave home during the day in Aarhus, Ringsted and Ishøj</strong></em>. <em>The vertical dashed line indicates July 28 where case numbers suddenly rose.</em></p>
+        </figcaption>
+</figure>
+
+<p>Reversely, when we visualize the same metric for Silkeborg and Brøndby who are also in the top five of affected municipalities the opposite happens.
+Here, the number of people that spend time away from their homes during the day appears to increase.</p>
+<figure>
+    <img src="/travel_divergence_bad.png"
+         alt="Deviation in daily distance traveled for people in Brøndby and Silkeborg."/> <figcaption>
+            <p><em><strong>Deviation in daily distance traveled for people in Brøndby and Silkeborg</strong></em>.</p>
+        </figcaption>
+</figure>
+
+<h2 id="people-react-differently-across-the-country">People react differently across the country</h2>
+<p>To create an overview of how people in different parts of the country react to information about new case numbers, we visualize how their &ldquo;going out during the day&rdquo; behavior changes over time as case numbers increase.
+In the visualization, each circle represents a municipality, and the area of each circle on a given date corresponds to the total number of new cases in that municipality on that day.
+As you drag the time-slider, starting July 28, you see case numbers increase (circles going up) and &ldquo;going out&rdquo; behavior change (move left or right).
+<strong>Ideally, we should observe that circles move left as they go upwards.</strong>
+Circles moving left means that their inhabitants react to information about new cases of COVID-19 and self-quarantine accordingly.
+The percentage change is relative to the average from July 21 to 28.</p>
+
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+
+<div class='vis1' id='vis-casesvstravel'></div>
+<div id="slider-casesvstravelFig"></div>
+
+
+
+
+
+
+<script>
+
+	let spinnercasesvstravel = new Spinner(spinnerOpts).spin(document.getElementById('vis-casesvstravel'));
+
+	let instance_casesvstravel;
+	d3.json('/data/fb_vs_ssi.json').then(function(data) {
+		spinnercasesvstravel.stop();
+		instance_casesvstravel = new TimeSliderScatterPlot(
+			data, 'vis-casesvstravel', 'casesvstravelFig',
+			'Percent change in number of people not home during the day',
+			'New cases per 100.000',
+			'New cases',
+			'New cases per 100.000',
+			'Percent change in number of people not home during the day'
+		);
+		instance_casesvstravel.setup();
+		instance_casesvstravel.drawLayout();
+		instance_casesvstravel.drawData();
+	})
+
+</script>
+
+<p><strong>Things to discover in this plot:</strong></p>
+<ul>
+<li><strong>There is no apparent correlation between cases and behavior</strong>. We might have expected to see that more affected municipalities reduced going out behavior more, but this is only really the case for Aarhus and Ringsted. And in Ringsted even, this is only the case on weekends.</li>
+<li><strong>Aarhus is by far the biggest container of new corona cases</strong>. Accordingly, it is also the municipality where we see the clearest indication of self-quarantine in both weekdays and weekends.</li>
+<li><strong>No noticable change in behavior in Copenhagen (<em>København</em>)</strong>. In fact there is a slight increase in activity.</li>
+</ul>
+</article>
+ 
+      
+
+      <footer class="book-footer">
+        
+  <div class="flex justify-between">
+
+
+
+
+
+</div>
+
+ 
+        
+      </footer>
+
+      
+  
+  <div class="book-comments">
+
+</div>
+  
+ 
+
+      <label for="menu-control" class="hidden book-menu-overlay"></label>
+    </div>
+
+    
+  </main>
+
+  
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

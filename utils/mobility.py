@@ -140,7 +140,6 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         # Load data
         filename = fn_day + "_" + window + ".csv"
         data_tile = load_prepare_tile(PATH_IN_TILE + filename,iso)
-        filename = fn_days[idx] + "_" + window + ".csv"
         data_admin = load_prepare_admin(PATH_IN_ADMIN + filename,iso)
 
         # Relabel
