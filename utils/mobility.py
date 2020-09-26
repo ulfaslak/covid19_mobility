@@ -9,6 +9,7 @@ from tqdm import tqdm
 import requests as rq
 from functools import partial
 from countryinfo import CountryInfo
+from .utils import get_date_range
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
@@ -124,13 +125,19 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     # Filenames
     fn_days_tile = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_TILE) if fn.endswith('.csv')]))
     fn_days_admin = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN_ADMIN) if fn.endswith('.csv')]))
-    fn_days = sorted(set(fn_days_tile).intersection(fn_days_admin))
+    fn_days_exists = sorted(set(fn_days_tile).intersection(fn_days_admin))
+    if len(fn_days_exists)==0:
+        return
+    fn_days = get_date_range(country, fn_days_exists)
 
     # Loop
-    for idx, fn_day in tqdm(enumerate(fn_days[start:]), total=len(fn_days[start:])):
+    for idx, fn_day in tqdm(enumerate(fn_days), total=len(fn_days)):
         # Get the actual id for the date
-        idx_date = idx+start
-
+        idx_date = idx
+        if fn_day not in fn_days_exists:
+            continue
+        if data_out['allday']['all']['baseline'][idx_date] != 'undefined':
+            continue
         # Get weekday
         dt_obj = dt.datetime(year=int(fn_day[-10:-6]), month=int(fn_day[-5:-3]), day=int(fn_day[-2:]))
         weekday = dt_obj.weekday()
@@ -139,8 +146,11 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         
         # Load data
         filename = fn_day + "_" + window + ".csv"
-        data_tile = load_prepare_tile(PATH_IN_TILE + filename,iso)
-        data_admin = load_prepare_admin(PATH_IN_ADMIN + filename,iso)
+        try:    
+            data_tile = load_prepare_tile(PATH_IN_TILE + filename,iso)
+            data_admin = load_prepare_admin(PATH_IN_ADMIN + filename,iso)
+        except FileNotFoundError:
+            continue
 
         # Relabel
         data_tile['source_kommune'] = data_tile['start_'+adm_kommune]

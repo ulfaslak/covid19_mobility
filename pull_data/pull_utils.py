@@ -141,7 +141,7 @@ class data_updater:
         dl_links = np.array(links)[~np.isin(dates, os.listdir(f'{outdir}'))]
 
         wait_time = 1
-        while len(dl_links) > 0:
+        while (len(dl_links) > 0) and (wait_time<60):
             for link in tqdm(dl_links):
                 self.driver.get(link)
                 time.sleep(wait_time)

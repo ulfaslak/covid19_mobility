@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import os, json
 import datetime as dt
 from collections import defaultdict
@@ -38,6 +39,13 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         else:
             return 'undefined'
 
+    def get_date_range(country,days):
+        start_date = dt.datetime.strptime(days[0][len(country)+1:],"%Y_%m_%d")
+        end_date = dt.datetime.strptime(days[-1][len(country)+1:],"%Y_%m_%d")
+        t_diff = (end_date - start_date).days
+        days = [(start_date+dt.timedelta(days=i)).strftime(f"{country}_%Y_%m_%d") for i in range(t_diff+1)]
+        return days
+
     def getvalid(row):
         notnull = row.notnull()
         if notnull[0]:
@@ -68,14 +76,12 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         N_POP = CountryInfo(country).population()  # Danish population as of Thursday, April 16, 2020 (Worldometer)
 
     def update_data_out1(time, label, data):
-        data_out1[time][label].append(
-            (sum(abs(data.n_crisis - data.n_baseline)) / 2) / sum(data.n_baseline)
-        )
+        data_out1[time][label][idx] = (sum(abs(data.n_crisis - data.n_baseline)) / 2) / sum(data.n_baseline)
 
     def update_data_out2(time, label, data,idx):
         data_out2[time][label]['baseline'][idx] = sum(data.n_baseline)
         data_out2[time][label]['crisis'][idx] = sum(data.n_crisis)
-        data_out2[time][label]['percent_change'][idx] = percent_change(data_out2[time][label]['baseline'][-1], data_out2[time][label]['crisis'][-1])
+        data_out2[time][label]['percent_change'][idx] = percent_change(data_out2[time][label]['baseline'][idx], data_out2[time][label]['crisis'][idx])
 
 
 
@@ -94,7 +100,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             data_out2 = defaultify(data_out2,0)
         start = len(data_out1['allday']['country'])
     else:
-        data_out1 = defaultdict(lambda: defaultdict(list))
+        data_out1 = defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined")))
         data_out2 = defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined"))))
         start = 0
 
@@ -107,17 +113,23 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     data_out1['_meta']['locations'] = []
 
     # usage: data_out1['08']['country'].append(value)
-    fn_days = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN) if fn.endswith('.csv')]))
-
-    #import pdb; pdb.set_trace()
-    for idx, fn_day in tqdm(enumerate(fn_days[start:]), total=len(fn_days[start:])):
-        idx_date = idx + start   
+    fn_days_exists = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN) if fn.endswith('.csv')]))
+    fn_days = get_date_range(country,fn_days_exists)
+    for idx, fn_day in tqdm(enumerate(fn_days), total=len(fn_days)):
+        if fn_day not in fn_days_exists:
+            continue
         data_day = []
+        data = None
+        allday_check = np.any([(data_out1[fn_time[:2]]['country'][idx] == 'undefined') for fn_time in ['0000', '0800', '1600']])
         for fn_time in ['0000', '0800', '1600']:
-           
+            if not allday_check:
+                continue
             # Filter
             filename = fn_day + "_" + fn_time + ".csv"
-            data = load_prepare(PATH_IN + filename,iso)
+            try:
+                data = load_prepare(PATH_IN + filename,iso)
+            except FileNotFoundError:
+                continue
             data.index = data['lat'].round(3).astype(str) + "," + data['lon'].round(3).astype(str)
             data = data.drop(['lat', 'lon'], axis=1)
 
@@ -129,21 +141,31 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
             #import pdb;pdb.set_trace()
             update_data_out1(fn_time[:2], 'country', data)
             for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
-                update_data_out2(fn_time[:2], adm2, data.loc[data[adm_kommune] == adm2],idx_date)
+                update_data_out2(fn_time[:2], adm2, data.loc[data[adm_kommune] == adm2],idx)
         
+        if not allday_check:
+            continue
         # Concat
         data_allday = pd.concat(data_day, join="outer", axis=1)
         data = data_allday.copy()
         data = data.drop(['n_baseline', 'n_crisis', adm_region, adm_kommune], axis=1)
-        data['n_baseline'] = data_allday['n_baseline'].mean(1)
-        data['n_crisis'] = data_allday['n_crisis'].mean(1)
-        data[adm_region] = [getvalid(row) for _, row in data_allday[adm_region].iterrows()]
-        data[adm_kommune] = [getvalid(row) for _, row in data_allday[adm_kommune].iterrows()]
+        if len(data_day)>1:
+            data['n_baseline'] = data_allday['n_baseline'].mean(1)
+            data['n_crisis'] = data_allday['n_crisis'].mean(1)
+            data[adm_region] = [getvalid(row) for _, row in data_allday[adm_region].iterrows()]
+            data[adm_kommune] = [getvalid(row) for _, row in data_allday[adm_kommune].iterrows()]
+        elif len(data_day) == 1:
+            data['n_baseline'] = data_allday['n_baseline']
+            data['n_crisis'] = data_allday['n_crisis']
+            data[adm_region] = data_allday[adm_region]
+            data[adm_kommune] = data_allday[adm_kommune]
+        else:
+            continue
 
         # Add data to data_out
         update_data_out1('allday', 'country', data)
         for adm2 in set(data[adm_kommune].loc[data[adm_kommune].notnull()]):
-            update_data_out2('allday', adm2, data.loc[data[adm_kommune] == adm2],idx_date)
+            update_data_out2('allday', adm2, data.loc[data[adm_kommune] == adm2],idx)
 
 
     # Time

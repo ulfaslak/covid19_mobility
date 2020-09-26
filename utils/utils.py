@@ -10,6 +10,8 @@ import pickle
 import geopandas as gpd
 from utils import geo_utils
 from shapely.ops import nearest_points
+import datetime as dt
+from collections import defaultdict
 
 
 # def switch_denmark(data, adm):
@@ -411,6 +413,42 @@ def Update_CSV(data_path, country_name, save_path=None, dat_type='popu',adm =2):
         else:
             df_poputile_new.to_csv(data_path + file, index=False)
 
+def get_date_range(country, days):
+    start_date = dt.datetime.strptime(days[0][len(country)+1:],"%Y_%m_%d")
+    end_date = dt.datetime.strptime(days[-1][len(country)+1:],"%Y_%m_%d")
+    t_diff = (end_date - start_date).days
+    days = [(start_date + dt.timedelta(days=i)).strftime(f"{country}_%Y_%m_%d") for i in range(t_diff+1)]
+    return days
+
+class defaultlist(list):
+    def __init__(self, fx):
+        self._fx = fx
+    def _fill(self, index):
+        while len(self) <= index:
+            self.append(self._fx())
+    def __setitem__(self, index, value):
+        self._fill(index)
+        list.__setitem__(self, index, value)
+    def __getitem__(self, index):
+        self._fill(index)
+        return list.__getitem__(self, index)
+
+def defaultify(d, depth = 0):
+    if isinstance(d, dict):
+        if depth == 0:
+            return defaultdict(lambda: defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined"))), {k: defaultify(v,depth+1) for k, v in d.items()})
+        if depth == 1:
+            return defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: "undefined")), {k: defaultify(v,depth+1) for k, v in d.items()})
+        if depth == 2:
+            return defaultdict(lambda: defaultlist(lambda: "undefined"), {k: defaultify(v,depth+1) for k, v in d.items()})
+    elif isinstance(d, list):
+        tmp = defaultlist(lambda: "undefined")
+        tmp.extend(d)
+        return tmp
+    else:
+        return d
+
+        
 
 # def load_kdtree(country_name):
 #     country = pycountry.countries.get(name=country_name).alpha_2
