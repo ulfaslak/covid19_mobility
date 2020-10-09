@@ -61,7 +61,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/visualizations/telco_brush/</guid>
-      <description>Movements from telco data Visualization and data analysis by Ulf Aslak and Peter Møllgaard. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
+      <description>Highly detailed travel data within Denmark Visualization, data analysis and data processing by Ulf Aslak, Peter Møllgaard and Laura Alessandretti. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.</description>
     </item>
     
     <item>
@@ -136,7 +136,7 @@ At the peak of the Danish lock-down, most public employees (all except for those
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/posts/invader/</guid>
-      <description>Invader Post by Peter Edsberg Møllgaard. Published: DATE, 2020. 
+      <description>Invader Post by Jaume Palmer Real. Formatted by Peter Edsberg Møllgaard. Published: August 26, 2020. 
 In December 2019, a novel coronavirus strain (SARS-CoV-2) emerged in the city of Wuhan, China. In just a few months, this virus has taken over the world forcing countries all over to shut down, limit travel and lock down cities to avoid a worse spread. This is an unprecedented scenario, so it is obvious that people want to be informed: citizens and media alike have focused all their attention to cover the pandemic.</description>
     </item>
     
@@ -166,7 +166,7 @@ Description: A Movement map seperates the country into different areas. It then 
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/mobility/population/</guid>
-      <description>Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: June, 2, 2020 8:10:17
+      <description>Population density during lockdown Report by Ulf Aslak, Laura Alessandretti, and Sune Lehmann. Updated: August, 10, 2020 13:27:31
 .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .</description>
     </item>
     
@@ -207,8 +207,8 @@ As discussed in the Population Landscape post, we observed a massive decrease of
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/data-description/telco_data/</guid>
-      <description>Movement maps using telco data These data show the number of daily trips between Danish Municipalities, estimated from aggregated mobile phone data provided by four large telecommunication companies. The purpose of the data is to study changes in mobility behaviour following the interventions introduced by the Danish government in response to the COVID-19 pandemics. Data covers the period from 1. February of 2020.
-Statistical presentation The data includes the daily number of trips between pairs of municipalities.</description>
+      <description>Movement maps using telco data These data show the number of daily trips between Danish Municipalities, estimated from aggregated mobile phone data provided by four large telecommunication companies. It is not possible to infer individual mobility from this dataset. Data covers the period from 1. February of 2020.
+Origin of data The data set was delivered by four major Danish telcos to Statistics Denmark (DST) to help the Danish State Serum Institute (SSI) - the Danish equivalent to the US&amp;rsquo;s CDC - to model the spread of COVID-19 and understand population behavior in response to various lock-down/mitigation measures.</description>
     </item>
     
     <item>
@@ -217,7 +217,7 @@ Statistical presentation The data includes the daily number of trips between pai
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://covid19.compute.dtu.dk/mobility/mobility/</guid>
-      <description>Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: June, 2, 2020 8:10:17
+      <description>Traveling patterns and mobility Report by Ulf Aslak and Sune Lehmann. Updated: August, 10, 2020 13:27:31
 .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2.</description>
     </item>
     

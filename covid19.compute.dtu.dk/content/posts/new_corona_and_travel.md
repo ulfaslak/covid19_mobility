@@ -36,7 +36,7 @@ Note also that the case number increase has stabilized to a linear increase in t
 ## Do people stay at home?
 
 The most interesting measure of travel to inspect in relation to growing case numbers, is the degree to which people stay at home during the day. 
-Read about how we measure this in the [Going out](http://localhost:1313/visualizations/where_people_are_going_out/) visualization page.
+Read about how we measure this in the [Going out](http://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/) visualization page.
 The two plots below are screenshots from that section of our website. 
 Note that the curves are smoothened to a seven-day average to reveal trends.
 
@@ -59,7 +59,7 @@ In the visualization, each circle represents a municipality, and the area of eac
 As you drag the time-slider, starting July 28, you see case numbers increase (circles going up) and "going out" behavior change (move left or right). 
 **Ideally, we should observe that circles move left as they go upwards.** 
 Circles moving left means that their inhabitants react to information about new cases of COVID-19 and self-quarantine accordingly. 
-The percentage change is relative to the average from July 21 to 28.
+The percentage change on each day is relative to the average activity on four prior same weekdays.
 
 {{< figures/case_numbers_vs_travel >}}
 

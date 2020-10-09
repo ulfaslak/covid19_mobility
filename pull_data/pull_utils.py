@@ -102,6 +102,9 @@ class data_updater:
         list_of_failed = []
         for country in countries:
             print(f'{country}')
+            if country == 'Brazil':
+                print("Skipping Brazil")
+                continue
             for ix, i in enumerate(self.data.loc[['folder', country]].items()):
                 self.cwtype = self.data.columns[ix]
                 links, text = self.get_links(f'https://www.facebook.com/geoinsights-portal/downloads/?id={i[1][1]}')
@@ -144,7 +147,7 @@ class data_updater:
         dl_links = np.array(links)[~np.isin(dates, os.listdir(f'{outdir}'))]
 
         wait_time = 1
-        while len(dl_links) > 0:
+        while (len(dl_links) > 0) and (wait_time<60):
             for link in tqdm(dl_links):
                 self.driver.get(link)
                 time.sleep(wait_time)

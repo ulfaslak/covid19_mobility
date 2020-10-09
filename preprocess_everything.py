@@ -43,9 +43,9 @@ def run():
             adm_region = 'adm1'
             create_shape_file(country,2,data_path)
         iso = pycountry.countries.get(name=country).alpha_2
-        # mobility.run(country,iso,adm_region,adm_kommune)
-        # movements.run(country,iso,adm_region,adm_kommune)
-        # continue
+        #night_day_difference.run(country,iso,adm_region,adm_kommune)
+        #movements.run(country,iso,adm_region,adm_kommune)
+        #continue
         if country in ['Denmark','Sweden']:
             pscripts = [
                 absolute_deviation,

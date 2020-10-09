@@ -17,7 +17,6 @@ The dataset was officially requested by SSI and the legality of its use was ensu
 To release the data from DST, we have removed a small amount of data to ensure the origin of the data (which operator) is confidential, see below.
 We are currently working on releasing the full data set in downloadable form.
 
-## Statistical presentation
 The data includes the daily number of trips between pairs of municipalities. Each entry consists of: 
 * Unix timestamp
 * Origin: the KOMKODE of the Danish municipality where trips start
@@ -25,7 +24,7 @@ The data includes the daily number of trips between pairs of municipalities. Eac
 * Counts: estimated number of trips between origin and destination
 
 ## Statistical processing
-The number of trips are estimated combining aggregated location-based services data provided by four major Danish 
+The number of trips are estimated combining aggregated location data provided by four major Danish 
 telecommunication companies. First, we pre-processed the data to make the four datasets comparable. Secondly, we 
 combined the four datasets together. Finally, we filtered data to remove potentially sensitive information.
 
@@ -44,7 +43,7 @@ the same cell-tower for more than 15 minutes.
 
 *Coarse-grain space:* for c1, c2, and c4, we summed the number of trips originating from zipcodes in the same municipality 
 and directed to zipcodes in the same municipality.  
-*Coarse-grain time*: For c2, we summed the number of trips between a given origin and destination occurring in the same day. 
+*Coarse-grain time*: For c2, we summed the number of trips between a given origin and destination occurring in the same day.   
 *Adjust shares:* We renormalized the number of trips to make sure that the fraction of trips measured by each company is 
 approximately equivalent to the company’s share of customers. We proceeded as follows:
 * We computed the total number of trips {{< katex >}} T_c {{< /katex >}} in March by each company c. 
@@ -71,7 +70,7 @@ We compute the partial number of trips between {{< katex >}} A {{< /katex >}} an
 {{< katex >}} t* {{< /katex >}} using data from the available companies:
 {{< html >}} $$AB_{partial}(t*) = \sum_{i\neq c*} AB_{c*}(t).$$ {{< /html >}}
 We estimate the number of trips between {{< katex >}} A {{< /katex >}} and {{< katex >}} B {{< /katex >}} on day 
-{{< katex >}} t* {{{< /katex >}} by company {{< katex >}} c* {{< /katex >}} as:
+{{< katex >}} t* {{< /katex >}} by company {{< katex >}} c* {{< /katex >}} as:
 {{< html >}} $$AB_{c*}(t*) \sim \frac{AB_{partial}(t*)}{1-AB_{c*}}.$$ {{< /html >}}
 We finally compute {{< katex >}} AB(t*) {{< /katex >}} as:
 {{< html >}} $$AB(t*) \sim AB_{partial}(t*)+AB_{c*}(t*).$$ {{< /html >}}  
@@ -79,21 +78,12 @@ We finally compute {{< katex >}} AB(t*) {{< /katex >}} as:
 {{< html >}} <ins>Filtering:</ins> {{< /html >}}  
 
 We apply two filters:
-* We remove entries such that the number of trips between {{< katex >}} A {{< /katex >}} and {{< katex >}} b {{< /katex >}} 
+* We remove entries such that the number of trips between {{< katex >}} A {{< /katex >}} and {{< katex >}} B {{< /katex >}} 
 at time {{< katex >}} t {{< /katex >}} is larger than 5. Thus, we impose {{< katex >}} AB(t)>5 {{< /katex >}}.
 * We remove all entries with origin {{< katex >}} A {{< /katex >}} at time {{< katex >}} t {{< /katex >}} if any given 
 company accounts for more than {{< katex >}} 80\% {{< /katex >}} of the total number of outgoing trips from {{< katex >}} A {{< /katex >}}.
 Thus we impose: 
 {{< html >}} $$\frac{\sum_BAB_c(t)}{\sum_BAB(t)}<0.8,$$ {{< /html >}} 
 for all companies {{< katex >}} c {{< /katex >}}.
-
-## Relevance 
-Government departments, academic groups and other organizations which want to study how the COVID crisis affected 
-mobility behaviour in Denmark. 
-
-## Accuracy and reliability
-The statistics is based on combining data from different mobile-phone sources using heuristics. Trends are reliable 
-but exact counts are only indicative
-
 
 

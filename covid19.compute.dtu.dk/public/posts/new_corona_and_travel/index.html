@@ -8,7 +8,7 @@
 <meta property="og:description" content="How new corona cases impact local behavior Post by Ulf Aslak. Published: Aug, 19, 2020. .vis { margin: 0 auto; height: 370px; } .vis1 { margin: 0 auto; height: 500px; } .line-baseline { stroke: black; stroke-width: 1.5; fill: none; stroke-dasharray: 10 5; opacity: 0.2; } .line-crisis { fill: none; stroke: black; stroke-width: 2; stroke-opacity: 0.25; } .line-changeall { fill: none; stroke: black; stroke-width: 1; stroke-opacity: 0.7; } .line-tooltip { stroke: &#39;black&#39;; stroke-dasharray: 5 2." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://covid19.compute.dtu.dk/posts/new_corona_and_travel/" />
-<meta property="article:modified_time" content="2020-08-24T13:07:55+02:00" />
+<meta property="article:modified_time" content="2020-08-19T16:45:32+02:00" />
 <title>How new corona cases impact travel | COVID-19 mobility</title>
 <link rel="icon" href="/favicon.png" type="image/x-icon">
 
@@ -66,6 +66,8 @@ https://github.com/alex-shpak/hugo-book
 <ul>
 <li><em>August</em>
 <ul>
+<li><a href="/posts/invader/">26 - <em>Denmark</em>:<br>
+Invader</a></li>
 <li><a href="/posts/new_corona_and_travel/"class=active>19 - <em>Denmark</em>:<br>
 New cases and travel</a></li>
 </ul>
@@ -109,6 +111,7 @@ Population landscape</a></li>
 </li>
 <li><em>How people move</em>
 <ul>
+<li><a href="/visualizations/telco_brush/"><strong>New</strong>: Travel in Denmark</a></li>
 <li><a href="/visualizations/how_people_move_movements_between_municipalities/">Movements between regions</a></li>
 <li><a href="/visualizations/how_people_move_distance_traveled/">Distance traveled</a></li>
 <li><a href="/visualizations/how_people_move_staying_home/">Staying home</a></li>
@@ -121,7 +124,8 @@ Population landscape</a></li>
 <p><strong>Data</strong></p>
 <ul>
 <li><a href="/data-description/population_density_maps/">Population Density Maps</a></li>
-<li><a href="/data-description/movement_maps/">Movement Maps</a>
+<li><a href="/data-description/movement_maps/">Movement Maps</a></li>
+<li><a href="/data-description/telco_data/">Movement Maps using Telco data</a>
 <!-- raw HTML omitted --></li>
 </ul>
 </li>
@@ -468,7 +472,7 @@ Any sign of behavioral change we can detect in our data is, therefore, mostly du
 Note also that the case number increase has stabilized to a linear increase in these places, and has seemingly ceased in Ringsted.</p>
 <h2 id="do-people-stay-at-home">Do people stay at home?</h2>
 <p>The most interesting measure of travel to inspect in relation to growing case numbers, is the degree to which people stay at home during the day.
-Read about how we measure this in the <a href="http://localhost:1313/visualizations/where_people_are_going_out/">Going out</a> visualization page.
+Read about how we measure this in the <a href="http://covid19.compute.dtu.dk/visualizations/where_people_are_going_out/">Going out</a> visualization page.
 The two plots below are screenshots from that section of our website.
 Note that the curves are smoothened to a seven-day average to reveal trends.</p>
 <p>Looking at how much people leave their home during daytime in Aarhus, Ringsted and Ishøj compared to the whole country as a baseline, it is clear that, following July 28, a collective drop seems to occur.
@@ -496,7 +500,7 @@ In the visualization, each circle represents a municipality, and the area of eac
 As you drag the time-slider, starting July 28, you see case numbers increase (circles going up) and &ldquo;going out&rdquo; behavior change (move left or right).
 <strong>Ideally, we should observe that circles move left as they go upwards.</strong>
 Circles moving left means that their inhabitants react to information about new cases of COVID-19 and self-quarantine accordingly.
-The percentage change is relative to the average from July 21 to 28.</p>
+The percentage change on each day is relative to the average activity on four prior same weekdays.</p>
 
 
 <!DOCTYPE html>

@@ -6,6 +6,7 @@ from collections import defaultdict
 from tqdm import tqdm
 import requests as rq
 from countryinfo import CountryInfo
+from .utils import defaultify, get_date_range
 
 def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def load_prepare(path,iso):
@@ -24,17 +25,6 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     def percent_change(v0, v1):
         return (v1 - v0) / v0
 
-    def defaultify(d, depth=0):
-        if isinstance(d, dict):
-            if depth == 0:
-                return defaultdict(lambda: defaultdict(lambda: defaultdict(list)),
-                                   {k: defaultify(v, depth + 1) for k, v in d.items()})
-            if depth == 1:
-                return defaultdict(lambda: defaultdict(list), {k: defaultify(v, depth + 1) for k, v in d.items()})
-            if depth == 2:
-                return defaultdict(list, {k: v for k, v in d.items()})
-
-
 
     if country == 'Czechia':
         N_POP = CountryInfo('Czech Republic').population()
@@ -42,14 +32,13 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         N_POP = CountryInfo(country).population()
         
 
-    def update_data_out(level, data08, data16):
+    def update_data_out(level, data08, data16, idx):
         data_diff_b = (data08.n_baseline - data16.n_baseline)
         data_diff_c = (data08.n_crisis - data16.n_crisis)
-        data_out['allday'][level]['baseline'].append(data_diff_b.loc[data_diff_b > 0].sum())
-        data_out['allday'][level]['crisis'].append(data_diff_c.loc[data_diff_c > 0].sum())
-        data_out['allday'][level]['percent_change'].append(
-            np.nan_to_num(percent_change(data_out['allday'][level]['baseline'][-1], data_out['allday'][level]['crisis'][-1]))
-        )
+        data_out['allday'][level]['baseline'][idx] = data_diff_b.loc[data_diff_b > 0].sum()
+        data_out['allday'][level]['crisis'][idx] = data_diff_c.loc[data_diff_c > 0].sum()
+        data_out['allday'][level]['percent_change'][idx] = np.nan_to_num(percent_change(data_out['allday'][level]['baseline'][idx], data_out['allday'][level]['crisis'][idx]))
+        
 
     PATH_IN = f'Facebook/{country}/population_tile/'
     PATH_OUT = 'covid19.compute.dtu.dk/static/data/'
@@ -58,30 +47,37 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
     if path_boo:
         with open(f'{PATH_OUT}{country}_night_day_difference.json', 'r') as fp:
             data_out = json.load(fp)
-            data_out = defaultify(data_out)
+            data_out = defaultify(data_out,0)
         start = len(data_out['allday']['all']['baseline'])
     else:
-        data_out = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
-        start = 0
+        data_out = defaultify({},0)
 
     data_out['_meta']['defaults'] = {}
     data_out['_meta']['variables'] = {}
     data_out['_meta']['datetime'] = []
     data_out['_meta']['locations'] = []
 
-    fn_days = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN) if fn.endswith('.csv')]))
-    for fn_day in tqdm(fn_days[start:]):
+    fn_days_exists = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN) if fn.endswith('.csv')]))
+    fn_days = get_date_range(country, fn_days_exists)
+    for idx, fn_day in tqdm(enumerate(fn_days), total=len(fn_days)):
+        if fn_day not in fn_days_exists:
+            continue
+        if data_out['allday']['all']['baseline'][idx] != 'undefined':
+            continue
 
            
         # Load and filter
-        data08 = load_prepare(PATH_IN + fn_day + "_" + "0800" + ".csv",iso)
+        try:    
+            data08 = load_prepare(PATH_IN + fn_day + "_" + "0800" + ".csv",iso)
+            data16 = load_prepare(PATH_IN + fn_day + "_" + "1600" + ".csv",iso)
+        except FileNotFoundError:
+            continue
         data08.index = data08['lat'].round(3).astype(str) + "," + data08['lon'].round(3).astype(str)
         data08['kommune'] = data08[adm_kommune]
         data08['n_baseline'] *= N_POP / data08.n_baseline.astype(float).sum()
         data08['n_crisis'] *= N_POP / data08.n_crisis.astype(float).sum()
         data08 = data08.drop(['lat', 'lon'], axis=1)
 
-        data16 = load_prepare(PATH_IN + fn_day + "_" + "1600" + ".csv",iso)
         data16.index = data16['lat'].round(3).astype(str) + "," + data16['lon'].round(3).astype(str)
         data16['kommune'] = data16[adm_kommune]
         data16['n_baseline'] *= N_POP / data16.n_baseline.astype(float).sum()
@@ -95,11 +91,11 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
         kommunes = sorted(set(data08_nn.kommune.tolist() + data16_nn.kommune.tolist()))
 
         # Add data to data_out
-        update_data_out('all', data08, data16)
+        update_data_out('all', data08, data16, idx)
         for kommune in kommunes:
             data08_kommune = data08.loc[data08.kommune == kommune]
             data16_kommune = data16.loc[data16.kommune == kommune]
-            update_data_out(kommune, data08_kommune, data16_kommune)
+            update_data_out(kommune, data08_kommune, data16_kommune, idx)
             
 
     # Time
