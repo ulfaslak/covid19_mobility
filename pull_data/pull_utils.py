@@ -141,11 +141,11 @@ class data_updater:
         dl_links = np.array(links)[~np.isin(dates, os.listdir(f'{outdir}'))]
 
         wait_time = 1
-        while (len(dl_links) > 0) and (wait_time<60):
+        while (len(dl_links) > 0) and (wait_time<20):
             for link in tqdm(dl_links):
                 self.driver.get(link)
                 time.sleep(wait_time)
-            wait_time = min(wait_time+10,60)
+            wait_time = min(wait_time+5,20)
             self.move_most_recent_files(outdir, links,country)
             dl_links = np.array(links)[~np.isin(dates, os.listdir(f'{outdir}'))]
 
