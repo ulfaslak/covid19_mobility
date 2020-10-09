@@ -7,6 +7,7 @@ import pandas as pd
 import os
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome import webdriver as chrome_webdriver
+from selenium.common.exceptions import NoSuchElementException
 import sys
 import numpy as np
 import glob
@@ -51,7 +52,12 @@ class data_updater:
         self.driver.get('https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fgeoinsights-portal%2F')
         self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(self.keys[0])
         self.driver.find_element_by_xpath('//*[@id="pass"]').send_keys(self.keys[1])
+        try:
+            self.driver.find_element_by_xpath('//*[@data-cookiebanner="accept_button"]').click()
+        except NoSuchElementException:
+            print("No cookie banner, skipping click.")
         self.driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
+        import pdb;pdb.set_trace()
 
     def add_countries(self, countries):
         # Adds country IDs to the data
