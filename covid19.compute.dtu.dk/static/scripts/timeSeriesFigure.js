@@ -22,6 +22,7 @@ class TimeSeriesFigure {
 
 		// Ranges
 		this.x = d3.scaleTime().range([0, this.width]);
+        this.x2 = this.x.copy();
 		this.y = d3.scaleLinear().range([this.height, 0]);
 
 		// Axes
@@ -41,12 +42,61 @@ class TimeSeriesFigure {
 		// SVG
 		this.svg = d3.select("#" + this.mainDivId)
 			.append("svg")
-				.attr("width", this.width + margin.left + margin.right)
-				.attr("height", this.height + margin.top + margin.bottom)
-			.append("g")
+                .attr("viewBox", [0,0,this.width + margin.left + margin.right, this.height + margin.top + margin.bottom])
+//                 .attr("clip-path", "url(#clip)")
+// 				.attr("width", this.width + margin.left + margin.right)
+// 				.attr("height", this.height + margin.top + margin.bottom)
+            .append("g")
 				.attr("transform", 
 						"translate(" + margin.left + "," + margin.top + ")");
+        
+        this.svg.append("clipPath")
+              .attr("id", "clip")
+            .append("rect")
+              .attr("x", 0)
+              .attr("y", 0)
+              .attr("width", this.width)
+              .attr("height", this.height+10);
+        
+        this.svg.call(
+			d3.zoom()
+				.extent([[margin.left, 0], [this.width - margin.right, this.height]])
+                .translateExtent([[margin.left, -Infinity], [this.width - margin.right, Infinity]])
+				.scaleExtent([1, 4])
+				.on("zoom", () => this.zoomed())
+		).on("dblclick.zoom", null);
+        
 	}
+    
+    // Testing zoom
+    zoomed() {
+		this.x = d3.event.transform.rescaleX(this.x2);
+        this.xAxis.scale(this.x)
+        this.clearData()
+        this.clearForZoom()
+        this.svg.selectAll(".x").filter(".axis").remove()
+        this.svg.selectAll(".shade").remove()
+        this.svg.selectAll(".noData").remove()
+        this.svg.selectAll(".histEventDot").remove()
+        this.svg.selectAll(".histEvent").remove()
+        this.svg.selectAll(".line-tooltip").remove()
+        this.svg.selectAll(".rect-tooltip").remove()
+        this.drawShades()
+        this.drawEventLines()
+        this.redrawData()
+        this.drawXAxis()
+        this.addTooltip()
+//         this.drawXAxis()
+//         console.log(this.x.domain())
+	}
+//     zoomed() {
+//         const xz = d3.event.transform.rescaleX(this.x);
+//         path.attr("d", area(this.data, xz));
+//         this.svg.call(this.xAxis, xz);
+//     }
+    
+
+    
 
 
 	// Clear and recreate
@@ -58,6 +108,11 @@ class TimeSeriesFigure {
 
 	redrawData() {
 	}
+    
+    clearForZoom() {
+        this.svg.selectAll('shade').remove();
+        this.svg.selectAll('shade').remove();
+    }
 
 
 	// Setup
@@ -75,6 +130,7 @@ class TimeSeriesFigure {
 
 		// Scale
 		this.x.domain(d3.extent(this.time_shown));
+        this.x2 = this.x.copy()
 	}
 
 	setRadio() {
@@ -261,6 +317,7 @@ class TimeSeriesFigure {
 			.attr("height", dy)
 			.style('fill', '#ecf0f1')
 			.style('fill-opacity', 1)
+            .attr("clip-path", "url(#clip)")
 
 		// NO DATA SHADE
 		this.svg.append('rect')
@@ -271,12 +328,17 @@ class TimeSeriesFigure {
 			.attr('fill', 'url(#lines)')
 			.attr('stroke-width', 1.5)
 			.attr('fill-opacity', 0.2)
+            .attr('class', 'noData')
+            .attr("clip-path", "url(#clip)")
+        
 		this.svg.append('text')
-			.attr('x', 10)
+			.attr('x', this.x(this.time_shown[0])+30)
 			.attr('y', 20)
 			.style("font-weight", 0)
 			.style("font-size", "12px")
 			.text('NO DATA')
+            .attr('class','noData')
+            .attr("clip-path", "url(#clip)")
 	}
 
 	drawXAxis() {
@@ -295,11 +357,13 @@ class TimeSeriesFigure {
 				.attr('x2', this.x(this.parseDate(d[0])))
 				.attr('y1', this.height)
 				.attr('y2', this.height)
+                .attr("clip-path", "url(#clip)")
 			this.svg.append('circle')
 				.attr('class', 'histEventDot')
 				.attr('cx', this.x(this.parseDate(d[0])))
 				.attr('cy', this.height+3.5)
 				.attr('r', 3)
+                .attr("clip-path", "url(#clip)")
 				.on('mouseover', () => this.mouseover())
 				.on('mousemove', () => {
 					this.mousemoveHistEvent(d);
@@ -327,6 +391,7 @@ class TimeSeriesFigure {
 			.attr('class', 'line-baseline')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
+            .attr("clip-path", "url(#clip)")
 	}
 
 	addTooltip() {
@@ -336,6 +401,7 @@ class TimeSeriesFigure {
 			.style('stroke', 'black')
 			.style('stroke-width', 1)
 			.attr('stroke-opacity', 0)
+            .attr("clip-path", "url(#clip)")
 		
 		this.svg.append('rect')
 			.attr('class', 'rect-tooltip')
@@ -343,6 +409,7 @@ class TimeSeriesFigure {
 			.attr('y', 0)
 			.attr('width', this.x(this.time[this.time.length-1]) - this.x(this.time[0]))
 			.attr('height', this.height)
+            .attr("clip-path", "url(#clip)")
 			.on('mouseover', () => this.mouseover())
 			.on('mousemove', () => {
 				let mouseXY = d3.mouse(this.svg.node());
@@ -581,6 +648,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('class', 'trendline')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
+            .attr("clip-path", "url(#clip)")
 	}
 
 	drawValue() {
@@ -590,6 +658,7 @@ class SingleLinePlot extends TimeSeriesFigure {
 			.attr('class', 'line-crisis')
 			.attr("id", "data" + this.uniqueId)
 			.attr('d', this.valueline)
+            .attr("clip-path", "url(#clip)")
 	}
 
 
@@ -917,6 +986,7 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.showBaseline ? null : 0)
+                .attr("clip-path", "url(#clip)")
         })
 	}
 
@@ -930,6 +1000,7 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.show7DAvg ? null : 0)
 			    .style('stroke',() => {if ( this.levelColors !== undefined) {return this.colors[this.levelColors[level]]}})
+                .attr("clip-path", "url(#clip)")
          })
 	}
 
@@ -942,6 +1013,7 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.showDaily ? null : 0)
+                .attr("clip-path", "url(#clip)")
         })
 	}
 
@@ -955,6 +1027,7 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr('d', this.valueline)
 			    .style('stroke-opacity', this.show7DAvg ? null : 0)
 			    .style('stroke',() => {if (this.levelColors !== undefined) { return this.colors[this.levelColors[level]]}})
+                .attr("clip-path", "url(#clip)")
         })
 	}
 
@@ -966,7 +1039,8 @@ class DeviationPlot extends TimeSeriesFigure {
                 .attr('class', 'line-crisis')
                 .attr("id", "data" + this.uniqueId)
                 .attr('d', this.valueline)
-			    .style('stroke-opacity', this.showDaily ? null : 0);
+			    .style('stroke-opacity', this.showDaily ? null : 0)
+                .attr("clip-path", "url(#clip)");
         })
 	}
 
@@ -1177,6 +1251,7 @@ class MultiLinePlot extends DeviationPlot {
 			.attr('class', 'line-changeall ' + level.replace(" ", "-"))
 			.attr("id", 'data' + this.uniqueId)
 			.attr('d', this.valueline)
+            .attr("clip-path", "url(#clip)")
 	}
 
 	drawCrisisCount(level) {
@@ -1192,6 +1267,7 @@ class MultiLinePlot extends DeviationPlot {
 			.attr('class', 'line-changeall ' + level.replace(" ", "-"))
 			.attr("id", 'data' + this.uniqueId)
 			.attr('d', this.valueline)
+            .attr("clip-path", "url(#clip)")
 	}
 
 

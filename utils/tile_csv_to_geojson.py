@@ -110,7 +110,7 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 #   with open('utils/globals/tile_kommune_map.json', 'w') as fp:
 #       json.dump(tile_kommune_map, fp)  
 
-    with open(f"{PATH_OUT}{country}_meta.json", 'w', encoding="utf-8") as fp:
+    with open(f"{PATH_OUT}meta.json", 'w', encoding="utf-8") as fp:
         json.dump({'n_files': N_files}, fp)
 
 if __name__ == "__main__":

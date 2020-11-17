@@ -57,7 +57,6 @@ class data_updater:
         except NoSuchElementException:
             print("No cookie banner, skipping click.")
         self.driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
-        import pdb;pdb.set_trace()
 
     def add_countries(self, countries):
         # Adds country IDs to the data

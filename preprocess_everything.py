@@ -46,7 +46,7 @@ def run():
         #night_day_difference.run(country,iso,adm_region,adm_kommune)
         #movements.run(country,iso,adm_region,adm_kommune)
         #continue
-        if country in ['Denmark','Sweden']:
+        if country in ['Denmark']:#,'Sweden']: # Needs to change tile vise meta file names if it should work with Sweden
             pscripts = [
                 absolute_deviation,
                 gini_over_time,
