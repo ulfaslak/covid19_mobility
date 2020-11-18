@@ -60,8 +60,8 @@ class TimeSeriesFigure {
         
         this.svg.call(
 			d3.zoom()
-				.extent([[margin.left, 0], [this.width - margin.right, this.height]])
-                .translateExtent([[margin.left, -Infinity], [this.width - margin.right, Infinity]])
+				.extent([[0, 0], [this.width, this.height]])
+                .translateExtent([[0, -Infinity], [this.width, Infinity]])
 				.scaleExtent([1, 4])
 				.on("zoom", () => this.zoomed())
 		).on("dblclick.zoom", null);
@@ -332,13 +332,14 @@ class TimeSeriesFigure {
             .attr("clip-path", "url(#clip)")
         
 		this.svg.append('text')
-			.attr('x', this.x(this.time_shown[0])+30)
+			.attr('x', this.x(this.time[0].addDays(-1)))
 			.attr('y', 20)
 			.style("font-weight", 0)
 			.style("font-size", "12px")
 			.text('NO DATA')
             .attr('class','noData')
             .attr("clip-path", "url(#clip)")
+            .attr("text-anchor","end")
 	}
 
 	drawXAxis() {
