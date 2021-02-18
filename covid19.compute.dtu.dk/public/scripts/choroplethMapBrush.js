@@ -734,7 +734,7 @@ class MovementsMapBrush {
 			.attr('text-anchor', 'end')
 			.attr('font-size', 11)
 			.style('stroke', '#999999')
-			.html('More restriction')
+			.html('More restrictions')
 			
 
 		// Draw axis
