@@ -131,6 +131,8 @@ def run(country):
     # Load data
     data = pd.read_csv(PATH_IN_DAT + 'df_safe.csv.gz', parse_dates=['date'],
                       dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
+    # removing zip code which does not exist in zip codes. Assuming it's Christiansø.
+    data = data[(data.origin_area_code != 411) & (data.destination_area_code != 411)]
     #df2 = pd.read_csv(PATH_IN_DAT + 'df_safe_within.csv.gz', parse_dates=['date'],
     #                  dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
 
@@ -166,7 +168,7 @@ def run(country):
     else:
         data_out = defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: 0)))
         start = 0
-
+    #start = max(0,start-7)
 
     fn_days = data.index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
 

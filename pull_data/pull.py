@@ -15,7 +15,8 @@ def run():
     driver_path = '/home/petem/HOPE/WorldCovid19/'
     updater = data_updater(download_folder=dl_folder, outdir=outdir,headless=True,path=country_file,creds=creds,driver_path=driver_path)
     updater.remove_empty_files(outdir)
-    updater.download_countries(updater.data.index[1:])
+    updater.download_countries(["Denmark","Sweden"])
+    #updater.download_countries(updater.data.index[1:])
     #updater.download_id('https://www.facebook.com/geoinsights-portal/downloads/?id=642750926308152&extra[crisis_name]=DK_NUTS3','Denmark','Movement_range')
 
 

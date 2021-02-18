@@ -706,6 +706,36 @@ class MovementsMapBrush {
 			.style('stroke', '#999999')
 			.html('New outbreaks')
 			
+		this.svgBrush.append("line")
+			.attr('x1', xi(310))
+			.attr('x2', xi(310))
+			.attr('y1', this.margin.top)
+			.attr('y2', figheight)
+			.attr('class', 'line-baseline')
+
+		this.svgBrush.append('text')
+			.attr('x', xi(310) - 4)
+			.attr('y', 75)
+			.attr('text-anchor', 'end')
+			.attr('font-size', 11)
+			.style('stroke', '#999999')
+			.html('Second Lockdown')
+			
+		this.svgBrush.append("line")
+			.attr('x1', xi(338)+1)
+			.attr('x2', xi(338)+1)
+			.attr('y1', this.margin.top)
+			.attr('y2', figheight)
+			.attr('class', 'line-baseline')
+
+		this.svgBrush.append('text')
+			.attr('x', xi(338) + 1 - 4)
+			.attr('y', 20)
+			.attr('text-anchor', 'end')
+			.attr('font-size', 11)
+			.style('stroke', '#999999')
+			.html('More restrictions')
+			
 
 		// Draw axis
 		this.svgBrush.append("g")	

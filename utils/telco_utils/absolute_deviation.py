@@ -22,6 +22,7 @@ def run(country):
     def load_prepare(path,path_zips,ref_date):
         data = pd.read_csv(f'{path}df_safe.csv.gz', parse_dates=['date'],
                           dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
+        data = data[(data.origin_area_code != 411) & (data.destination_area_code != 411)]
         #df2 = pd.read_csv(f'{path}df_safe_within.csv.gz', parse_dates=['date'],
         #                  dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
         data = compute_relative_change(data,ref_date)

@@ -24,6 +24,7 @@ class TimeSeriesFigure {
 		this.x = d3.scaleTime().range([0, this.width]);
         this.x2 = this.x.copy();
 		this.y = d3.scaleLinear().range([this.height, 0]);
+        this.y2 = this.y.copy();
 
 		// Axes
 		this.xAxis = d3.axisBottom(this.x).ticks(6);
@@ -60,16 +61,16 @@ class TimeSeriesFigure {
         
         this.svg.call(
 			d3.zoom()
-				.extent([[margin.left, 0], [this.width - margin.right, this.height]])
-                .translateExtent([[margin.left, -Infinity], [this.width - margin.right, Infinity]])
+				.extent([[0, 0], [this.width, this.height]])
+                .translateExtent([[0, -Infinity], [this.width, Infinity]])
 				.scaleExtent([1, 4])
-				.on("zoom", () => this.zoomed())
+				.on("zoom", () => (d3.event.altKey) ? this.zoomed_y() : this.zoomed_x())
 		).on("dblclick.zoom", null);
         
 	}
     
     // Testing zoom
-    zoomed() {
+    zoomed_x() {
 		this.x = d3.event.transform.rescaleX(this.x2);
         this.xAxis.scale(this.x)
         this.clearData()
@@ -86,14 +87,26 @@ class TimeSeriesFigure {
         this.redrawData()
         this.drawXAxis()
         this.addTooltip()
-//         this.drawXAxis()
-//         console.log(this.x.domain())
-	}
-//     zoomed() {
-//         const xz = d3.event.transform.rescaleX(this.x);
-//         path.attr("d", area(this.data, xz));
-//         this.svg.call(this.xAxis, xz);
-//     }
+        }
+
+    zoomed_y() {
+		this.y = d3.event.transform.rescaleY(this.y2);
+        this.yAxis.scale(this.y)
+        this.clearData()
+        this.clearForZoom()
+        this.svg.selectAll(".y").filter(".axis").remove()
+        this.svg.selectAll(".shade").remove()
+        this.svg.selectAll(".noData").remove()
+        this.svg.selectAll(".histEventDot").remove()
+        this.svg.selectAll(".histEvent").remove()
+        this.svg.selectAll(".line-tooltip").remove()
+        this.svg.selectAll(".rect-tooltip").remove()
+        this.drawShades()
+        this.drawEventLines()
+        this.redrawData()
+        this.drawYAxis()
+        this.addTooltip()
+        }
     
 
     
@@ -332,13 +345,14 @@ class TimeSeriesFigure {
             .attr("clip-path", "url(#clip)")
         
 		this.svg.append('text')
-			.attr('x', this.x(this.time_shown[0])+30)
+			.attr('x', this.x(this.time[0].addDays(-1)))
 			.attr('y', 20)
 			.style("font-weight", 0)
 			.style("font-size", "12px")
 			.text('NO DATA')
             .attr('class','noData')
             .attr("clip-path", "url(#clip)")
+            .attr("text-anchor","end")
 	}
 
 	drawXAxis() {
@@ -773,14 +787,15 @@ class DeviationPlot extends TimeSeriesFigure {
 			]
 
 		} else if (this.mode == 'count') {
-			this.data._meta.timeframes.forEach(timeframe => {
+			//this.data._meta.timeframes.forEach(timeframe => {
 				(this.level).forEach(level => {
-                    if (level in this.data[timeframe]){
-					    allYVals.push(...this.data[timeframe][level]['crisis'])
-					    allYVals.push(...this.data[timeframe][level]['baseline'])
+                    if (level in this.data[this.timeframe]){
+					    allYVals.push(...this.data[this.timeframe][level]['crisis'])
+					    allYVals.push(...this.data[this.timeframe][level]['baseline'])
+                        
                     }
 				})
-			})
+			//})
 			let yMin = 0
 		    let yMax = d3.max(allYVals,Number);
 
@@ -1220,6 +1235,7 @@ class MultiLinePlot extends DeviationPlot {
 		]
 
 		this.y.domain(this.yrange);
+        this.y2 = this.y.copy()
 	}
 
 

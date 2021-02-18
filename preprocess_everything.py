@@ -32,7 +32,7 @@ def run():
     # return
     # Then run in parallel
     print('\n-----------\nrun in parallel:\n----------------')
-    for country in country_list:
+    for country in ['Denmark','Sweden']: #country_list:
         print(f'Processing {country}')
         if country == 'Ireland':
             adm_kommune = 'adm1'
@@ -46,7 +46,7 @@ def run():
         #night_day_difference.run(country,iso,adm_region,adm_kommune)
         #movements.run(country,iso,adm_region,adm_kommune)
         #continue
-        if country in ['Denmark']:#,'Sweden']: # Needs to change tile vise meta file names if it should work with Sweden
+        if country in ['Denmark','Sweden']:
             pscripts = [
                 absolute_deviation,
                 gini_over_time,

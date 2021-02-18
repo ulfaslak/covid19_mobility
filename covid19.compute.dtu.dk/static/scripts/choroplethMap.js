@@ -382,11 +382,17 @@ class MovementsMap {
 	setSlider() {
 		// Define
 		let N = this.datetime.length
+        let indexes = [], i;
+        for (i = 0; i < N; i++)
+            if (this.parseDate(this.datetime[i]).getDate()===1)
+                indexes.push(i);
+
 		let sliderStep = d3.sliderBottom()
 			.min(0)
 			.max(N-1)
 			.width(this.width - this.rwidth - 60)
-			.tickValues(d3.range(2, N, 14))
+			//.tickValues(d3.range(2, N, 30))
+			.tickValues(indexes)
 			.tickFormat(i => this.idxToDate(i))
 			.step(1)
 			.default(this.t)
