@@ -16,6 +16,8 @@ import operator
 import json
 from tqdm import tqdm
 import re
+from zipfile import ZipFile
+import datetime as dt
 
 class data_updater:
 
@@ -28,7 +30,7 @@ class data_updater:
         self.download_folder = download_folder
         self.headless = headless
         self.driver_path = driver_path
-        self.data_types = ['Movement between Admin', 'Movement between Tiles', 'Facebook Population (Admin',
+        self.data_types = ['Movement between Admin', 'Movement between tiles', 'Facebook Population (Admin',
                           'Facebook Population (Tile']
         self.load_data(path)
 
@@ -49,15 +51,17 @@ class data_updater:
 
     def login(self):
         # Login to facebook
-        self.driver.get('https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fgeoinsights-portal%2F')
-        self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(self.keys[0])
-        self.driver.find_element_by_xpath('//*[@id="pass"]').send_keys(self.keys[1])
+        self.driver.get('https://www.facebook.com/')
+        #self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
         try:
             self.driver.find_element_by_xpath('//*[@data-cookiebanner="accept_button"]').click()
         except NoSuchElementException:
             print("No cookie banner, skipping click.")
-        self.driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
-        import pdb;pdb.set_trace()
+        self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(self.keys[0])
+        self.driver.find_element_by_xpath('//*[@id="pass"]').send_keys(self.keys[1])
+        # self.driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
+        self.driver.find_element_by_xpath('//*[@name="login"]').click()
+        self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
 
     def add_countries(self, countries):
         # Adds country IDs to the data
@@ -101,6 +105,35 @@ class data_updater:
         time.sleep(3)
         list_of_failed = []
         for country in countries:
+            query = f'{country} Coronavirus Disease Prevention Map'
+            self.driver.find_element_by_xpath('//*[@placeholder="Search for a dataset by name"]').clear()
+            self.driver.find_element_by_xpath('//*[@placeholder="Search for a dataset by name"]').send_keys(query)
+            time.sleep(3)
+            for dat_type in self.data_types:
+                outdir = self.outdir + '/' + country + '/' + self.data[dat_type]['folder'] + '/' 
+                element = self.driver.find_elements_by_xpath(f'//div[contains(text(),"{dat_type}")]')
+                parent_element = element[0].find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..')
+                parent_element.find_element_by_xpath(f'.//div[contains(text(),"Download")]').click()
+                element_check = self.driver.find_elements_by_xpath(f'//div[contains(text(),"Last 7 days")]')
+                if len(element_check) > 0:
+                    #Checking if newest file is already downloaded
+                    date_structure = element_check[0].get_attribute('innerHTML')[-12:]
+                    if os.path.isfile(outdir + country + dt.datetime.strptime(date_structure,'%b %d, %Y').strftime("_%Y_%m_%d_0000.csv")):
+                        download_element = self.driver.find_elements_by_xpath(f'//div[contains(text(),"Cancel")]')
+                        for ele in download_element:
+                            if ele.text=="Cancel": ele.click()
+                        time.sleep(1)
+                        continue
+
+
+                    download_element = self.driver.find_elements_by_xpath(f'//div[contains(text(),"Download Files")]')
+                    for ele in download_element:
+                        if ele.text=="Download Files": ele.click()
+                    if not self.is_file_downloaded():
+                        print('Did not download')
+                        continue
+                    self.move_most_recent_files(outdir, country, dat_type)
+        '''
             print(f'{country}')
             if country == 'Brazil':
                 print("Skipping Brazil")
@@ -115,7 +148,7 @@ class data_updater:
                     print(f'Downloading {i[1][0]}')
                     self.download_links(links,text,f'{self.outdir}/{country}/{i[1][0]}',country)
             print('')
-
+        '''
         print('Failed download attempts:')
         for ele in list_of_failed:
             print(f"{ele[0]}: {ele[1]}")
@@ -191,7 +224,7 @@ class data_updater:
 
         return (country + '_' + date + '.csv')
 
-    def move_most_recent_files(self,outdir: str, urls: list, country: str):
+    def move_most_recent_files(self,outdir: str, country: str, file_type: str):
         '''
         Get the most recent files form the download directory, rename them, and put them in the destination directory
         '''
@@ -199,7 +232,18 @@ class data_updater:
         self.try_mkdir_silent(outdir)
 
         csv_files = {}
-        # import pdb; pdb.set_trace()
+        zip_file = max(glob.glob(self.download_folder + '/*.zip'), key=os.path.getctime)
+        with ZipFile(zip_file) as zf:
+            for f_name in zf.namelist():
+                target_name = (country + f_name[-20:]).replace('-','_')
+                target_path = outdir + target_name
+                if not os.path.isfile(target_path):
+                    with open(target_path, 'wb') as f:
+                        f.write(zf.read(f_name))
+        os.remove(zip_file)
+        
+
+        '''
         for f in glob.glob(self.download_folder + '/*.csv'):
             csv_files[f] = os.path.getctime(f)
 
@@ -218,6 +262,7 @@ class data_updater:
                     print(sorted_file)
             else:
                 print(sorted_file)
+        '''
 
     def remove_empty_files(self,start_dir):
         for root, dirs, files in os.walk(start_dir):
@@ -246,6 +291,7 @@ class data_updater:
         chrome_options = chrome_webdriver.Options()
         if download_location:
             prefs = {'download.default_directory': download_location,
+                     "browser.set_download_behavior":"{ behavior: 'allow' , downloadPath: '"+download_location+"'}",
                      'download.prompt_for_download': False,
                      'download.directory_upgrade': True,
                      'safebrowsing.enabled': False,
@@ -279,3 +325,12 @@ class data_updater:
 
         params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': download_dir}}
         command_result = driver.execute("send_command", params)
+
+    def is_file_downloaded(self, timeout=30):
+        end_time = time.time() + timeout
+        while len(glob.glob(self.download_folder + '/*.zip'))==0:
+            time.sleep(1)
+            if time.time() > end_time:
+                print("File not found within time")
+                return False
+        return True
