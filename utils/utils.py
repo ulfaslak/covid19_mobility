@@ -326,6 +326,8 @@ def Update_CSV(data_path, country_name, save_path=None, dat_type='popu',adm =2):
         df_poputile = pd.DataFrame(pd.read_csv(data_path + file, float_precision='round_trip'))
         # Removing datapoints which are not from the desired country
         df_poputile = df_poputile[df_poputile['country'] == country]
+        # Removing missing values
+        df_poputile = df_poputile[~df_poputile.n_crisis.isna()]
         df_poputile = df_poputile.rename(columns={'geometry_line': 'geometry'}) #Just to make sure it was renamed
 
         if dat_type == "move":
@@ -356,6 +358,8 @@ def Update_CSV(data_path, country_name, save_path=None, dat_type='popu',adm =2):
             df_poputile_new = pd.DataFrame(pd.read_csv(data_path + file, float_precision='round_trip'))
             # Removing datapoints which are not from the desired country
             df_poputile_new = df_poputile_new[df_poputile_new['country'] == country]
+            df_poputile_new = df_poputile_new[~df_poputile_new.n_crisis.isna()]
+            df_poputile_new = df_poputile_new.rename(columns={'geometry_line': 'geometry'}) #Just to make sure it was renamed
 
         except pd.errors.EmptyDataError:
             continue
