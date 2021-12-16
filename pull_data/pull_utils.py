@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 import time
 import pandas as pd
 import os
@@ -54,13 +55,16 @@ class data_updater:
         self.driver.get('https://www.facebook.com/')
         #self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
         try:
-            self.driver.find_element_by_xpath('//*[@data-cookiebanner="accept_button"]').click()
+            self.driver.find_element(By.XPATH,'//*[@data-cookiebanner="accept_button"]').click()
+            #self.driver.find_element_by_xpath('//*[@data-cookiebanner="accept_button"]').click()
         except NoSuchElementException:
             print("No cookie banner, skipping click.")
-        self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(self.keys[0])
-        self.driver.find_element_by_xpath('//*[@id="pass"]').send_keys(self.keys[1])
-        # self.driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
-        self.driver.find_element_by_xpath('//*[@name="login"]').click()
+        self.driver.find_element(By.XPATH,'//*[@id="email"]').send_keys(self.keys[0])
+        self.driver.find_element(By.XPATH,'//*[@id="pass"]').send_keys(self.keys[1])
+        self.driver.find_element(By.XPATH,'//*[@name="login"]').click()
+        #self.driver.find_element_by_xpath('//*[@id="email"]').send_keys(self.keys[0])
+        #self.driver.find_element_by_xpath('//*[@id="pass"]').send_keys(self.keys[1])
+        #self.driver.find_element_by_xpath('//*[@name="login"]').click()
         time.sleep(3)
         self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
 
@@ -73,7 +77,8 @@ class data_updater:
             ids = []
             self.driver.get(
                 'https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fgeoinsights-portal%2F')
-            ele = self.driver.find_element_by_xpath('//*[@id="js_3"]')
+            ele = self.driver.find_element(By.XPATH,'//*[@id="js_3"]')
+            #ele = self.driver.find_element_by_xpath('//*[@id="js_3"]')
             ele.send_keys(country)
             time.sleep(1)
             ele.send_keys(" Coronavirus Disease Prevention")
@@ -81,7 +86,8 @@ class data_updater:
             ele.send_keys(Keys.DOWN)
 
             while True:
-                text = self.driver.find_element_by_xpath('//span[contains(text(),"Search")]').text
+                text = self.driver.find_element(By.XPATH,'//span[contains(text(),"Search")]').text
+                #text = self.driver.find_element_by_xpath('//span[contains(text(),"Search")]').text
                 if text == f'Search: "{country + " Coronavirus Disease Prevention"}"':
                     break
                 time.sleep(1)
@@ -89,9 +95,10 @@ class data_updater:
 
             time.sleep(3)
             for dat_type in self.data_types:
-                elements = self.driver.find_elements_by_xpath(f'//div[contains(text(),"{dat_type}")]')
+                elements = self.driver.find_elements(By.XPATH, f'//div[contains(text(),"{dat_type}")]')
+                #elements = self.driver.find_elements_by_xpath(f'//div[contains(text(),"{dat_type}")]')
                 for ele in elements:
-                    page_id = ele.find_element_by_tag_name('a').get_attribute('href').split('=')[-1]
+                    page_id = ele.find_element(By.TAG_NAME, 'a').get_attribute('href').split('=')[-1]
                     out = self.open_and_check(f'https://www.facebook.com/geoinsights-portal/downloads/?id={page_id}',
                                               country + " Corona")
                     if out:
@@ -104,36 +111,38 @@ class data_updater:
         self.start_driver()
         self.login()
         time.sleep(3)
-        self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
         list_of_failed = []
         for country in countries:
             print(f"Downloading data for {country}")
+            self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
             query = f'{country} Coronavirus Disease Prevention Map'
             #import pdb; pdb.set_trace()
-            self.driver.find_element_by_xpath('//*[@placeholder="Search for a dataset by name"]').clear()
-            self.driver.find_element_by_xpath('//*[@placeholder="Search for a dataset by name"]').send_keys(query)
+            self.driver.find_element(By.XPATH,'//*[@placeholder="Find datasets by name"]').clear()
+            self.driver.find_element(By.XPATH,'//*[@placeholder="Find datasets by name"]').send_keys(query)
+            #self.driver.find_element_by_xpath('//*[@placeholder="Find datasets by name"]').clear()
+            #self.driver.find_element_by_xpath('//*[@placeholder="Find datasets by name"]').send_keys(query)
             time.sleep(3)
             for dat_type in self.data_types:
                 outdir = self.outdir + '/' + country + '/' + self.data[dat_type]['folder'] + '/' 
-                element = self.driver.find_elements_by_xpath(f'//div[contains(text(),"{dat_type}")]')
+                element = self.driver.find_elements(By.XPATH, f'//div[contains(text(),"{dat_type}")]')
                 if len(element)==0:
                     print(f"Data not downloaded for {dat_type} for {country}")
                     continue
-                parent_element = element[0].find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..')
-                parent_element.find_element_by_xpath(f'.//div[contains(text(),"Download")]').find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').click()
-                element_check = self.driver.find_elements_by_xpath(f'//div[contains(text(),"Last 7 days")]')
-                if len(element_check) > 0:
-                    #Checking if newest file is already downloaded
+                parent_element = element[0].find_element(By.XPATH,'..').find_element(By.XPATH,'..').find_element(By.XPATH,'..').find_element(By.XPATH,'..')
+                parent_element.find_element(By.XPATH,f'.//*[contains(text(),"Download")]').click() #find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').click()
+                element_check = self.driver.find_elements(By.XPATH, f'//div[contains(text(),"Last 7 days")]')
+                #Checking if newest file is already downloaded
+                if len(element_check)>0:
                     date_structure = element_check[0].get_attribute('innerHTML')[-12:]
                     if os.path.isfile(outdir + country + dt.datetime.strptime(date_structure,'%b %d, %Y').strftime("_%Y_%m_%d_0000.csv")):
-                        download_element = self.driver.find_elements_by_xpath(f'//div[contains(text(),"Cancel")]')
+                        download_element = self.driver.find_elements(By.XPATH, f'//div[contains(text(),"Cancel")]')
                         for ele in download_element:
                             if ele.text=="Cancel": ele.click()
                         time.sleep(1)
                         continue
 
 
-                    download_element = self.driver.find_elements_by_xpath(f'//div[contains(text(),"Download Files")]')
+                    download_element = self.driver.find_elements(By.XPATH, f'//div[contains(text(),"Download Files")]')
                     for ele in download_element:
                         if ele.text=="Download Files": ele.click()
                     if not self.is_file_downloaded():
@@ -175,8 +184,10 @@ class data_updater:
 
     def get_links(self, path):
         self.driver.get(path)
-        ele = self.driver.find_elements_by_tag_name('li')
-        links = [date.find_element_by_tag_name('a').get_attribute('href') for date in ele if len(re.findall("\d{4}-\d{2}-\d{2}[ +]\d{4}",date.text)) > 0]
+        ele = self.driver.find_elements(By.TAG_NAME, 'li')
+        #ele = self.driver.find_elements_by_tag_name('li')
+        links = [date.find_element(By.TAG_NAME, 'a').get_attribute('href') for date in ele if len(re.findall("\d{4}-\d{2}-\d{2}[ +]\d{4}",date.text)) > 0]
+        #links = [date.find_element_by_tag_name('a').get_attribute('href') for date in ele if len(re.findall("\d{4}-\d{2}-\d{2}[ +]\d{4}",date.text)) > 0]
         text = [date.text.replace('-','_').replace(' ','_') for date in ele if len(re.findall("\d{4}-\d{2}-\d{2}[ +]\d{4}",date.text)) > 0]
         return links, text
 
@@ -199,7 +210,8 @@ class data_updater:
         main_window = self.driver.current_window_handle
         self.driver.execute_script(f'''window.open("{link}","_blank");''')
         self.driver.switch_to.window(self.driver.window_handles[1])
-        ele = self.driver.find_elements_by_xpath(f'//*[contains(text(),"{contains}")]')
+        ele = self.driver.find_elements(By.XPATH, f'//*[contains(text(),"{contains}")]')
+        #ele = self.driver.find_elements_by_xpath(f'//*[contains(text(),"{contains}")]')
         if len(ele)>0:
             output = ele[0].text
         else:
