@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 import json
@@ -20,6 +21,12 @@ def run(country):
         def __getitem__(self, index):
             self._fill(index)
             return list.__getitem__(self, index)
+
+    def convert(o):
+        if isinstance(o, np.int64): 
+            return int(o)
+        else:
+            return o
 
     def percent_change(crisis, baseline):
         if baseline == 0:
@@ -152,7 +159,7 @@ def run(country):
         start = len(data_out['_meta']['datetime'])
     else:
         data_out = defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: 0)))
-        start = 0
+        start = 0 
 
 
     fn_days = data.index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
@@ -207,7 +214,7 @@ def run(country):
     data_out['_meta']['defaults']['lonMax'] = cbb[2]
 
     with open(PATH_OUT,'w') as f:
-        json.dump(data_out,f)
+        json.dump(data_out,f, default = convert)
 
 if __name__ == "__main__":
     os.chdir("../../")

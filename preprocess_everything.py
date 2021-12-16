@@ -29,10 +29,9 @@ def run():
     # First run serially
     print("Adding the admin locations to the CSV files:")
     prep_countries.run(path)
-    # return
     # Then run in parallel
     print('\n-----------\nrun in parallel:\n----------------')
-    for country in country_list:
+    for country in ['Denmark','Sweden']: #country_list:
         print(f'Processing {country}')
         if country == 'Ireland':
             adm_kommune = 'adm1'
@@ -57,6 +56,7 @@ def run():
                 movements
             ]
         else:
+            continue
             pscripts = [
                 absolute_deviation,
                 gini_over_time,
