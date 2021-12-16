@@ -12,7 +12,7 @@ def run(path):
     
     #import pdb; pdb.set_trace()
     country_list = os.listdir(path)
-    for country_name in country_list:
+    for country_name in ['Denmark','Sweden']: #country_list:
         if country_name == 'Ireland':
             adm = 'adm1'
         else:

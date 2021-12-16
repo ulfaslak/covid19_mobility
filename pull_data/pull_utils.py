@@ -61,6 +61,7 @@ class data_updater:
         self.driver.find_element_by_xpath('//*[@id="pass"]').send_keys(self.keys[1])
         # self.driver.find_element_by_xpath('//*[@id="loginbutton"]').click()
         self.driver.find_element_by_xpath('//*[@name="login"]').click()
+        time.sleep(3)
         self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
 
     def add_countries(self, countries):
@@ -103,17 +104,23 @@ class data_updater:
         self.start_driver()
         self.login()
         time.sleep(3)
+        self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
         list_of_failed = []
         for country in countries:
+            print(f"Downloading data for {country}")
             query = f'{country} Coronavirus Disease Prevention Map'
+            #import pdb; pdb.set_trace()
             self.driver.find_element_by_xpath('//*[@placeholder="Search for a dataset by name"]').clear()
             self.driver.find_element_by_xpath('//*[@placeholder="Search for a dataset by name"]').send_keys(query)
             time.sleep(3)
             for dat_type in self.data_types:
                 outdir = self.outdir + '/' + country + '/' + self.data[dat_type]['folder'] + '/' 
                 element = self.driver.find_elements_by_xpath(f'//div[contains(text(),"{dat_type}")]')
+                if len(element)==0:
+                    print(f"Data not downloaded for {dat_type} for {country}")
+                    continue
                 parent_element = element[0].find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..')
-                parent_element.find_element_by_xpath(f'.//div[contains(text(),"Download")]').click()
+                parent_element.find_element_by_xpath(f'.//div[contains(text(),"Download")]').find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').find_element_by_xpath('..').click()
                 element_check = self.driver.find_elements_by_xpath(f'//div[contains(text(),"Last 7 days")]')
                 if len(element_check) > 0:
                     #Checking if newest file is already downloaded
@@ -235,6 +242,8 @@ class data_updater:
         zip_file = max(glob.glob(self.download_folder + '/*.zip'), key=os.path.getctime)
         with ZipFile(zip_file) as zf:
             for f_name in zf.namelist():
+                if not f_name.endswith('.csv') or f_name.startswith('__MACOSx'):
+                    continue
                 target_name = (country + f_name[-20:]).replace('-','_')
                 target_path = outdir + target_name
                 if not os.path.isfile(target_path):
@@ -301,6 +310,7 @@ class data_updater:
 
         if headless:
             chrome_options.add_argument("--headless")
+            chrome_options.add_argument("--allow-running-insecure-content")
 
         if sys.platform.startswith("win"):
             driver_path += ".exe"
