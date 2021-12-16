@@ -23,7 +23,12 @@ def run(country,iso,adm_region='adm1',adm_kommune='adm2'):
 
 
     def percent_change(v0, v1):
-        return (v1 - v0) / v0
+        if v0==0:
+            return 'undefined'
+        elif (v0 == np.inf or v1 == np.inf):
+            return 0
+        else:
+            return (v1 - v0) / v0
 
 
     if country == 'Czechia':

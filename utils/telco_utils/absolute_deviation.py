@@ -118,7 +118,7 @@ def run(country):
 
     # usage: data_out1['08']['country'].append(value)
     # fn_days = sorted(set([fn[:-9] for fn in os.listdir(PATH_IN) if fn.endswith('.csv')]))
-    data = load_prepare(PATH_IN,PATH_IN_ZIPS,start_date)
+    data = load_prepare(PATH_IN,PATH_IN_ZIPS,start_date).dropna(subset=['source_kommune','target_kommune'])
     fn_days = data[data.index>start_date].index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
 
     #import pdb; pdb.set_trace()

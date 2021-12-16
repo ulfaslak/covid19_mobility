@@ -69,4 +69,4 @@ def create_shape_file(country, adm, save_dir=False, file_return=True, return_geo
         return shape_file
 
 if __name__ == '__main__':
-    create_shape_file('Denmark', adm=2, save_dir='/Users/ulfaslak/Documents/git/covid19_mobility/covid19.compute.dtu.dk/static/data/')
+    create_shape_file('Denmark', adm=2, save_dir='/Users/petem/HOPE/covid19_mobility/utils/shapefiles/')
