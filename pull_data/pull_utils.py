@@ -59,6 +59,7 @@ class data_updater:
             #self.driver.find_element_by_xpath('//*[@data-cookiebanner="accept_button"]').click()
         except NoSuchElementException:
             print("No cookie banner, skipping click.")
+
         self.driver.find_element(By.XPATH,'//*[@id="email"]').send_keys(self.keys[0])
         self.driver.find_element(By.XPATH,'//*[@id="pass"]').send_keys(self.keys[1])
         self.driver.find_element(By.XPATH,'//*[@name="login"]').click()
@@ -67,6 +68,7 @@ class data_updater:
         #self.driver.find_element_by_xpath('//*[@name="login"]').click()
         time.sleep(3)
         self.driver.get('https://partners.facebook.com/data_for_good/data/?partner_id=3930226783727751')
+
 
     def add_countries(self, countries):
         # Adds country IDs to the data

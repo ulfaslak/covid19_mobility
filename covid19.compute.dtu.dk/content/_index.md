@@ -38,7 +38,7 @@ The research presented here is the work of the DTU Compute COVID-19 modeling gro
 * [Laura Alessandretti](http://laura.alessandretti.com), assistant professor (telco-data, text)
 * [Jonas Lybker Juul](https://www.nbi.dk/~jonassj/), postdoc (Epidemic modeling, Facebook and telco-data, text)
 * [Anna Sapienza](http://www.annasapienza.it), postdoc (Facebook data)
-* [Peter Edsberg Møllgaard](https://orbit.dtu.dk/en/persons/peter-edsberg-møllgaard), research assistant (Facebook data, website, figures)
+* [Peter Edsberg Møllgaard](https://orbit.dtu.dk/en/persons/peter-edsberg-møllgaard), PhD (Facebook data, website, figures)
 * [Sune Lehmann](https://sunelehmann.com/), professor (PI, text)
 
 

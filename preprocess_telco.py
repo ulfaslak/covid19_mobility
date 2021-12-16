@@ -10,9 +10,11 @@ def run():
     # Then run in parallel
     print('\n-----------\nrun in parallel:\n----------------')
     country = 'Denmark'
+
     pscripts = [absolute_deviation, movements_telco_new]
     #movements_telco_new.run(country)
     Parallel(n_jobs=min(8, len(pscripts)))(delayed(lambda x: x.run(country))(x) for x in pscripts)
+
             
 
 if __name__ == "__main__":

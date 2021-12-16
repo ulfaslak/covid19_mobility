@@ -382,12 +382,19 @@ class MovementsMap {
 	setSlider() {
 		// Define
 		let N = this.datetime.length
+        let indexes = [], i;
+        for (i = 0; i < N; i++)
+            if (this.parseDate(this.datetime[i]).getDate()===1)
+                indexes.push(i);
+
 		let sliderStep = d3.sliderBottom()
 			.min(0)
 			.max(N-1)
 			.width(this.width - this.rwidth - 60)
-			.tickValues(d3.range(2, N, 14))
-			.tickFormat(i => this.idxToDate(i))
+			//.tickValues(d3.range(2, N, 30))
+			.tickValues(indexes)
+            .displayFormat(i => this.idxToDate(i))
+			.tickFormat(i => this.idxToDate_tick(i))
 			.step(1)
 			.default(this.t)
 			.on('onchange', t => {
@@ -703,6 +710,16 @@ class MovementsMap {
 		return dateString
 	}
 
+	idxToDate_tick(i) {
+        let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"] 
+		let date = this.parseDate(this.datetime[0]);
+		date.setHours(date.getHours() + 24 * i);
+		let dateString = "";
+		dateString += months[date.getMonth()] + "/"
+		dateString += date.getFullYear() - 2000
+		return dateString
+	}
+        
 	exists(d) {
 		if (!(d in this.data))
 			return false;

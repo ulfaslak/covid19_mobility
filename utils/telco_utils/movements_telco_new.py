@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 import json
+import numpy as np
 from countryinfo import CountryInfo
 from collections import defaultdict
 from tqdm import tqdm
@@ -32,6 +33,17 @@ def run(country):
         if baseline == 0:
             return 0
         return (crisis - baseline) / baseline
+
+    class NpEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, np.integer):
+                return int(obj)
+            elif isinstance(obj, np.floating):
+                return float(obj)
+            elif isinstance(obj, np.ndarray):
+                return obj.tolist()
+            else:
+                return super(NpEncoder, self).default(obj)
 
     def defaultify(d, depth = 0):
         if isinstance(d, dict):
@@ -72,6 +84,7 @@ def run(country):
                              on=['weekday', 'origin_area_code', 'destination_area_code'],
                              how='left',
                              suffixes=['', '_ref']).fillna(5)
+
 
         # Compute relative change
         # df_change['rel_change']=(df_change['all'] - df_change['all_ref'])/df_change['all_ref']
@@ -125,6 +138,8 @@ def run(country):
     # Load data
     data = pd.read_csv(PATH_IN_DAT + 'df_safe.csv.gz', parse_dates=['date'],
                       dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
+    # removing zip code which does not exist in zip codes. Assuming it's Christiansø.
+    data = data[(data.origin_area_code != 411) & (data.destination_area_code != 411)]
     #df2 = pd.read_csv(PATH_IN_DAT + 'df_safe_within.csv.gz', parse_dates=['date'],
     #                  dtype={'origin_area_code': 'int', 'destination_area_code': 'int'})
 
@@ -159,8 +174,11 @@ def run(country):
         start = len(data_out['_meta']['datetime'])
     else:
         data_out = defaultdict(lambda: defaultdict(lambda: defaultlist(lambda: 0)))
+
         start = 0 
 
+
+        start = 0
 
     fn_days = data.index.unique().sort_values().strftime("%Y-%m-%d %H:%H:%H").to_list()
 
@@ -214,7 +232,10 @@ def run(country):
     data_out['_meta']['defaults']['lonMax'] = cbb[2]
 
     with open(PATH_OUT,'w') as f:
+
         json.dump(data_out,f, default = convert)
+        #json.dump(data_out, f, cls=NpEncoder)
+
 
 if __name__ == "__main__":
     os.chdir("../../")

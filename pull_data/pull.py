@@ -18,8 +18,10 @@ def run():
     #updater.move_most_recent_files(outdir_tmp, 'Denmark', updater.data_types[0])
     #import pdb; pdb.set_trace()
     updater.remove_empty_files(outdir)
+
     #updater.download_countries(updater.data.index[1:])
     updater.download_countries(['Denmark','Sweden'])
+
     #updater.download_id('https://www.facebook.com/geoinsights-portal/downloads/?id=642750926308152&extra[crisis_name]=DK_NUTS3','Denmark','Movement_range')
 
 
